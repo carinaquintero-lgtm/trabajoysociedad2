@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartografías y conversaciones aquí y más allá</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Postal de mediados de siglo */
+    --sepia:#8B4513;      /* Sepia Clásico — textos, títulos, bordes */
+    --gamuza:#F4A460;     /* Gamuza Suave — enlaces y acentos cálidos */
+    --arena:#E6D7B8;      /* Sepia Arena — tarjetas y bloques */
+    --marfil:#FFFFF0;     /* Marfil Vintage — fondo general */
+    --azul:#AEC6CF;       /* Azul Cielo Pastel — botones principales */
+    --rosa:#FFD1DC;       /* Rosa Pastel — etiquetas y alertas */
+    --lila:#E8D7F1;       /* Liláceo Suave — subtextos y fondos alternos */
+
+    /* Ampliación armónica para distinguir las 9 estaciones del mapa:
+       mismos valores de luminosidad/saturación que los tres pastel de
+       arriba, sumando el resto de la rueda cromática. */
+    --salvia:#B8CBB0;     /* verde salvia pastel */
+    --manteca:#F2E2A8;    /* amarillo manteca pastel */
+    --durazno:#F3C2A0;    /* durazno pastel */
+    --malva:#D9B8C4;      /* malva polvo pastel */
+    --turquesa:#A8C4C2;   /* turquesa apagado pastel */
+
+    --tinta:var(--sepia);
+    --tinta-suave:#A9744F;
+    --papel:var(--marfil);
+    --papel-osc:var(--arena);
+    --papel-linea:#D5C09B;
+    --sombra: rgba(139,69,19,.16);
+    --c-conventillo:var(--durazno);
+    --c-feria:var(--manteca);
+    --c-mercado:var(--gamuza);
+    --c-escuela:var(--lila);
+    --c-seccional:var(--malva);
+    --c-congreso:var(--azul);
+    --c-puerto:var(--turquesa);
+    --c-periodico:var(--rosa);
+    --c-hospital:var(--salvia);
+    --c-plaza:var(--arena);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--papel);
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(139,69,19,.05), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(139,69,19,.04), transparent 45%);
+    color:var(--tinta);
+    font-family:'Inter', system-ui, sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{font-family:'Playfair Display', Georgia, serif;}
+  .wrap{max-width:640px;margin:0 auto;padding:0 20px 80px;}
+  /* ---------- LANDING ---------- */
+  #landing{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding:48px 20px 60px;
+  }
+  .eyebrow{
+    font-size:.78rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--tinta-suave); text-align:center; margin-bottom:10px;
+  }
+  #landing h1{
+    font-size:2.1rem; text-align:center; margin:0 0 6px; line-height:1.15;
+  }
+  .subtitulo{
+    text-align:center; font-style:italic; color:var(--tinta-suave);
+    margin:0 0 28px; font-size:1.02rem;
+  }
+  .relato{
+    background:var(--papel-osc);
+    border:1px solid var(--papel-linea);
+    border-radius:4px;
+    padding:22px 24px;
+    font-size:.98rem;
+    max-width:560px; margin:0 auto 30px;
+    box-shadow:0 3px 10px var(--sombra) inset;
+  }
+  .relato p{margin:0 0 12px;}
+  .relato p:last-child{margin-bottom:0;}
+  .audio-relato{
+    margin-bottom:16px; padding-bottom:16px; border-bottom:1px dashed var(--papel-linea);
+    display:flex; flex-direction:column; gap:8px; align-items:center;
+  }
+  .audio-relato .btn{ font-size:.88rem; padding:10px 22px; }
+  .cta-row{display:flex; justify-content:center;}
+  .btn{
+    font-family:'Inter',sans-serif; font-weight:600; font-size:.95rem;
+    background:var(--azul); color:var(--tinta);
+    border:none; border-radius:30px; padding:14px 30px;
+    cursor:pointer; box-shadow:0 4px 10px var(--sombra);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:translateY(1px) scale(.98);}
+  .btn-ghost{
+    background:transparent; color:var(--tinta); border:1.5px solid var(--tinta);
+  }
+  .btn-alt{ background:var(--papel-osc); color:var(--tinta); border:1.5px solid var(--tinta-suave); }
+
+  /* ---------- MAPA / RECORRIDO ---------- */
+  #mapa{display:none;}
+  #mapa.activo{display:block;}
+  .mapa-header{ padding:20px 0 4px; text-align:center; }
+  .mapa-header h2{ font-size:1.5rem; margin:0 0 4px; }
+  .mapa-header p{ color:var(--tinta-suave); font-size:.92rem; margin:0; }
+
+  .mapa-hint{ text-align:center; font-size:.85rem; color:var(--tinta-suave); margin:4px 0 6px; }
+  .mapa-lienzo-shell{ display:flex; justify-content:center; padding:0 16px; }
+  .mapa-lienzo{
+    width:100%; max-width:min(1050px, 96vw); height:min(78vh, 800px); min-height:420px;
+    overflow:auto; -webkit-overflow-scrolling:touch;
+    border:1px solid var(--papel-linea); border-radius:14px;
+    background-color:var(--marfil);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.545 0 0 0 0 0.27 0 0 0 0 0.075 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    box-shadow:0 3px 10px var(--sombra) inset;
+    cursor:grab;
+  }
+  .mapa-lienzo.arrastrando{ cursor:grabbing; }
+  .mapa-lienzo svg{ display:block; width:1050px; max-width:none; height:auto; }
+  .mapa-lienzo text{ font-family:'Inter',sans-serif; }
+  .edificio{ cursor:pointer; }
+  .edificio .plinto{
+    stroke:var(--tinta); stroke-width:3; fill:var(--edif-color);
+    transition:transform .12s ease; transform-box:fill-box; transform-origin:center;
+    filter:drop-shadow(0 5px 5px rgba(139,69,19,.35));
+  }
+  .edificio:active .plinto{ transform:scale(.96); }
+  .edificio .icono{ fill:none; stroke-width:2; stroke:var(--tinta); }
+  .edificio .icono .repaso{ opacity:.5; }
+  .edificio .rotulo{ font-size:27px; font-weight:600; fill:var(--tinta); text-anchor:middle; }
+  .edificio .estado-txt{ font-size:13px; fill:var(--sepia); font-weight:700; text-anchor:middle; text-transform:uppercase; letter-spacing:.04em; }
+
+  .pie-mapa{ margin-top:36px; text-align:center; }
+  .pie-mapa p{ font-size:.85rem; color:var(--tinta-suave); }
+
+  /* ---------- MODAL ESCENA ---------- */
+  #escena-overlay{
+    position:fixed; inset:0; background:rgba(20,17,12,.55);
+    display:none; align-items:flex-end; justify-content:center; z-index:100;
+  }
+  #escena-overlay.activo{ display:flex; }
+  #escena{
+    background:var(--papel); width:100%; max-width:640px;
+    max-height:92vh; overflow-y:auto; border-radius:16px 16px 0 0;
+    padding:0 0 30px; animation:subir .25s ease;
+    box-shadow:0 -6px 24px rgba(0,0,0,.35);
+  }
+  @keyframes subir{ from{transform:translateY(24px); opacity:0;} to{transform:translateY(0); opacity:1;} }
+  .escena-top{
+    position:sticky; top:0; background:var(--barra-color, var(--azul));
+    color:var(--tinta); padding:16px 18px; border-radius:16px 16px 0 0;
+    display:flex; align-items:center; justify-content:space-between; z-index:2;
+    border-bottom:1px solid rgba(139,69,19,.15);
+  }
+  .escena-top h2{ margin:0; font-size:1.2rem; }
+  .escena-top .quienes{ font-size:.8rem; opacity:.8; margin:2px 0 0; }
+  .cerrar{
+    background:rgba(139,69,19,.15); border:none; color:var(--tinta); width:34px; height:34px;
+    border-radius:50%; font-size:1.1rem; cursor:pointer; flex-shrink:0; margin-left:12px;
+  }
+  .escena-cuerpo{ padding:18px 18px 0; }
+  .nota-recurso{
+    background:var(--lila); border:1px dashed var(--tinta-suave); border-radius:8px;
+    padding:10px 12px; font-size:.82rem; color:var(--tinta-suave); margin-bottom:16px;
+  }
+  .nota-recurso a{ color:var(--sepia); font-weight:600; text-decoration:underline; }
+  .fila-botones-recurso{
+    display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;
+  }
+  .fila-botones-recurso .btn{
+    flex:1 1 0; min-width:80px; text-align:center; padding:10px 6px;
+    font-size:.8rem; text-decoration:none; box-sizing:border-box;
+  }
+  .fila-burbuja{ display:flex; align-items:flex-end; gap:10px; margin-bottom:16px; }
+  .fila-burbuja.der{ flex-direction:row-reverse; }
+  .avatar{
+    width:clamp(64px, 20vw, 96px); height:clamp(64px, 20vw, 96px);
+    border-radius:50%; flex-shrink:0; object-fit:contain;
+    background:#fff; border:2.5px solid var(--tinta); padding:4px;
+    box-shadow:0 2px 6px var(--sombra);
+  }
+  .fila-burbuja .burbuja{ max-width:none; flex:1 1 auto; min-width:0; }
+  .burbuja{
+    max-width:82%; padding:10px 14px; border-radius:14px;
+    font-size:.95rem; position:relative; animation:aparecer .25s ease both;
+  }
+  .sin-avatar{ margin-bottom:10px; }
+  @keyframes aparecer{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .burbuja .nombre{ display:block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; margin-bottom:3px; opacity:.7; }
+  .burbuja.A{ background:var(--papel-osc); border:1px solid var(--papel-linea); margin-right:auto; border-bottom-left-radius:3px; }
+  .burbuja.B{ background:var(--lila); border:1px solid var(--papel-linea); margin-left:auto; border-bottom-right-radius:3px; text-align:right; }
+  .burbuja.tuya{ background:var(--gamuza); color:var(--tinta); }
+  .burbuja.tuya .nombre{ opacity:.8; }
+  /* Colita de la burbuja, apuntando hacia el personaje que habla */
+  .fila-burbuja.izq .burbuja::after,
+  .fila-burbuja.der .burbuja::after{
+    content:''; position:absolute; bottom:0; width:0; height:0; border-style:solid;
+  }
+  .fila-burbuja.izq .burbuja.A::after{
+    left:-7px; border-width:0 8px 8px 0; border-color:transparent var(--papel-osc) transparent transparent;
+  }
+  .fila-burbuja.izq .burbuja.tuya::after{
+    left:-7px; border-width:0 8px 8px 0; border-color:transparent var(--gamuza) transparent transparent;
+  }
+  .fila-burbuja.der .burbuja.B::after{
+    right:-7px; border-width:0 0 8px 8px; border-color:transparent transparent transparent var(--lila);
+  }
+  .fila-burbuja.der .burbuja.tuya::after{
+    right:-7px; border-width:0 0 8px 8px; border-color:transparent transparent transparent var(--gamuza);
+  }
+  .credito-ilustraciones{
+    font-size:.72rem; color:var(--tinta-suave); text-align:center; font-style:italic;
+    margin:-4px 0 16px;
+  }
+
+  .cierre-escena{ text-align:center; padding:20px 0 4px; }
+  .cierre-escena p{ font-size:.85rem; color:var(--tinta-suave); margin:0 0 12px; }
+  .btn-cta{
+    display:inline-block; background:var(--gamuza); color:var(--tinta);
+    text-decoration:none; font-weight:700;
+  }
+
+  /* Próximamente */
+  #proximamente-overlay{
+    position:fixed; inset:0; background:rgba(20,17,12,.55); display:none;
+    align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  #proximamente-overlay.activo{ display:flex; }
+  .proximamente-caja{
+    background:var(--papel); border-radius:14px; padding:26px 22px; max-width:340px; text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+  }
+  .proximamente-caja h3{ margin:10px 0 6px; }
+  .proximamente-caja p{ font-size:.88rem; color:var(--tinta-suave); margin:0 0 16px; }
+</style>
+</head>
+<body>
+
+<!-- ============ LANDING ============ -->
+<section id="landing">
+  <div class="wrap" style="padding:0;">
+    <p class="eyebrow">Trabajo y Sociedad aplicado a la Educación 2</p>
+    <h1>Cartografías y conversaciones<br>aquí y más allá</h1>
+    <p class="subtitulo">Un recorrido narrativo por Buenos Aires, 1930</p>
+
+    <div class="relato">
+      <div class="audio-relato">
+        <a class="btn btn-alt" href="https://drive.google.com/file/d/1t3sCUijzNBfyLJaozi1j_OmvKqelQa82/view" target="_blank">🔊 Escuchá el relato</a>
+      </div>
+      <p>Es lunes, 1 de septiembre, en una Buenos Aires fría, bañada por el sol, pero acariciada por una brisa helada. Mientras atravieso la Plaza de Mayo con el diario doblado en mi mano, bebo un sorbo de café y me sumerjo en sus páginas como si las noticias cobraran vida ante mis ojos. Todo lo que leo resuena en mi cabeza con timbres y tonos de voces de variados actores, proyectando afirmaciones, quejas, sueños, dudas...</p>
+      <p>El frío filtrándose por mi ropa me saca de esa escena, levanto la vista y veo que algunos nubarrones ahora están más cerca. Camino, como si el cuerpo me pesara, a paso lento. Me detengo en una esquina y haciendo malabares extiendo y vuelvo a doblar el diario, para pasar a otras noticias.</p>
+      <p>El titular destaca la crisis económica en Argentina y en el mundo. De repente veo la crisis tomar forma en las calles adoquinadas que rodean la plaza. La imagen es confusa pero palpable, no la reconozco, pero al mismo tiempo la siento familiar, me llama la atención la gama de colores que la componen, los hay oscuros, muy oscuros, pero también claros, y como si de un filtro se tratara puedo ver, a través de ella (o quizás sea adentro), el puesto de diario, la catedral, la Casa de Gobierno, el banco, el correo y la aduana.</p>
+      <p>Me estiro para elevarme sobre los edificios y atravesar sus historias. Así puedo visualizar el puerto, el tren, algunos conventillos, el boliche, el mercado. Giro la cabeza y logro divisar el puerto, el río y un vasto territorio que no conozco. Las voces se escuchan lejanas pero potentes. La ciudad empieza a cobrar vida en cada palabra, como invitándome a sumergirme en ella.</p>
+      <p>Comienzan a caer las primeras gotas, me pongo el diario entre la ropa, termino el café y proyectando mi mirada te veo... me acerco a vos.</p>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn" onclick="irAlMapa()">Comenzar el recorrido</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MAPA / SENDA ============ -->
+<section id="mapa">
+  <div class="wrap" style="max-width:820px;">
+    <div class="mapa-header">
+      <h2>Recorré la ciudad</h2>
+      <p>Cada sector del mapa guarda una conversación entre dos referentes de la época.</p>
+    </div>
+    <p class="mapa-hint">🧭 Deslizá con el dedo (o arrastrá con el mouse) para explorar el mapa y tocá un edificio para entrar.</p>
+  </div>
+  <div class="mapa-lienzo-shell">
+    <div class="mapa-lienzo" id="mapa-lienzo"><!-- se completa por JS --></div>
+  </div>
+  <div class="wrap" style="max-width:820px;">
+    <div class="pie-mapa">
+      <p style="font-size:.78rem; font-style:italic;">Ilustraciones de los personajes: Lic. Martín Castañeda, creadas originalmente para el escenario en metaverso, cedidas para este proyecto.</p>
+      <button class="btn btn-ghost" onclick="irALanding()">Volver al inicio</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MODAL ESCENA ============ -->
+<div id="escena-overlay">
+  <div id="escena">
+    <div class="escena-top" id="escena-top">
+      <div>
+        <h2 id="escena-titulo"></h2>
+        <p class="quienes" id="escena-quienes"></p>
+      </div>
+      <button class="cerrar" onclick="cerrarEscena()">✕</button>
+    </div>
+    <div class="escena-cuerpo" id="escena-cuerpo"></div>
+  </div>
+</div>
+
+<!-- ============ PRÓXIMAMENTE ============ -->
+<div id="proximamente-overlay">
+  <div class="proximamente-caja">
+    <div id="prox-icono"></div>
+    <h3 id="prox-titulo"></h3>
+    <p>Este escenario todavía se está construyendo con el mismo formato de conversación e íconos que ya viste.</p>
+    <div class="nota-recurso" id="prox-recurso" style="text-align:left;"></div>
+    <div class="fila-botones-recurso" id="prox-botones"></div>
+    <button class="btn btn-ghost" onclick="cerrarProximamente()">Volver al mapa</button>
+  </div>
+</div>
+
+<script>
+/* Ícono de "recurso" (reemplaza el emoji 📎, que no se ve bien en todas las
+   plataformas) — un documento simple, en línea con el resto de los íconos. */
+const ICONO_RECURSO = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px; margin-right:5px; flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>`;
+
+/* ------------------------------------------------------------------
+   ICONOS — sketch simple, monocromo, pensados para imitar la estética
+   blanco y negro con acento de color del escenario original en Topia.
+------------------------------------------------------------------- */
+const ICONS = {
+  conventillo: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><rect x="7" y="10" width="26" height="24" rx="1"/><path d="M12 34V10M28 34V10"/><path d="M12 16h4v6h-4zM18 16h4v6h-4zM24 16h4v6h-4z"/><path d="M9 10l11-6 11 6"/></svg>`,
+  mercado: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><path d="M7 14l4-8h18l4 8"/><path d="M7 14h26M7 14v3a3 3 0 006 0v-3M13 17a3 3 0 006 0v-3M19 17a3 3 0 006 0v-3M25 17a3 3 0 006 0v-3"/><rect x="11" y="20" width="18" height="14" rx="1"/></svg>`,
+  escuela: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><rect x="8" y="16" width="24" height="18" rx="1"/><path d="M20 16V9M17 9h6"/><circle cx="20" cy="7" r="1.4" fill="currentColor" stroke="none"/><path d="M14 34v-8h12v8"/></svg>`,
+  plaza: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="20" cy="14" r="8"/><path d="M20 22v12M12 34h16M14 30h6M20 30h6"/></svg>`,
+  seccional: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><rect x="8" y="14" width="24" height="20" rx="1"/><path d="M14 34v-8h4v8M22 34v-8h4v8"/><path d="M20 5l1.6 3.3 3.6.5-2.6 2.6.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.6 3.6-.5z"/></svg>`,
+  hospital: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><rect x="7" y="14" width="26" height="20" rx="1"/><path d="M14 34v-7h5v7M27 34v-7h-5v7"/><path d="M20 17v8M16 21h8"/></svg>`,
+  feria: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 8L32 28H8Z"/><path d="M8 28h24"/><circle cx="20" cy="33" r="3"/><path d="M20 2l1.1 2.3 2.5.3-1.8 1.8.4 2.4-2.2-1.1-2.2 1.1.4-2.4-1.8-1.8 2.5-.3z"/></svg>`,
+  congreso: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><path d="M20 6a7 7 0 017 7H13a7 7 0 017-7z"/><path d="M20 6V3"/><rect x="9" y="18" width="22" height="16" rx="1"/><path d="M14 34v-8h4v8M22 34v-8h4v8"/></svg>`,
+  puerto: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 10v14M12 10h6l-2 4"/><path d="M6 26h28l-4 8H10z"/><path d="M20 24v-8"/></svg>`,
+  periodico: `<svg viewBox="0 0 40 40" fill="none" stroke-width="2" stroke-linecap="round"><path d="M8 10h24v20a2 2 0 01-2 2H10a2 2 0 01-2-2z"/><path d="M12 15h16M12 20h16M12 25h10"/></svg>`,
+};
+
+/* ------------------------------------------------------------------
+   DATOS DE LOCALIZACIONES
+   Contenido histórico y guiones de diálogo tomados y adaptados de
+   "La otredad indócil" (Quintero, C. — TFI MEED, UNCuyo, 2024).
+   TODO (Carina): reemplazar los recuadros "nota-recurso" con los
+   materiales/enlaces propios de esta cursada de Trabajo y Sociedad
+   aplicado a la Educación 2. Faltan por construir: Plaza pública (la
+   actividad colectiva de Padlet) y Hospital (salud mental, sin
+   personajes todavía).
+------------------------------------------------------------------- */
+const LOCATIONS = [
+  {
+    id:'conventillo', nombre:'Conventillo', icon:'conventillo', color:'var(--c-conventillo)',
+    ready:true,
+    personajes:['Casero nacionalista','Trabajador de frigorífico, hijo de inmigrantes'],
+    recurso:'Recursos sobre movimiento obrero, migración y vivienda popular en los conventillos porteños de 1930.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/interacción-1-conventillo-1',
+    guionUrl:'https://docs.google.com/presentation/d/1IEYLPZKq9y_qhGCfg2S4nM5Bge0nho5R/edit?usp=drive_link',
+    speakerA:{clave:'CN', nombre:'Casero Nacionalista', img:'data:image/jpeg;base64,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'},
+    speakerB:{clave:'TF', nombre:'Trabajador del Frigorífico', img:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQECWAJYAAD/2wBDAAwICQoJBwwKCQoNDAwOER0TERAQESMZGxUdKiUsKyklKCguNEI4LjE/MigoOk46P0RHSktKLTdRV1FIVkJJSkf/2wBDAQwNDREPESITEyJHMCgwR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0f/wAARCACgAGIDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1WiiigAooooAKKz73URFL9ntlMs7dAOcfWqx0m8u8te3rLkghEH3eKANjIHUik3r/AHh+dZK+HbYOHM9wWAx/rPfOae3h+zKgB5l4wcP1+tAGrRWG9te6MnnW9w09qg+aFxyB7f4VsxSCWJJF6MARQA+iiigAooooAKKKKACkPSlooAy9Jg2Qyy5JmkZsse3pVrTpmms1Z23OCQ31qlZ6hD/adzYsdjxtuXP8VW4vs9q0z+aiq53YLdD3pivZlyisW41xnkMWnW73DjHIHFN83xCxBFvAqkE4J5z+dILmlqmf7NnwCfk7Gn2X/HlDg5+QVhHVL0SNp2qWhilnUiKSPJRj6c1v2qlLWJWzkKBz1oGS0UUUAFFFFABRRRQAVDdzeRayS91HFTVQ1jJtFUZ+ZwDxmgCOLTbWezVbiIMzck55GfekXQLAHO2QjOcFzirdlJ5kOe4ODVmgCKCCG3j2QRqi+gFS0UUAVNRg8233qAZIjvQmprWUT2ySf3hz9akIyCD3rN0CTfYuvGElYADsM0AadFFFABRRRQAUUUUAFVNSQtaFlUFkO4VbqG5njhT95k5/hAyTQBQspgkowfkfmtQc1zEdyqXssG1hCp+UkHKE9jWzb3DIoB+Zcdc0AX6Kj85Qu45qje6za2cZeVto7Z70AXbmVYLaSRuiqTVDw7F5elhtzN5jlwW681kJey+I7oQWrFbVSGkfHX2rqY41ijWONQqqMACgB1FFFABRRRQAUUUUAISACT0FZE10Ft7jVJRiOFD5QPc+tP1+5kigjggbEkzbRjrXK/EjUvsVhYaPGzh7k4LKenbp+dAGp4VtjP4ce5vlMrXjs7ZPUdvp3p1zptzEP+JfeMg7I/p9a6DT7VLPTbe0QfLFGqDPsKebaInJFAHGG51OG4FvdTMxYHCo55q3pnhj7bMt/qssj5HyQk44961p0t4dWadkyLeAu20ZIqv4c1eXWIDPJtQ+awRB12ds0ATy2As9VtJbBEiib5JUXgH3+tbNVbtsT24xnL/lVqgAooooAKKKKACiiigDEmY3PihU52QRZ6cZPf8AnXJa94fm8QePpyZ2hS3RGRj/AA4x2/OunEkWn+JblJcIbpQ6Ox4OO2fzq1qliNQVJrZvKuozlZF/iHofUUATxz3FnEq3YMygczL/AFq1Dd28yBopkYHpzVO0vVC7JWBA4PsaVtIsZGaWFfLLnJMZ4J9cdKAMcGTU/EmoWZfZBGFDn1HpWo+gWSwhbRTayLyskZIOff1FMXRSkrHzVZX65XBp62upWzhIJ0khJ53HDCgCOzuJbi7ihuOZImYE+vof0rZrG0e3KajdSFy235OuQD+NbNABRRRQAUUUUAFFFFAGR4ns7S60eb7VEG2qSjdCpx2Nc7onh128OrOl/dxOVLqAx6V1GuRM9lvU8oc47N7VV0bVIFiis7hTbyqmQGGAR7UAZ2lnT1sl+z6iPtMhLMHb7x9COavWt/5LgXatalvun7yt+Pap30fR2uzciOJZCcnDYGfpV8i1eFYXMTo3CqcEH6CmJX6kUeoQu21Z4WJ5GHHNLc6hb28DSyyJ8vRQwJJ9K57VdD0+bXI42hCxtGWARtuGzzWpbeH9Ns4d0ELcLn5mLdvekMtaMfMsROSSZmL89R7VfrP0Nt+mq/HzEng5rQoAKKKKACiiigAooooAz9ek8rRriT+6uadYAXNhC06AkoOvXFR64qz2yWjMB5zAc9/arsCBF2L0UACmJ9CvJpNlIwZ4c49zTJtItXCBd6bDkbTWhRSGc7qFjFY6pZzxl/nJQ5ORnt/OtsPm0Y+iGs/xNGTpJnXG6B1kH4HmprSdZrAyI3yshYflQA3w8MaUmQR8xPNadZnhx2fSIyxyQSK06ACiiigAooooAKKKKAIZ7aK4wZF+YdGHUVmNqE2m3v2S4ikuImQukqcsPUEf1rZrEvyI/Etm8xHlPGygnsaAJz4g05YlkklaNWbbllPWnDXtLzj7Wo5xyD/hVTWYbaW7trXaGeR/mA9PepT4b0/Pyx4/WgCW51fS3geN7uMhwVwOc/hWB4f1OZml097dmVQ4EvYrjjj/AD1pbyxtdJ16P7R81rcjaCw/1betdLFp8MEDLCoDFSuQMUAUfCUqS6EhjHAdl/Eda2qwvB0MkGilJVKkTPwa3aACiiigAooooAKa+ccGnUUAVi82T0qhqVubsIJgSFOQfQ1r4HoKQqp6qPyoA521gNtdmXexY5q6xm+8sx61q+Wn90flSGNCMbRQBzOsWlzqlg1vvHmod0bH1qta+MHgt1sbqxuPtsabWOABkd66w20RYHaAfYUj2kLnLIM9M0AZ+kzyxaYglX94xJI9KuWtw8zkEEAVLHbRxklQeakCqDkACgB1FFFABRRRQB//2Q=='},
+    fijos:[
+      {q:'A', t:`Hola, te aviso que este lunes hay que realizar el pago de la habitación.`},
+      {q:'B', t:`¡Ahhh! Sí, en cuanto me paguen la segunda quincena cancelo el mes.`},
+      {q:'A', t:`Te pregunto, ¿ustedes van a seguir mandando toda la carne para afuera? Ellos nos mandan lo peor y nosotros lo mejor ¿Cómo es eso?`},
+      {q:'B', t:`¿Qué te digo? Esos que vienen de afuera somos los que sostenemos el frigorífico y los campos, para que la industria funcione, se exporte, entre guita… vos sabés.`},
+      {q:'A', t:`Vos naciste acá, tu viejo era el extranjero, pero de los buenos, eh. Igual, ¿no creés que el trabajo tendría que ser para los propios? Encima esos extranjeros vienen con ínfulas y con ideas de gran cosa y ni valores traen, al contrario.`},
+    ],
+    eleccion:{ quien:'B', pregunta:'¿Qué le responde el Trabajador del Frigorífico?', alternativa:`El valor del trabajo sin descanso, de cuidarnos, la valentía de reclamar lo propio… esos son valores.` },
+  },
+  {
+    id:'feria', nombre:'Feria', icon:'feria', color:'var(--c-feria)',
+    ready:true, tipo:'monologo',
+    personajes:['La Adivina'],
+    recurso:'Recursos sobre movimientos sociales que no tienen su propio personaje en las demás estaciones (pueblos originarios, comunidades afrodescendientes, otras luchas de la época).',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/interacción-conventillo-2',
+    guionUrl:'https://docs.google.com/presentation/d/1xr511JOD9bC8695S6dvYX20agZOy3lBp/edit?usp=drive_link',
+    speakerA:{clave:'AD', nombre:'La Adivina', img:'data:image/jpeg;base64,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'},
+    monologo:`¡Te doy la bienvenida a tu búsqueda de secretos y misterios! En este rincón de magia y predicción, mi más cordial bienvenida. Soy la adivina que guiará tus pasos a través del velo de lo desconocido. Aquí vas a encontrar respuestas a tus preguntas más profundas y una luz en la oscuridad de la incertidumbre. Con la sabiduría ancestral y la intuición como mis aliados, desvelaremos los misterios que el destino te tiene reservados. Vos sentate, relajate y dejá que el universo hable a través de mí. ¡Veamos qué te tiene preparado el futuro! ¿Quién se atreve a preguntar?`,
+  },
+  {
+    id:'mercado', nombre:'Mercado', icon:'mercado', color:'var(--c-mercado)',
+    ready:true,
+    personajes:['Panadero anarquista','Descendiente de esclavos'],
+    recurso:'Recursos sobre anarquismo, trabajo y comunidad afroargentina a principios del siglo XX.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-3',
+    guionUrl:'https://docs.google.com/presentation/d/1BN0sOS_WdLLXFANBud--Gj4PnfYWWhdmHnvE9G1KaB8/edit?usp=sharing',
+    speakerA:{clave:'PA', nombre:'Panadero Anarquista', img:'data:image/jpeg;base64,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'},
+    speakerB:{clave:'DE', nombre:'Descendiente de Esclavos', img:'data:image/jpeg;base64,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'},
+    fijos:[
+      {q:'A', t:`¡Hola! Buen día ¿Qué queremos hoy? Tengo para ofrecerte unos "vigilantes" recién salidos del horno.`},
+      {q:'B', t:`¡Hola! Nooooo, gracias, de eso ya tuvimos mucho nosotros. Prefiero unas orejas para escuchar mejor lo que está pasando, se ve fea la cosa.`},
+      {q:'A', t:`Sí, mala mía. Cualquier forma de autoridad que se crea mejor para decidir por los demás, requiere de orejas atentas que eviten que esa gente tenga más poder.`},
+      {q:'B', t:`Como si eso se pudiera evitar, miráme a mí y a mi familia… ni los que viven como nosotros, pero son más claritos, nos quieren. Al menos algunos de esos de corbatas nos dieron la libertad, pero se quedaron ahí, vos sabés que eso no alcanza para vivir.`},
+      {q:'A', t:`Claro que no, pero me parece que somos nosotros los que tenemos que organizarnos y juntos hacer algo por nosotros mismos, el Estado no lo va a hacer.`},
+    ],
+    eleccion:{ quien:'B', pregunta:'¿Qué le responde el Descendiente de Esclavos?', alternativa:`Pero ¿cómo vamos a ser parte nosotros de esa organización, si ni ustedes nos quieren?` },
+  },
+  {
+    id:'escuela', nombre:'Escuela', icon:'escuela', color:'var(--c-escuela)',
+    ready:true,
+    personajes:['Maestra socialista','Directora de escuela conservadora'],
+    recurso:'Recursos sobre modelos educativos en disputa (escuela nueva, escuela anarquista, educación tradicional) a principios del siglo XX.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1',
+    guionUrl:'https://docs.google.com/presentation/d/1geEi3cmWnIXTdGm4MvmEolE07kcFAOBcYTNU0RGL6vg/edit?usp=sharing',
+    speakerA:{clave:'M', nombre:'Maestra Socialista', img:'data:image/jpeg;base64,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'},
+    speakerB:{clave:'D', nombre:'Directora', img:'data:image/jpeg;base64,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'},
+    fijos:[
+      {q:'A', t:`¡Buenos días, directora!`},
+      {q:'B', t:`Buenos días, Señorita.`},
+      {q:'A', t:`Quería hablar con usted porque tengo algunas ideas para trabajar con mis alumnos sobre lo que está pasando en el país, ellos cuentan lo que sus padres dicen en sus casas y ya he tenido dos alumnos que han terminado peleando, cuando se supone que deberían dialogar.`},
+      {q:'B', t:`Me parece muy interesante lo que contás, coincido con usted en que hay que hacer algo. Es importante que los niños sepan que se trata de temas de adultos en los que no se tienen que meter y trabajemos con ellos nuestros más altos valores, como el respeto a la tradición y a la autoridad. No están en edad para entender estos temas, mucho menos para debatirlos.`},
+      {q:'A', t:`Entiendo su perspectiva, pero creo que es importante que en la escuela sí hablemos de estos temas. Es cierto que son niños, pero es importante promover el diálogo y la solidaridad. Muchos de ellos la están pasando mal en sus casas, la comida no alcanza y el casero los apura con los pagos, que además son altísimos. Además, ¿si acá no enseñamos sobre participación, justicia, derechos, entonces dónde?`},
+    ],
+    eleccion:{ quien:'B', pregunta:'¿Qué le responde la Directora?', alternativa:`La escuela no es lugar para las ideologías ni todas esas ideas extranjeras subversivas, estamos para enseñar nuestra cultura para que sean personas de bien, educados y con buenos valores.` },
+  },
+  {
+    id:'seccional', nombre:'Seccional de policía', icon:'seccional', color:'var(--c-seccional)',
+    ready:true,
+    personajes:['Policía conservador','Descendiente de un pueblo indígena'],
+    recurso:'Recursos sobre pueblos originarios, represión estatal y despojo de tierras a principios del siglo XX.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-6',
+    guionUrl:'https://docs.google.com/presentation/d/1qtJhvYwzN28jhVSE0XeWke22C-UjZuNr2RG-4V689Ew/edit?usp=sharing',
+    speakerA:{clave:'PC', nombre:'Policía', img:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQECWAJYAAD/2wBDAAwICQoJBwwKCQoNDAwOER0TERAQESMZGxUdKiUsKyklKCguNEI4LjE/MigoOk46P0RHSktKLTdRV1FIVkJJSkf/2wBDAQwNDREPESITEyJHMCgwR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0f/wAARCACgAGcDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1WiiigAooooAKKKSgBaKYZYx1dR+NIZ4v+ein6HNAElFVJNRtY+DJk+gFSW11Fcj92Tn0I5oAnooooAKKKKACiiigBKrz30EXAcO/ZV5NULm9llldUO1U7dzWLJI8hPlYQHk46/nVRi2RKaRr3OrSLz5scQx06ms2fUyQPMnduMgDioJYUMO0qdx6moLpYjAixxlierZ5FaqETKVSQ65vZn+SNQDjOc5PNVIbuPzjHPemKQD5VOT+Bqey228Ulyyk7c4JH61asNKtLmzEt7D50kvzFm4YVlXrwoLVDpwc9WyulzclDGkmcdSB2+tdVokTiySWY5kcZzXE2vmaZqF1p7M0lur7d55KDPGa7+2mgMKKkqHCjoacpc2xpGPLuWKKQEEZByKWoLCiiigAooooApXVmWk8+3ISUdcjhh6Vzt3atbytNEwi6l437D2rr6x/E0MUungPgOWwp71UZNEyipHPQxyXsreVcoq92fjiqOpXkOmXawG4ZmwAzJ0x6Cuw06wszCFMEbnAy2OtPm8O6RPKJJbKNmHrmqdR9CFSXU5m51PTjpgt/PDhoyPkGGBNU4PFItIYbeG284p8u5m5JzxxXXS+GNHlXb9kCemwkVSfwRpTEkGYEnOdw/wrKcVU+JXNIrl2MF3n1JJZ4bmO1lmGJVZOo6/Ws9rHV7NWmWT7QqD/AJZSYwK6xPCMcasvmrMpHAkXH8qp6R4eBNwFbb5cmAFckGmMwtM8RXsE42XTMWPMclehaVf/AG2DLrslH3lrLHhmN5RJJFCGHUgda2LOyitAfLHzHqTQBaooooAKKKKACsjxISlkkmcKrc/pWvVe/tlu7KSB1DBhxn1oAo6VKrNxgAqK1q5fSmeNQjECSHKlRXQwzKyA7hQBPRTdy4zkUhkUdOaAEuJRDA8jEAKO9U9GiZLQvIctIck1DeSnUJ1tIfuA/vGzWoihECKMBRgUAOooooAKKKKACiikJABJ6CgBskixIXc4Aql5lzesVQGGH+8RyaZGDqN0ZHBEEZwo9TWkAAAAMAdBQBmXWlEIJLJ9k69Sf4/rWcbi6g4ubSVT3ZOQa6WigDmlvpmYKkczFhgZGBUsUGp3LYK+TGe7cGt/ApssixJuagDNNg9jbbrY75ActnvVvT7tby2Eg+8OGHoalimSXIXr3BrJUNY6tI0YAhdhvUD170k1JXQG3RSAgjI6UtMAooooAKq6nJ5djIc4zwKtVmeIS6aW0kYzsYMfpQBcsohDZxIo6KKfLIEHXn0qKyuFuIlZem0EVkeIJZbC4+1gnyZF2H/ZPrQBp6YzukrsSQXOB6VdrP0PnS425O7Jye9aFABVXUI2eAbBkqc1aooAo6aMl3II7c1HdRb9QMfaaIj6EdK0aoztjWbdfVDUQhGC5Y7BdvcfpcxltNr/AH4yVYE81crPsCRf3a5BG7NaFWAUUUUAFRzRLNC8T9GGDUlFAGFpTmyne1lPzIT26r61d1uOKbTJBKMpwc0zWbPegu4VPnRc8fxD0qlNfrc6HLsBxjv1U9waANmyREsoljGF2DFT1BY/8eMHf92v8qnoAKKKKACsedx/b4dmHlwRFm55HB/xrXJwMmuThlfU9TuUgJIkOGYdAAf/AK1AGvoKOVuLiQEGWTIz6VrVHBCsECxJ91RgVJQAUUUUAFFFFABWDrelrHaz3Nm3lMcF1HQ1vVXv4xLYzIe6GgBNOP8AxL4ATkhBnjFWaxtBu/MskViTs+XrmtgHPSgBaKKKAK2ozeRYTSdwpA+tVtCtVttPU7VDSHcdvvVbxDI80lvYRjJlYFjn9K2IoxFEsa9FAAoAfRRRQAUUUUAFFFFABSEAjB5BpaKAMO3s1029lTePKl+dPUH0rQWUrgjkVS8QHyvImbOwNtbHanQXIRwrYIYZBoAnfVraOQRySqrk4AJ61MbxEiaSQ4VRkmua15IBrtqVVSWHT+tS65fK9vHYW21pZZAGHXFAF3RUe+vpdTmztPEYPQVu1Dawi3tY4hj5VAOPWpqACiiigAooooAKKKKAGPIqHDVC17ArbWbBqzTHiR/vKDQBn313Y3UEltMzAMOuOnvXKprSaer2t8jyiM/upYx95feu1azibsahbSbN874g2euRQBwl9q0d1qUN3HE+yJcEHqa09DZH1I6ldo6nkogXPNdH/YVgDlYQv0p8WlQxHKk/lQBOl7FIgZQ2D6ip0cOMimC3iAxtpUiRGyoxQBJRRRQAUUUUAf/Z'},
+    speakerB:{clave:'DI', nombre:'Descendiente de Indígena', img:'data:image/jpeg;base64,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'},
+    fijos:[
+      {q:'A', t:`Hola, ¿qué está buscando?`},
+      {q:'B', t:`Estoy aquí porque me dijeron que mi hijo fue arrestado y que lo trajeron acá. Quiero saber por qué lo arrestaron.`},
+      {q:'A', t:`Seguramente por hacer daños a la propiedad pública.`},
+      {q:'B', t:`¿Puede decirme más? ¿Mi hijo estaba rompiendo cosas o simplemente estaba participando en una protesta pacífica?`},
+      {q:'A', t:`Los manifestantes se volvieron violentos, estaban tirando piedras y rompiendo todo. Nosotros tenemos que mantener el orden público y detuvimos a los responsables de los disturbios. Tu hijo estaría en ese grupo.`},
+      {q:'B', t:`Nuestra comunidad viene luchando por años para que nos devuelvan nuestras tierras ancestrales, las que nos quitaron injustamente. La protesta era por eso y era tranquilo, mi hijo es tranquilo.`},
+    ],
+    eleccion:{ quien:'A', pregunta:'¿Qué le responde el Policía?', alternativa:`Eso lo va a tener que ver con el fiscal, mejor búsquense un buen abogado.` },
+  },
+  {
+    id:'congreso', nombre:'Congreso', icon:'congreso', color:'var(--c-congreso)',
+    ready:true, tipo:'debate3',
+    personajes:['Diputado Conservador','Diputado Socialista','Anarcosindicalista'],
+    recurso:'Recursos sobre los modelos políticos en disputa (conservadurismo, socialismo, anarcosindicalismo) hacia 1930.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1-1',
+    guionUrl:'https://docs.google.com/presentation/d/1qGb7OgrErvh9ustKzJv-4jZjCzQiSRAU5w089JIeEwA/edit?usp=sharing',
+    personajes3:[
+      {clave:'DC', nombre:'Diputado Conservador', img:'data:image/jpeg;base64,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'},
+      {clave:'DS', nombre:'Diputado Socialista', img:'data:image/jpeg;base64,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'},
+      {clave:'AS', nombre:'Anarcosindicalista', img:'data:image/jpeg;base64,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'},
+    ],
+    fijos:[
+      {q:0, t:`Señores, no debemos pasar por alto el hecho de que algunos movimientos sociales han llevado a la polarización y la discordia en nuestra sociedad. Es necesario mantener un equilibrio entre el respeto a las tradiciones y valores culturales, y la promoción de cambios sociales. Estos grupos de inadaptados borran con el codo lo que escriben con la mano, piden ser oídos y respuestas, pero no escuchan y mucho menos respetan a otros que quieren seguir trabajando, cuidando de su familia y caminando por una ciudad limpia, ordenada y tranquila.`},
+      {q:1, t:`Señor diputado, hay gente que ya está cansada de ser discriminada, burlada y de promesas que nunca llegan ni van a llegar, porque no hay voluntad política para que así sea. Entonces, ¿les negamos la expresión? La represión y la falta de respuesta a sus demandas es lo que ha llevado a tanto cansancio y enojo.`},
+      {q:2, t:`Está claro, ustedes, el Estado no puede o no quiere hacer nada al respecto. Es necesario organizarnos entre trabajadores para ponerle límites a estos cuervos que nos quieren sacar los ojos.`},
+    ]
+  },
+  {
+    id:'periodico', nombre:'Puesto de diarios', icon:'periodico', color:'var(--c-periodico)',
+    ready:true,
+    personajes:['Periodista feminista','Hija de inmigrante español conservadora'],
+    recurso:'Recursos sobre el movimiento sufragista y los derechos civiles y políticos de las mujeres.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-5',
+    guionUrl:'https://docs.google.com/presentation/d/19w0EVgKyYfnKpLrcim4PLPlhkwVSe9sUlVX9b4abgx8/edit?usp=sharing',
+    speakerA:{clave:'MP', nombre:'Mujer Periodista', img:'data:image/jpeg;base64,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'},
+    speakerB:{clave:'HIE', nombre:'Hija de Inmigrante Español', img:'data:image/jpeg;base64,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'},
+    fijos:[
+      {q:'A', t:`Hola… Qué revuelo hay, ¿no?`},
+      {q:'B', t:`Sí, no sabemos qué va a pasar mañana, no se puede vivir así.`},
+      {q:'A', t:`Necesitamos el coraje de las mujeres de la "Rebelión de las escobas", esas sí que sabían lo que querían y cómo conseguirlo.`},
+      {q:'B', t:`Pero no la pasaron tan bien, claro… imagino que a eso lo sabían.`},
+      {q:'A', t:`Es que no vamos a conseguir nada estando calladas y en nuestra casa alimentando hombres y niños. Hay que hacer algo.`},
+    ],
+    eleccion:{ quien:'B', pregunta:'¿Qué le responde la Hija de Inmigrante Español?', alternativa:`No es tan fácil, ¿quién se hace cargo de lo que no hagamos en casa? Además, ¿qué creés que vamos a lograr saliendo a las calles? A veces me dan ganas, pero no me animo, no sé si tiene sentido.` },
+  },
+  {
+    id:'puerto', nombre:'Puerto', icon:'puerto', color:'var(--c-puerto)',
+    ready:true,
+    personajes:['Hijo de un huelguista asesinado en la Semana Trágica','Argentino liberal, trabajador portuario'],
+    recurso:'Recursos sobre la Semana Trágica de 1919 y el movimiento obrero portuario.',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-4',
+    guionUrl:'https://docs.google.com/presentation/d/1t3hd_NudSNgE5tTWIEIum7qzrmCqflxgaDsly5WZ5n8/edit?usp=sharing',
+    speakerA:{clave:'HH', nombre:'Hijo de un Huelguista', img:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQECWAJYAAD/2wBDAAwICQoJBwwKCQoNDAwOER0TERAQESMZGxUdKiUsKyklKCguNEI4LjE/MigoOk46P0RHSktKLTdRV1FIVkJJSkf/2wBDAQwNDREPESITEyJHMCgwR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0f/wAARCACgAI0DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1WiiqV1BLcSmNLp4RjPyigC7UTXECHDTRg+hYVQGhwkkzXNxKT6vinpolguMxF8dNzE0ASSarYRnD3UYP1qF9esAcJI0nGfkXOasJpliihVtYsA55XNWEhijGEjRfooFAGYNcEn/HvZ3EnGeUIpP7S1OQHyNLcHt5jYrXooAp6bPczQt9tjSKZTgqjZFXKoxMV1iZMHDIG/Hp/Sr1ABRRRQAUUUUAFFFFABRRRQAVVkO3UIjnh1K/1q1VPUMIYJTj5ZR+tAFyiikOccdaAIL64NraPOE37OSM0zTrs3luZCoUg4wDmsXxPHry6ZcXFlIsmwZECKMsvcVz/gK41PV7i6iu1e1tI14RTtOTQB6LRUFpbLaw+UjOyj++2TU9AGbcEx69asDhZI2U89cVpVmaufLurCU9Fm2k+mRWnQAUUUUAFFFFABRRRQAUUUUAFUtXXdp0hHVcMPrV2kIDAgjIPagBqSKY1YsBkA9aje8tYzh54wfTdQ9nA+N0YwOgHGKathaK24QLu9etAEUup2WGj80sSMEKpNcfoOtJD4jliSN5Q8Z4VcHIPf8AKu6WCFPuxIv0UVzotIIfFqTKgQljyo6kigDT/tK6dcx6bL0z8zUn2nWH+7Zwpz/E+fxrUooAxLyy1e/h8uSeGHDBhtXPT1raUEKAxyccmlooAKKKKACiiigAooooAKKKKACiiigAooooAK57UsRa/FISANyt069q6Gub8TJ/p9tJ34xg+9AHSUUinKg+ooYhVLMcADJNADZZUhjMkrBVHUms9b66u3xZQYj/AOej9PwqODOp3Ukkp/0ZDtRP759a1lAUAAYA6AUAUVt9QDktdpg9tvSnPNeW6bpI0lUfeKnBxV2igBkUqTRh4zlTT6zSxstVjiXJhuAeOykVpUAFFFFABRRRQAUUUUAFFFFABXO+MMrDA+MjJGMc1vyyCKNnPYVmS2aXTRTX0jqzEhEHQUAXdPlSWwgZCD+7Hf2qHW2ZdMkCZBb5eDg06S1gtrUmPKGMEqc1QuNUF5bGG2iaY7QXfoB+NAFuwwqxxqNqqAMVo1h2d0WZZChHZh3BrZSRJFBVgRQA+ik3D1qK4nWCIueT/CvqaAK822XVoUAyYlLE+lXqrWcLIGkl/wBZIcn2qzQAUUUUAFFFFABRRRQAUUUUAULxvOvobUcr99+fSoPEuqf2TpMlwib5eiDGefWpbFvO1C5lODtOxax/Ec6yDUw5+WC2AUf7RINAGZpry38kHm3Ek9/M3z4JCxpx2rtYrWKG28iJQq4rkfh1bYS6upwTO23k9hj+fFdalx5s5jiwQn3zQBlXFtLas0kKhu5Rv4qiTUFyBslhYj7u3NdA6K/3gDUX2WMHIz9KAMqDUWlYpbQyyydtwwKu2Ue+QyXLlp+6H+H6U2ddmo2qRnAGSx9quTQJLyRhh0YdRQBLVe6vIbUDzG+Y9FHU1C73ysYUVXOOJT0H1psdtHav5r5nuW7nt9PSgAEN5dZklma3U/dROo+tOmF1BEZPPVgnJBXGabLYT3EizNdyROP4UPFPWwbcPOupJVH8LdDQBbjbfGrf3gDTqQAAADoKWgAooooAKKKKAMzRTmOTP3t5zWbNpZvL/Ubi4hIUoQo7NgcVoXUEtlNLdwbmjf5pEHUH1H+FQtf3V9a7LZCm8Y3OMEZ9qAOU8PX1xBJPZWafv51G1Qc7PxrvNNtPsVmkJYu/VmPc1xHgq3Nn4hZGX5sOjFj83rXoNABSEgAk8AUtUppHuLj7PF9wf6xv6UALbRidpJ5FBD8L9Ka1rcQNus5sjvHJyD9PSrqqEUKowBwKWgCiZdQkG1YEiPdmbP6VZhh8sZY7nPVjUtFABRRRQAUUUUAFFFFABRRRQBR1Zz9nWJTzIwH4d6ntoUjjGEAPriqd6pk1SAfwopP0NaK/doA4G0kjtPHrIwGTcMoIHQt/+uvQK4LV1+z+NXkChSZIyGCjngd/zrvaAI55PKgd/QcUyziEcA9W+Y02+5hUHoXGasDgYFAC0UUUAFFFFABRRRQAUUUUAFFFFABRRRQBmLl9WlJ6KABWkv3RWVCwjv7lupL9qvfasZ/dtxQBx/jOMR63FINzNIittB/umu0t2L28bnqyAn8q4vx1MjXFm7IACGVicZHeug0fVIZdKtcupk8pcgtznpQBfvx/o27GdrA8VYHIyKiDfaIHUjGRikspPMtUPcfKfw4oAnooooAKKKKACiiigAooooAKKKKACml0B5YDHvSnocHFUms5mZy0u7d09qAKEUhGs3Cg5AYE49DV2dEvboRFyI4xlgDjJNV30h2fcJXX12kAmp4rSaGIJFkEdyetAHOeMNFtI7OGaJWZhJglpOADWh4c063m8OQBBh1DKG64Oat6lpj39usVy7HDBsqAKmtbSa1iEMKBYwS2eOSaAGaPO6xmGdy0kbFHJ657U5ZUtNa+zo423IMhT0bufxqC90l5n80Z8xvvMp2n9KWz0fy5PMICSAY35yxFAG1RUcMflxhdxbHc1JQAUUUUAFFFFABRRRQB/9k='},
+    speakerB:{clave:'AL', nombre:'Argentino Liberal', img:'data:image/jpeg;base64,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'},
+    fijos:[
+      {q:'A', t:`Mi viejo murió luchando por mejores condiciones de trabajo en la Semana Trágica. Fue asesinado durante la huelga de 1919. Estaba harto de la explotación y las condiciones inhumanas en las que trabajaba. ¿Cómo podés apoyar un sistema que permite que los trabajadores sean tratados como esclavos?`},
+      {q:'B', t:`Lamento lo de tu viejo, pero vivimos en una sociedad en la que tenemos que respetar la propiedad privada y la libertad individual. Los propietarios de las tierras y las empresas tienen derecho a llevar sus negocios como quieran y si no te gusta, buscáte otro trabajo.`},
+      {q:'A', t:`¿Entonces no tenemos derecho a condiciones de trabajo seguras y salarios justos? Mi viejo y sus compañeros no querían hacerse ricos, lo único que querían era que les pagaran y que les pagaran lo justo.`},
+    ],
+    eleccion:{ quien:'B', pregunta:'¿Qué le responde el Argentino Liberal?', alternativa:`Hay que tener paciencia, mirá... la libre competencia puede llevar a mejores sueldos, claro... no va a pasar ya. Si las empresas compiten por trabajadores calificados, a la larga van a tener que ofrecer mejores condiciones para retener empleados, pero ustedes se tienen que esforzar, tienen que poner voluntad y trabajar más, estudiar... hacer las cosas mejor, no peor.` },
+  },
+  {
+    id:'hospital', nombre:'Hospital', icon:'hospital', color:'var(--c-hospital)', ready:false,
+    personajes:['A definir'],
+    recurso:'Estación nueva, pensada para trabajar salud mental — todavía sin personajes ni guion (se arma con el mismo formato que las demás).',
+    wixUrl:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1-2',
+  },
+  {
+    id:'plaza', nombre:'Plaza pública', icon:'plaza', color:'var(--c-plaza)', ready:false,
+    personajes:['El grupo clase'],
+    recurso:'El lugar de socialización: acá va la actividad colectiva en Padlet "El CENS en la urbe" (recorrido por la plaza, mapeo socioafectivo del curso y producción personal sobre el territorio de pertenencia) — no es una escena de diálogo entre dos personajes como las demás. Estos son los recursos comunes a todo el recorrido:',
+    botones:[
+      {label:'Hoja de ruta', url:'https://view.genially.com/6ab090ec42ede85ea127023c'},
+      {label:'Sitio', url:'https://cartografiandoprac.wixsite.com/cartograf-as-y-conve'},
+      {label:'Padlet', url:'https://padlet.com/cartografiandopracticas/saberes-que-resuenan-nsn0xnjszx6iqg0'},
+    ],
+  },
+];
+
+/* ------------------------------------------------------------------ */
+function irAlMapa(){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('mapa').classList.add('activo');
+  window.scrollTo(0,0);
+}
+function irALanding(){
+  document.getElementById('mapa').classList.remove('activo');
+  document.getElementById('landing').style.display='flex';
+  window.scrollTo(0,0);
+}
+
+/* Posición (centro) de cada edificio dentro del lienzo de 1400x980,
+   distribuidos por sectores igual que en el escenario original de Topia:
+   la plaza pública queda al centro y el resto de las localizaciones
+   alrededor, unidas por caminos. */
+/* Distribución radial pareja: las 9 estaciones a la misma distancia de la
+   plaza (centro), separadas por el mismo ángulo (40° cada una), para que
+   ninguna quede amontonada ni con espacio de más respecto a las demás. */
+const MAP_LAYOUT = {
+  hospital:    {x:525, y:150},
+  seccional:   {x:769, y:220},
+  puerto:      {x:899, y:398},
+  escuela:     {x:854, y:600},
+  mercado:     {x:655, y:732},
+  feria:       {x:395, y:732},
+  conventillo: {x:196, y:600},
+  periodico:   {x:151, y:398},
+  congreso:    {x:281, y:220},
+  plaza:       {x:525, y:450},
+};
+
+function pintarMapa(){
+  const centro = MAP_LAYOUT.plaza;
+  const caminos = Object.keys(MAP_LAYOUT).filter(id => id!=='plaza').map(id=>{
+    const p = MAP_LAYOUT[id];
+    return `<path d="M ${centro.x} ${centro.y} L ${p.x} ${p.y}" stroke="var(--tinta-suave)" stroke-width="4" stroke-dasharray="2 16" stroke-linecap="round" opacity=".4" fill="none"/>`;
+  }).join('');
+
+  const edificios = LOCATIONS.map(loc=>{
+    const pos = MAP_LAYOUT[loc.id];
+    const accion = loc.ready ? `abrirEscena('${loc.id}')` : `abrirProximamente('${loc.id}')`;
+    return `
+      <g class="edificio ${loc.ready?'lista':''}" style="--edif-color:${loc.color}" transform="translate(${pos.x},${pos.y})" onclick="${accion}">
+        <rect class="plinto" x="-62" y="-62" width="124" height="124" rx="22"/>
+        <svg class="icono" x="-34" y="-34" width="68" height="68" viewBox="0 0 40 40" stroke-linecap="round">
+          <g class="repaso" transform="translate(0.8,-0.6) rotate(-2 20 20)">${iconoInterior(loc.icon)}</g>
+          <g>${iconoInterior(loc.icon)}</g>
+        </svg>
+        <text class="rotulo" x="0" y="90">${loc.nombre}</text>
+        <text class="estado-txt" x="0" y="114">Tocar para entrar</text>
+      </g>`;
+  }).join('');
+
+  const svg = `
+    <svg viewBox="0 0 1050 900" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="${centro.x}" cy="${centro.y}" r="135" fill="var(--c-plaza)" opacity=".25"/>
+      ${caminos}
+      ${edificios}
+    </svg>`;
+  document.getElementById('mapa-lienzo').innerHTML = svg;
+}
+pintarMapa();
+
+/* Devuelve sólo las formas internas de un ícono (sin la etiqueta <svg> externa)
+   para poder incrustarlo dentro del lienzo del mapa. */
+function iconoInterior(clave){
+  return ICONS[clave].replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+}
+
+/* Arrastrar con mouse para explorar el mapa (el dedo ya funciona nativo). */
+(function habilitarArrastre(){
+  const el = document.getElementById('mapa-lienzo');
+  let arrastrando=false, movido=false, x0=0, y0=0, sl0=0, st0=0;
+  el.addEventListener('pointerdown', e=>{
+    if(e.pointerType !== 'mouse') return;
+    arrastrando=true; movido=false;
+    x0=e.clientX; y0=e.clientY; sl0=el.scrollLeft; st0=el.scrollTop;
+    el.classList.add('arrastrando');
+  });
+  el.addEventListener('pointermove', e=>{
+    if(!arrastrando) return;
+    const dx=e.clientX-x0, dy=e.clientY-y0;
+    if(Math.abs(dx)>4 || Math.abs(dy)>4) movido=true;
+    el.scrollLeft = sl0 - dx;
+    el.scrollTop = st0 - dy;
+  });
+  ['pointerup','pointerleave'].forEach(ev=>el.addEventListener(ev, ()=>{ arrastrando=false; el.classList.remove('arrastrando'); }));
+  el.addEventListener('click', e=>{ if(movido){ e.stopPropagation(); movido=false; } }, true);
+})();
+
+/* ---------------- ESCENA / DIÁLOGO ---------------- */
+let escenaActual = null;
+
+function abrirEscena(id){
+  escenaActual = LOCATIONS.find(l=>l.id===id);
+  document.getElementById('escena-top').style.setProperty('--barra-color', escenaActual.color);
+  document.getElementById('escena-top').style.background = escenaActual.color;
+  document.getElementById('escena-titulo').textContent = escenaActual.nombre;
+  document.getElementById('escena-quienes').textContent = escenaActual.personajes.join(' · ');
+  renderEscena();
+  document.getElementById('escena-overlay').classList.add('activo');
+  document.getElementById('escena').scrollTop = 0;
+}
+function cerrarEscena(){
+  document.getElementById('escena-overlay').classList.remove('activo');
+}
+
+function botonesRecursoInner(L){
+  const items = [];
+  if(L.wixUrl) items.push({label:'Ver página de esta estación', url:L.wixUrl});
+  if(L.botones) items.push(...L.botones);
+  return items.map(b=>`<a class="btn btn-alt" href="${b.url}" target="_blank">${b.label}</a>`).join('');
+}
+function botonesRecurso(L){
+  const inner = botonesRecursoInner(L);
+  return inner ? `<div class="fila-botones-recurso">${inner}</div>` : '';
+}
+
+function botonContinuar(L){
+  const url = L.guionUrl || L.wixUrl;
+  if(!url) return '';
+  return `
+    <div class="cierre-escena">
+      <p>El resto del guion se sigue escribiendo en el documento de la estación, no acá (así queda guardado).</p>
+      <a class="btn btn-cta" href="${url}" target="_blank">Ahora continuá asumiendo el rol del personaje elegido</a>
+    </div>`;
+}
+
+function renderEscena(){
+  const L = escenaActual;
+  let html = `<div class="nota-recurso">${ICONO_RECURSO}${L.recurso}</div>`;
+  html += botonesRecurso(L);
+  html += `<p class="credito-ilustraciones">Ilustraciones de personajes: Lic. Martín Castañeda</p>`;
+
+  if(L.tipo === 'monologo'){
+    html += burbuja(L.speakerA.nombre, L.monologo, 'A', false, L.speakerA.img);
+    html += botonContinuar(L);
+    document.getElementById('escena-cuerpo').innerHTML = html;
+    return;
+  }
+
+  if(L.tipo === 'debate3'){
+    L.fijos.forEach(t=>{
+      html += burbuja(L.personajes3[t.q].nombre, t.t, t.q % 2 === 0 ? 'A' : 'B', false, L.personajes3[t.q].img);
+    });
+    html += botonContinuar(L);
+    document.getElementById('escena-cuerpo').innerHTML = html;
+    return;
+  }
+
+  L.fijos.forEach(turno=>{
+    const spk = turno.q === 'A' ? L.speakerA : L.speakerB;
+    html += burbuja(spk.nombre, turno.t, turno.q, false, spk.img);
+  });
+  if(L.eleccion){
+    const spkElige = L.eleccion.quien === 'A' ? L.speakerA : L.speakerB;
+    html += burbuja(spkElige.nombre, L.eleccion.alternativa, L.eleccion.quien, false, spkElige.img);
+  }
+  html += botonContinuar(L);
+
+  document.getElementById('escena-cuerpo').innerHTML = html;
+}
+
+function burbuja(nombre, texto, lado, esTuya, img){
+  const cuerpo = `<div class="burbuja ${esTuya?'tuya':lado}"><span class="nombre">${nombre}</span>${texto}</div>`;
+  if(!img) return `<div class="sin-avatar">${cuerpo}</div>`;
+  const avatar = `<img class="avatar" src="${img}" alt="${nombre}">`;
+  return `<div class="fila-burbuja ${lado==='A'?'izq':'der'}">${avatar}${cuerpo}</div>`;
+}
+
+
+/* ---------------- PRÓXIMAMENTE ---------------- */
+function abrirProximamente(id){
+  const loc = LOCATIONS.find(l=>l.id===id);
+  document.getElementById('prox-icono').innerHTML = `<div style="width:48px;height:48px;margin:0 auto;color:${loc.color}">${ICONS[loc.icon]}</div>`;
+  document.getElementById('prox-titulo').textContent = loc.nombre;
+  document.getElementById('prox-recurso').innerHTML = loc.recurso ? `${ICONO_RECURSO}${loc.recurso}` : '';
+  document.getElementById('prox-botones').innerHTML = botonesRecursoInner(loc);
+  document.getElementById('proximamente-overlay').classList.add('activo');
+}
+function cerrarProximamente(){
+  document.getElementById('proximamente-overlay').classList.remove('activo');
+}
+</script>
+</body>
+</html>
