@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estación Congreso · Esquemas para exponer</title>
+<script>document.documentElement.className="js"</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sepia:#2F3E5C; --gamuza:#7FA8D9; --arena:#E1E8F1; --marfil:#F7FAFD;
+  --azul:#BFD8EE; --rosa:#E8D9F5; --lila:#E3DAF4; --salvia:#C6E3DA;
+  --manteca:#D6ECF5; --durazno:#AFC3F0; --malva:#C9CCF0; --turquesa:#B4D8D8;
+  --ciruela:#4A4FA3;           /* lila profundo: acento de la estación Escuela */
+  --tinta:#1B2742; --tinta-suave:#5F6F8C; --linea:#C5D0E0;
+  --sombra:rgba(47,62,92,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--arena);color:var(--tinta);font-family:'Inter',system-ui,sans-serif}
+#stage{width:1280px;margin:0 auto;background:var(--marfil)}
+.slide{position:relative;width:1280px;height:720px;padding:44px 64px 56px;display:flex;flex-direction:column;overflow:hidden;border-bottom:6px solid var(--arena)}
+#ctrl{display:none}
+/* modo presentación (requiere JS) */
+html.js,html.js body{height:100%;overflow:hidden}
+html.js #viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+html.js #stage{height:720px;position:relative;flex:none;transform-origin:center center;box-shadow:0 10px 40px var(--sombra);overflow:hidden;margin:0}
+html.js .slide{position:absolute;inset:0;width:auto;display:none;border:0}
+html.js .slide.on{display:flex}
+html.js #ctrl{display:flex}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .18 0 0 0 0 .24 0 0 0 0 .36 0 0 0 .05 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+.slide>*{position:relative}
+.kicker{font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ciruela);margin-bottom:6px}
+h1,h2{font-family:'Playfair Display',Georgia,serif;color:var(--sepia);line-height:1.1}
+h2{font-size:40px;margin-bottom:6px}
+.lead{font-size:21px;color:var(--tinta-suave);margin-bottom:18px;max-width:1040px}
+.fuente{position:absolute!important;left:64px;bottom:18px;font-size:13px;color:var(--tinta-suave)}
+.num{position:absolute!important;right:64px;bottom:18px;font-size:13px;color:var(--tinta-suave)}
+.box{border-radius:16px;padding:16px 20px;border:2px solid var(--sepia);box-shadow:4px 4px 0 var(--sombra);background:var(--marfil)}
+.box h3{font-family:'Playfair Display',serif;font-size:29px;color:var(--sepia);margin-bottom:8px}
+.box ul{list-style:none}
+.box li{font-size:24px;line-height:1.3;padding-left:22px;position:relative;margin:8px 0}
+.box li::before{content:"✦";position:absolute;left:0;color:var(--ciruela);font-size:14px;top:8px}
+.row{display:flex;gap:20px}
+.grow{flex:1}
+.arrow{align-self:center;font-size:34px;color:var(--ciruela);flex:none}
+.tag{display:inline-block;font-size:14px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--lila);color:var(--ciruela);border:1.5px solid var(--ciruela);margin:2px 4px 2px 0}
+/* portada */
+.cover{justify-content:center;align-items:flex-start;background:linear-gradient(135deg,var(--lila) 0%,var(--marfil) 62%)}
+.cover h1{font-size:68px;max-width:960px;margin:10px 0 18px}
+.cover p{font-size:24px;color:var(--tinta-suave);max-width:820px}
+/* hoja de ruta */
+.step{flex:1;border-radius:18px;padding:22px;border:2px solid var(--sepia);box-shadow:4px 4px 0 var(--sombra)}
+.step .n{font-family:'Playfair Display',serif;font-size:54px;color:var(--sepia);line-height:1}
+.step h3{font-size:30px;margin:8px 0;font-family:'Playfair Display',serif}
+.step p{font-size:24px;line-height:1.35}
+/* tablas */
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:22px}
+th,td{padding:15px 14px;text-align:left;vertical-align:top;border-bottom:1.5px solid var(--linea)}
+th{font-family:'Playfair Display',serif;font-size:26px;color:var(--sepia);border-bottom:3px solid var(--sepia)}
+td:first-child{font-weight:700;color:var(--ciruela);width:160px}
+/* tarjetas maestras */
+.maestra{flex:1;border-radius:18px;border:2px solid var(--sepia);box-shadow:4px 4px 0 var(--sombra);overflow:hidden;display:flex;flex-direction:column;background:var(--marfil)}
+.maestra header{padding:14px 18px;display:flex;gap:14px;align-items:center}
+.maestra .ini{width:58px;height:58px;border-radius:50%;background:var(--marfil);border:2px solid var(--sepia);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:28px;color:var(--sepia);flex:none}
+.maestra h3{font-family:'Playfair Display',serif;font-size:29px;line-height:1.05;color:var(--sepia)}
+.maestra .vida{font-size:17px;color:var(--tinta);font-weight:600}
+.maestra .body{padding:14px 20px 18px;font-size:23px;line-height:1.35}
+.maestra .body p{margin:9px 0}
+a{color:var(--ciruela);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.lk{margin-top:10px!important;font-size:20px;line-height:1.5}
+.lk a{white-space:nowrap}
+.fuente a{color:var(--tinta-suave);font-weight:500}
+/* controles */
+#ctrl{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);gap:8px;z-index:5;opacity:.0;transition:opacity .2s}
+body:hover #ctrl{opacity:.95}
+#ctrl button{font:600 15px 'Inter';padding:7px 14px;border-radius:99px;border:2px solid var(--sepia);background:var(--marfil);color:var(--sepia);cursor:pointer}
+#ctrl button:hover{background:var(--lila)}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:36vh;overflow:auto;background:rgba(27,39,66,.96);color:var(--marfil);padding:16px 28px 20px;font-size:18px;line-height:1.45;display:none;z-index:4}
+body.notes #notes{display:block}
+#notes b{color:var(--durazno)}
+#notes ul{margin-left:22px}
+@media print{.vid iframe{display:none}.vid{width:auto;padding:30px;border:2px dashed var(--ciruela);border-radius:14px;background:#fff}.vid-cap{font-size:22px;color:var(--tinta)}
+  html,body,html.js,html.js body{overflow:visible!important;height:auto!important;background:#fff}
+  html.js #viewport{position:static;display:block}
+  html.js #stage,#stage{transform:none!important;width:1280px;height:auto!important;box-shadow:none;overflow:visible!important;margin:0}
+  html.js .slide,.slide{position:relative!important;inset:auto!important;display:flex!important;width:1280px;height:720px;page-break-after:always;border:0}
+  #ctrl,#notes{display:none!important}
+  .slide::before{display:none}
+  @page{size:1280px 720px;margin:0}
+}
+</style>
+<style id="diseno-frio">
+:root{--ciruela:#4A4FA3}
+.slide{background:linear-gradient(180deg,#F7FAFD 0%,#EDF2F9 100%)}
+.slide::after{content:"";position:absolute;left:0;right:0;top:0;height:9px;z-index:2;background:linear-gradient(90deg,#1B2742 0%,#4A4FA3 38%,#7FA8D9 72%,#C6E3DA 100%)}
+.cover{background:radial-gradient(circle at 88% 18%,rgba(127,168,217,.55) 0,transparent 36%),radial-gradient(circle at 96% 96%,rgba(198,227,218,.42) 0,transparent 34%),linear-gradient(135deg,#1B2742 0%,#2A3A66 58%,#3B4A9A 100%)}
+.cover::before{opacity:.18}
+.cover h1{color:#fff;font-size:64px}
+.cover .kicker{background:rgba(255,255,255,.14);color:#D5E4F8}
+.cover p{color:#C9D8EE}
+.kicker{display:inline-block;align-self:flex-start;padding:5px 14px;border-radius:99px;background:#E3DAF4;color:var(--ciruela);font-size:14px;margin-bottom:12px}
+h2{font-size:42px;letter-spacing:-.01em}
+h2::after{content:"";display:block;width:72px;height:5px;border-radius:3px;background:linear-gradient(90deg,var(--ciruela),#7FA8D9);margin:10px 0 4px}
+.slide{padding-top:40px}
+.box,.step,.maestra{border:1.5px solid rgba(47,62,92,.22);box-shadow:0 10px 24px rgba(47,62,92,.12);border-radius:20px}
+.box{border-top:6px solid rgba(74,79,163,.6)}
+.box li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ciruela);opacity:.85;font-size:0;top:12px}
+.step .n{width:58px;height:58px;border-radius:50%;background:#fff;color:var(--ciruela);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 12px rgba(47,62,92,.16);margin-bottom:6px}
+.arrow{color:var(--ciruela)}
+th{border-bottom:3px solid var(--ciruela)}
+td{border-bottom:1.5px solid #C5D0E0}
+tbody tr:nth-child(even) td,tr:nth-child(even) td{background:rgba(255,255,255,.65)}
+.num{background:#fff;border-radius:99px;padding:2px 11px;box-shadow:0 2px 6px rgba(47,62,92,.14);font-weight:600;color:var(--ciruela)}
+#ctrl button{border-color:var(--ciruela);color:var(--ciruela);background:#fff}
+#ctrl button:hover{background:#E3DAF4}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.dlg{display:flex;align-items:flex-end;gap:10px;margin:5px 0}.dlg.right{flex-direction:row-reverse}.dlg .av{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:top;border:3px solid #fff;box-shadow:0 4px 12px rgba(47,62,92,.2);background:#fff;flex:none}.dlg .bub{max-width:960px;padding:7px 16px 8px;border-radius:18px;font-size:17.5px;line-height:1.28;box-shadow:0 6px 16px rgba(47,62,92,.10);border:1.5px solid rgba(47,62,92,.18)}.dlg.left .bub{background:#E3DAF4;border-bottom-left-radius:4px}.dlg.right .bub{background:#D6ECF5;border-bottom-right-radius:4px}.dlg.mid{margin-left:70px}.dlg.mid .bub{background:#D4EBE3}.dlg .who{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ciruela);margin-bottom:2px}.sm li{font-size:20px!important;margin:5px 0!important}.sm h3{font-size:24px!important;margin-bottom:6px!important}.sm.box{padding:12px 16px}.tight th,.tight td{padding:8px 12px!important}.vid{flex:none;width:520px;align-self:flex-start}.vid iframe{width:520px;height:293px;border:0;border-radius:14px;box-shadow:0 10px 24px rgba(47,62,92,.2);background:#000;display:block}.vid-cap{font-size:15px;color:var(--tinta-suave);margin-top:8px}.gancho{font-size:19px;color:var(--tinta);background:#fff;border-left:5px solid var(--ciruela);border-radius:0 12px 12px 0;padding:5px 14px;margin:2px 0 8px;box-shadow:0 2px 8px rgba(47,62,92,.08)}.gancho b{color:var(--ciruela)}.gancho i{color:var(--tinta-suave)}.lens{font-size:20px;color:var(--tinta);background:#fff;border:1.5px dashed var(--ciruela);border-radius:14px;padding:8px 16px;margin:6px 0 0}.lens b{color:var(--ciruela)}.legend{font-size:15px;color:var(--tinta-suave);margin-top:2px}.credito{position:absolute!important;right:150px;bottom:18px;font-size:12px;color:var(--tinta-suave)}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+<section class="slide " data-notes="<b>Para abrir (4 min)</b><ul>
+<li>Leemos el diálogo en voz alta con <b>tres voluntarios</b>: diputado conservador, diputado socialista y anarcosindicalista.</li>
+<li>El diputado conservador habla de «polarización y discordia», pide <b>equilibrio entre tradición y cambios</b>, llama «inadaptados» a los movimientos sociales («borran con el codo lo que escriben con la mano»; «piden ser oídos… pero no escuchan») y defiende a quienes quieren «trabajar, cuidar de su familia y caminar por una ciudad limpia, ordenada y tranquila».</li>
+<li>El diputado socialista le contesta: esa gente está cansada de ser discriminada, burlada y de promesas que no llegan «porque no hay voluntad política». Pregunta: «¿les negamos la expresión?». Y advierte que la represión y la falta de respuesta explican el enojo.</li>
+<li>El anarcosindicalista corta el debate: <b>ni unos ni otros</b>. «El Estado no puede o no quiere hacer nada»; hay que <b>organizarse entre trabajadores</b> para ponerles límites a «estos cuervos que nos quieren sacar los ojos».</li>
+<li>En el mapa, quien juega elige continuar el debate como uno de los tres personajes (en el PPT hay tres inicios de intervención posibles).</li>
+<li><b>Pregunta disparadora</b>: ¿quién tiene razón? ¿es posible cambiar las cosas desde adentro del Congreso o hay que hacerlo desde afuera? Anotamos 3 o 4 respuestas y las retomamos en la diapositiva 15.</li></ul>">
+  <div class="kicker">Estación Congreso · El diálogo del mapa</div>
+<div class="dlg left"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Diputado Conservador</span>Señores, no debemos pasar por alto el hecho de que algunos movimientos sociales han llevado a la polarización y la discordia en nuestra sociedad. Es necesario mantener un equilibrio entre el respeto a las tradiciones y valores culturales, y la promoción de cambios sociales. Estos grupos de inadaptados borran con el codo lo que escriben con la mano, piden ser oídos y respuestas, pero no escuchan y mucho menos respetan a otros que quieren seguir trabajando, cuidando de su familia y caminando por una ciudad limpia, ordenada y tranquila.</div></div>
+<div class="dlg right"><img class="av" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQECWAJYAAD/2wBDAAwICQoJBwwKCQoNDAwOER0TERAQESMZGxUdKiUsKyklKCguNEI4LjE/MigoOk46P0RHSktKLTdRV1FIVkJJSkf/2wBDAQwNDREPESITEyJHMCgwR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0f/wAARCACgAIEDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1WiisuSe7vLtorJ0jjiOHY+tAGpRWYsWqxOCJoplzyCMGrqz/ADBJBsc9u1AE1FFFABRUU88cCF5GwK5i48ZOJ2jtdOllA6Ed/wDCgDrKK4dPGepLK4m0xgoHygggtWzpXiuyv5DBODaTj+CQ9aAN+ikBBGQciloAKKKpXd6YyI4E3yN09KALtFUAupBA2+It3U1YtblZwylSkinDKwwRQBPRRRQAVlkXdhcStDB9ohk+bg4INalFAFS0v1uZpITG8ciAEhhReuBJDGD8zNkVTtheNcTzwMjKzcK/p7Gp7YNPqDyTYDxjAUdqANCoHnJcxxDcw79hS3Mpjjwv3m4FOgiEUeOrHlj6mgCL7IshDTnew59hT0tbdDlIlB9hU1FAEMtpbzDEsKN9RWBrvhG2v4xLZsbe6jOUbPB9jXS0UAc94bvphNJpt7/roumeM/QeldDXKeK5I7LU7W+hc+chAdF6la6Szuoru2WaFwwI5x2NAC3cnlwEjqeBVbT7YqWnmGH6DPaprxBJ5Sk/xg49ai1HzJbV4yjqMj5kNAE73tqn3riMf8CFVfPhk1OJ4JAxK4bAp8Gl2aICIASR1PWrMNtDB/qowufSgCWiiigApGOFJ9BS01/9W2fQ0AU9IC/ZWK55cnmm6ed17dk9pMUaKc2J4x+8ao9NxHql9CepcOM+hoAS5vA+spaIMmNd59quJdQIhMk0aY67mAxXM+JbPURfTX+jsVnVQjgdx61wt9b6pIzwXshklDbioPD0Aelza1NcasbDTvK+XBMhYEEe1bq52jdjOOcV49Bpeo6XZS6psaEx/wCrJPGaZbeJNWLZbUZHLcgB/untQB7LRWD4P11tc0pnnTZcwtslAHB9DW4kiOTsYHBwcUAeca7O7eNfIkB+9hcngjGa3vCT+VqV5Duyr7WA7Disjx5ayQ64l+E2AR/Iw/iI9fzrb8D2Trp3264B82bO3P8AdoA358m4hAHfmm37bYkA7uKTcJNRAU/cXmm6g+2a1X+9J60AXBwKWiigAooooAKbIMxsPY06igDL0aVRalQf+WjcZ6c0upQywXKajbLuZBtlQDllqnDMLC/ltJwyK77onI4I+vatiOdSoD8e/rQBUE8UrJeQuDDINj89KsJaWhfd5MZb1IFZ99pjoJJ9Om8vIy0J5RvwrLstZvYpRHd2UggblJ1HAFAHTXVnbXdo1rcQq8LDBQjiuZl+HeiOzNH50e49A2QK27fUkmUNBKsg9O9WftgAyy/kaAOZg8I32mh4dM1ErbyHLhhhq6bTrNbK2EYYs3VmPc1G2oJnjA+pqnc6lJc5trA7pD1fHFABcW0GsaoBMvmQW/GOxNaNxJHZWeEAXaMIorNiTVoIxDBDCOOZOBk1ZttMf7R9ovZjNID8o7LQBPpsbrbB5QBJIdxx2qDUmzfWSdi+c4qzdXSxLhWG6suK4OpaxGI87bf7xHTNAG7RRRQAUUUUAFFFFAEVzbQ3URjnQOp9ayZdHuLZjJp9w7Ac+TIcg1t0UAc7/a4tE230LW0gGQM8H8ac1vc3CiW2tzErfMymRSjZ6nA6GtDWUglsjHPGsgbgA/0qPQoFtbOSzVmJhcg7vQ8j9KAOB8RTX+n6aLq1XaDIRJjsPUfjWXo3iG9vb+G0mupX804BHrjitzxDrVtGiafdwGUJKzFN+3I9c1J4d0/RDP8A21p8c0UpUqlvJhgrngkGgDQs9Na7vhGXlby/vHtmt9IbfS50+zlT5hCyRDk/7w/rUqaVG1iIpC6yH5iynBBqCIbDLCkUQwQvnIPvnuDQBPcaiyk+XtCg9W71RfULmd9lury544GAK0raCGeMFogVU8Z9fWrccUcQxGiqD1wOtAGCNJv7iQ+dMI0J52jBI71sWFjDYW4ihH1Pc1ZooAKKKKACiiigAooooAKKKKAKV2wluYrfAJJ3H6VCjiHxC8ZJAuIcj0yv/wBY06zPn6pcS44j+QGodXbyLq2uj0ilGeOzfKf50AeX+NonTxPdO3IXGOO1dR8PNPneJZbhSgjcuBnrkcVQ8dWTXPiWNFUkOvO303c129hbm3tY7G3JG0DzZB2/2R70AXJZZLiRobc7VBxJJ6ew96p35W3CQQ5XCnH9TWpFGkUYRFCqOwrHuwZLmWc42EiOM/zNAGnYx+XaICMEjNWKbGNsagdgKdQAUUUUAFFFFABRRRQAUUUUAFNkbZGzE4wCadVLV5jDp8jLjceBmgCLQ1P2R5WbcZZCc/pUmpwpLFtlXMbqVbHUZ71Ys4xDaRIABhRnFOnAMRBHFAHM29nNLrG+5RTJFGEWUc7h/ez+HI9a6W3hWJMKMd6p6UmRJI2DlsCtGgCObcY9qfebjPp71UvgqC2hAyC4AzV+qGpMEuLRmHHmY/GgC/RSDkZpaACiiigAooooAKKKKACiiigArB1yR725trO3yQJQXx7VsXcjR2zuiliB0ArO+2WNgsZuH2OepYdaANYDAAHamTdAKpxa3pspIS6TIOOaklv7PymYXMWQpx81Fx2ewzR/+PNv+ujVfrA07Ube1hBEqvG+ScHkGtKHVrGUgCdVJ7NxSTT2G4tbou1DcwpPGEcd8g+hp3nRf89E/wC+hSmWIDJkQD3YUySCwm3o8TH54jgirVZV3J9j1FbxfmhkGyXbzg9jWopDKGU5B5BFAC0UUUAFFFFABRRRQAUUUUAJ1rB8UojrbIyjBbrW/WH4hdRNApbsTipn8LLp/GrnHJYvNcutu3Uk5PFXBYyeUFYKSfU1as7dwjSpwSTj61eSNHT96jRy45BXIrgp+0a0PZxHsYySZg/YbhRhCDjtRHb3IG1493pjrWy8KNkq4GOvB/GmrA5wUYce9K04vYL0pK1zNt45Y325lxjBBJqdopHSSLbIQwyOeMirkkRChmznpkHgVIFZADyGB+lWqk1uZOjSl8JpadZWl7p0T4ccYYZxzWtFGIo1RScKMDNY+iNJFLKrOPIc5Qdwa267k01dHlSi4uzCiiimSFFFFABRRRQAUUUUAFcx4mjl/t3T34ETqyA5x81dFPG8igJIU9az77SHv4PKnuCQOVI6qfak1dWHF8rTMm2SSGFhMNqgkknitXQ5DLbyTSkBXc7Aewqknhhk277ySUL2Y9atPo8jR+WsgjQDAC8VnTp8hvXruq9jTKWzdoz+VCwW+cqiZ9qw38MFjlbyVM9cMaRPC7xj5NRuc+5rU5zansreeJo3QYI6jtXPyloro2srYeLGC3G8VeXQpwR/xMZsD3px0ESDFxcPN/dLdV/GonBSVmaU6jpu6KinHIG0FTuOf1rV0S4e501HlOWBIz61lL4Qt1l3i6nAznaG4FbNtYrbQLDFIwVaUIchVWr7R3sW6Kao2rgnNOrQxCiiigAooooA/9k=" alt=""><div class="bub"><span class="who">Diputado Socialista</span>Señor diputado, hay gente que ya está cansada de ser discriminada, burlada y de promesas que nunca llegan ni van a llegar, porque no hay voluntad política para que así sea. Entonces, ¿les negamos la expresión? La represión y la falta de respuesta a sus demandas es lo que ha llevado a tanto cansancio y enojo.</div></div>
+<div class="dlg mid"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Anarcosindicalista</span>Está claro, ustedes, el Estado no puede o no quiere hacer nada al respecto. Es necesario organizarnos entre trabajadores para ponerle límites a estos cuervos que nos quieren sacar los ojos.</div></div>
+  <span class="fuente">Fuente: diálogo de la estación (mapa interactivo)</span><span class="credito">Ilustraciones: Lic. Martín Castañeda</span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (2 min)</b><ul>
+<li>Es el mapa de toda la clase. <b>Hegemónico</b>: lo que se impone como lo normal (el orden, la tradición, las elecciones controladas). <b>Contrahegemónico</b>: lo que lo discute. Acá hay dos maneras de discutirlo: <b>desde adentro</b> (el partido, el voto, las leyes: los socialistas) y <b>desde abajo</b> (el sindicato, la asamblea, la huelga: los anarcosindicalistas).</li>
+<li>Las dos nacen en el mismo mundo obrero, con inmigrantes, y chocan entre sí. Eso aparece en el diálogo: el diputado socialista todavía cree que hay que hablar con el Estado; el anarcosindicalista ya no.</li>
+<li>Sugerencia de tiempos para una hora: diap. 1-3 unos 10 min; 4-6 unos 12; 7-9 unos 14; 10-12 unos 14; 13-14 unos 8; 15-16, trabajo del grupo y cierre. Podés acelerar o frenar donde necesites.</li></ul>">
+  <div class="kicker">Recorrido</div>
+  <h2>Cuatro movimientos para entender la estación</h2>
+  <p class="lead">Aquí hay <b>tres miradas</b>: el orden conservador liberal y dos maneras de cambiarlo.</p>
+  <div class="row" style="flex:1;align-items:stretch;margin-bottom:14px">
+    <div class="step" style="background:var(--lila)"><div class="n">1</div><h3>Escuchamos</h3><p>El debate y las <b>tres miradas</b>. <i>Diap. 1-3</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--malva)"><div class="n">2</div><h3>La mirada hegemónica</h3><p>El orden conservador liberal que <b>defiende el diputado</b>. <i>Diap. 4-6</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--salvia)"><div class="n">3</div><h3>Dos miradas contrahegemónicas</h3><p><b>Socialistas</b> (7-9) y <b>anarcosindicalistas</b> (10-12).</p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--azul)"><div class="n">4</div><h3>Cruzamos y trabajamos</h3><p>Comparamos, volvemos a las frases y <b>seguimos el debate</b>. <i>Diap. 13-16</i></p></div>
+  </div>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (5 min)</b><ul>
+<li>Las tres columnas salen de lo que dice cada personaje; no hace falta saber nada más para completarlas.</li>
+<li>Fijémonos en que <b>los tres hablan de lo mismo</b> (los movimientos sociales y el conflicto) pero lo nombran distinto: «inadaptados», «gente cansada», «trabajadores que se organizan».</li>
+<li>El conservador y el socialista discuten <b>con el Estado</b> (uno lo defiende, el otro le exige). El anarcosindicalista <b>se baja de la discusión</b>: no espera nada de él.</li>
+<li><b>Pregunta al grupo</b>: ¿qué cambia si decimos «inadaptados» o «gente cansada»? ¿quién elige el nombre de un conflicto?</li></ul>">
+  <div class="kicker">Las tres miradas</div>
+  <h2>Tres miradas sobre los reclamos sociales</h2>
+  <table class="tight" style="margin-top:4px;font-size:21px"><tr><th></th><th style="background:var(--malva)">Diputado conservador</th><th style="background:var(--azul)">Diputado socialista</th><th style="background:var(--salvia)">Anarcosindicalista</th></tr>
+    <tr><td>Los movimientos sociales</td><td>«Inadaptados» que rompen la armonía</td><td>Gente <b>cansada</b> de ser discriminada y burlada</td><td>Trabajadores que deben <b>organizarse</b></td></tr>
+    <tr><td>El Estado</td><td>Garante del equilibrio y de la tradición</td><td>Debe responder: falta <b>voluntad política</b></td><td>«No puede o no quiere hacer nada»</td></tr>
+    <tr><td>La expresión</td><td>«Piden ser oídos, pero no escuchan»</td><td>«¿Les negamos la <b>expresión</b>?»</td><td>Se ejerce en la <b>asamblea</b></td></tr>
+    <tr><td>La salida</td><td>Orden, equilibrio y cambios graduales</td><td><b>Leyes</b> y representación en el Congreso</td><td><b>Sindicatos</b> y acción entre trabajadores</td></tr>
+  </table>
+  <span class="fuente">Fuente: diálogo de la estación Congreso (mapa interactivo)</span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (6-8 min)</b><ul>
+<li>En teoría política, <b>conservadurismo</b> y <b>liberalismo</b> son identidades distintas y a veces opuestas. Se pregunta: ¿cómo pudieron gobernar juntos?</li>
+<li><b>Conservadurismo</b>: nace como respuesta a las transformaciones de la modernidad (Revolución Francesa e Industrial). Defiende la tradición, las jerarquías sociales ('orden natural'), la familia patriarcal y la propiedad privada.</li>
+<li><b>Liberalismo</b>: es una expresión de la modernidad. El individuo es el sujeto político, la libertad es 'negativa' (hago lo que quiero mientras no afecte la libertad de otro), confía en el progreso y ve al Estado como un 'mal necesario'.</li>
+<li><b>Coinciden en dos puntos</b>: la defensa a ultranza de la propiedad privada y el recelo frente a las masas. Eso permitió la fórmula: <b>liberales en lo económico, conservadores en lo político</b>.</li>
+<li>Del video: 'en un punto son contradictorios, pero en la Argentina caminaron juntos bastante tiempo. Eran conservadores en unas cosas y liberales en otras'.</li>
+<li><b>Pregunta al grupo</b>: ¿qué escuela, qué policía, qué hospital querría alguien que desconfía de las masas pero necesita un país 'moderno'?</li>
+<li>Conexión con el diálogo: «equilibrio entre el respeto a las tradiciones y la promoción de ciertos cambios» es la fórmula de la diapositiva: <b>tradición y jerarquías</b> (conservadurismo) más <b>progreso</b> (liberalismo). El diputado quiere cambios, pero sin que cambie quién decide.</li>
+<li>Y también aparece el <b>recelo frente a las masas</b>: los movimientos sociales son «grupos de inadaptados». Es la segunda idea que comparten conservadores y liberales.</li>
+<li>Los socialistas lo dicen así: «Roquistas, mitristas y alemistas son todos lo mismo… no por un programa ni por una idea» (Justo, 1896, en Pigna); es decir, los partidos de la clase rica son «uno solo» cuando se trata de proteger sus beneficios.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 1. ¿Quiénes son y qué creen?</div>
+  <h2>El orden conservador liberal</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Es necesario mantener un equilibrio entre el respeto a las tradiciones y valores culturales, y la promoción de cambios sociales» <i>— Diputado conservador</i></div>
+  <svg viewBox="0 0 1150 565" style="width:100%;flex:1">
+<circle cx="430" cy="275" r="230" fill="#C9CCF0" fill-opacity=".75" stroke="#2F3E5C" stroke-width="3"/>
+<circle cx="720" cy="275" r="230" fill="#BFD8EE" fill-opacity=".75" stroke="#2F3E5C" stroke-width="3"/>
+<text x="345" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#1B2742">CONSERVADURISMO</text><text x="805" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#1B2742">LIBERALISMO</text>
+<text x="355" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Valor de la <tspan font-weight="700">tradición</tspan></text><text x="355" y="185" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Jerarquías</tspan> sociales</text><text x="355" y="210" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">(«orden natural»)</text>
+<text x="355" y="255" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Familia <tspan font-weight="700">patriarcal</tspan></text><text x="355" y="300" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Mira al <tspan font-weight="700">pasado</tspan></text>
+<text x="355" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">Reacción ante los cambios</text><text x="355" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">de la modernidad</text>
+<text x="795" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">El <tspan font-weight="700">individuo</tspan> libre</text><text x="795" y="170" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">es el sujeto político</text><text x="795" y="215" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Libertad «negativa»</text>
+<text x="795" y="260" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Confía en el <tspan font-weight="700">progreso</tspan></text><text x="795" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Estado = «mal necesario»</text>
+<text x="795" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">Una expresión</text><text x="795" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">de la modernidad</text>
+<text x="575" y="175" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#4A4FA3">LO QUE</text><text x="575" y="195" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#4A4FA3">COMPARTEN</text>
+<text x="575" y="240" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Propiedad</tspan></text><text x="575" y="262" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">privada</tspan></text><text x="575" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Recelo frente</tspan></text><text x="575" y="327" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">a las <tspan font-weight="700">masas</tspan></text>
+<rect x="95" y="522" width="960" height="38" rx="19" fill="#E3DAF4" stroke="#4A4FA3" stroke-width="2.5"/>
+<text x="575" y="548" text-anchor="middle" font-family="Inter" font-size="20" font-weight="700"  fill="#4A4FA3">Liberalismo económico + conservadurismo político = fórmula de las élites argentinas</text>
+</svg>
+  <div class="lens"><b>En esta estación:</b> el diputado habla como <b>conservador</b> («tradiciones») y como <b>liberal</b> («cambios sociales» controlados); los otros dos le piden que escuche.</div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">video Los socialistas (28:47)</a> · <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (6-8 min)</b><ul>
+<li><b>1874</b>: el Partido Nacional de Avellaneda y el Partido Autonomista de Alsina se unen y forman el <b>Partido Autonomista Nacional (PAN)</b>. Antes, en 1861, Mitre había impuesto en Pavón la hegemonía de Buenos Aires y los liberales se dividieron por el destino de la ciudad y su aduana.</li>
+<li><b>1880</b>: Roca es elegido presidente (11 de abril). Tejedor, gobernador de Buenos Aires, no acepta la derrota y encabeza una revolución: unos 20.000 hombres, 6.000 muertos según el video. Buenos Aires se federaliza. Roca gobierna con el lema <b>'paz y administración'</b>: asegurar el orden político para conseguir el progreso. Se consolida el <b>modelo agroexportador</b>.</li>
+<li><b>1890</b>: Revolución del Parque (26 de julio): la Unión Cívica de Alem y Mitre reclama respeto a las instituciones y elecciones limpias. La sofocan, pero el presidente (Juárez Celman) renuncia por la crisis financiera. El video escribe 'Juárez Zelman'; el apellido es Juárez Celman.</li>
+<li><b>1910-16</b>: Sáenz Peña impulsa la reforma: padrón único, voto secreto y obligatorio, lista incompleta. El 2 de abril de 1916 gana Yrigoyen: <b>termina un período de 35 años</b> de gobiernos conservadores liberales.</li>
+<li><b>1930</b>: los conservadores apoyan el primer golpe de Estado (Uriburu). En los años 30 vuelven con el llamado <b>'fraude patriótico'</b>: por eso se la conoce como década infame.</li>
+<li>Los nodos oscuros son los hechos de ESTA estación: mostrar cómo se insertan dentro del mismo régimen.</li>
+<li><b>Pregunta al grupo</b>: ¿qué cambia para la gente común cuando las elecciones 'solo convalidan lo que está decidido de antemano'?</li>
+<li><b>1896</b>: en marzo el Partido Socialista debuta en elecciones en la Capital: Justo obtiene 138 votos (Pigna). En junio (28 y 29) se funda formalmente el partido (video 'Los socialistas').</li>
+<li><b>1901</b>: nace la Federación Obrera Argentina (FOA) con 27 sociedades gremiales de socialistas y anarquistas; en 1904 cambia el nombre por Federación Obrera Regional Argentina (FORA) (CCI, 'La FORA').</li>
+<li><b>1902</b>: la <b>Ley de Residencia</b> (Ley Cané): permite al Poder Ejecutivo expulsar a extranjeros considerados peligrosos para el orden, sin juicio previo. La sanciona el gobierno de Roca el día siguiente de una huelga muy grande en el puerto de Buenos Aires; en la primera semana se deportan unas 500 personas (video 'Ni dios ni amo', con la investigadora Gabriela Costanzo). Después se decreta el estado de sitio (del 26 de noviembre de 1902 al 1 de enero de 1903).</li>
+<li><b>1904</b>: Alfredo Palacios, socialista, es elegido diputado por La Boca (13 de marzo): el primero del partido y de toda América, según el video. La CCI lo lee como una jugada del régimen: «la burguesía avanza combinando la represión abierta con la apertura del parlamento al PS».</li>
+<li><b>1910</b>: Ley de Defensa Social, tras una bomba en el Teatro Colón (sin muertos): prohíbe estandartes, reuniones y publicaciones anarquistas. Complementa la de Residencia. La de Residencia se deroga en 1958 (Frondizi).</li>
+<li><b>1912</b>: la Ley Sáenz Peña (voto secreto, obligatorio y universal masculino) cambia el sistema; en 1912-1914 los socialistas llegan a 10 diputados y 1 senador.</li>
+<li><b>1931</b>: después del golpe de 1930, los socialistas obtienen la mayor representación parlamentaria de su historia: 43 diputados y 2 senadores.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 2. ¿Qué pasó?</div>
+  <h2>35 años de gobiernos conservadores liberales</h2>
+  <div class="gancho"><b>Del diálogo:</b> «una ciudad limpia, ordenada y tranquila» <i>— Diputado conservador</i></div>
+  <svg viewBox="0 0 1150 400" style="width:100%;flex:1"><line x1="30" y1="185" x2="1120" y2="185" stroke="#2F3E5C" stroke-width="3"/><circle cx="100" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="100" y1="172" x2="100" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="100" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Se forma el PAN</text><text x="100" y="105" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1874</text><circle cx="205.55555555555554" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="205.55555555555554" y1="198" x2="205.55555555555554" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="205.55555555555554" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1880</text><text x="205.55555555555554" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Roca: «paz y</text><text x="205.55555555555554" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">administración»</text><circle cx="311.1111111111111" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="311.1111111111111" y1="172" x2="311.1111111111111" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="311.1111111111111" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Revolución del Parque</text><text x="311.1111111111111" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">y Unión Cívica</text><text x="311.1111111111111" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1890</text><circle cx="416.6666666666667" cy="185" r="13" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="3"/><line x1="416.6666666666667" y1="198" x2="416.6666666666667" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="416.6666666666667" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1896</text><text x="416.6666666666667" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Nace el Partido</text><text x="416.6666666666667" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Socialista</text><circle cx="522.2222222222222" cy="185" r="13" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="3"/><line x1="522.2222222222222" y1="172" x2="522.2222222222222" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="522.2222222222222" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Nace la FOA</text><text x="522.2222222222222" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">(luego FORA)</text><text x="522.2222222222222" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1901</text><circle cx="627.7777777777778" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="627.7777777777778" y1="198" x2="627.7777777777778" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="627.7777777777778" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1902</text><text x="627.7777777777778" y="279" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Ley de</text><text x="627.7777777777778" y="301" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Residencia</text><circle cx="733.3333333333334" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="733.3333333333334" y1="172" x2="733.3333333333334" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="733.3333333333334" y="111" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Palacios: primer</text><text x="733.3333333333334" y="133" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">diputado socialista</text><text x="733.3333333333334" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1904</text><circle cx="838.8888888888889" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="838.8888888888889" y1="198" x2="838.8888888888889" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="838.8888888888889" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1910-16</text><text x="838.8888888888889" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Sáenz Peña y</text><text x="838.8888888888889" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">triunfo de Yrigoyen</text><circle cx="944.4444444444445" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="944.4444444444445" y1="172" x2="944.4444444444445" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="944.4444444444445" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Primer golpe</text><text x="944.4444444444445" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">de Estado</text><text x="944.4444444444445" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1930</text><circle cx="1050" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="1050" y1="198" x2="1050" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="1050" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">Años 30</text><text x="1050" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">«Fraude patriótico»:</text><text x="1050" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">década infame</text><circle cx="60" cy="380" r="9" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="2.5"/><text x="78" y="386" font-family="Inter" font-size="16" fill="#1B2742">El régimen conservador liberal</text><circle cx="400" cy="380" r="11" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="2.5"/><text x="420" y="386" font-family="Inter" font-size="16" fill="#1B2742">Lo que vemos en esta estación</text><circle cx="740" cy="380" r="9" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="2.5"/><text x="758" y="386" font-family="Inter" font-size="16" fill="#1B2742">Otras miradas que aparecen</text></svg>
+  <div class="lens"><b>En esta estación:</b> mientras el PAN controla los comicios, nacen el <b>Partido Socialista</b> (1896) y la <b>FORA</b> (1901); el régimen responde con <b>represión</b> (1902) y con una <b>banca</b> (1904).</div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">video Los socialistas (28:47)</a> · <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8-10 min)</b><ul>
+<li>El mecanismo (fila de arriba) es el mismo en todas las estaciones: <b>modelo agroexportador → PAN → elecciones controladas → represión y negociación</b>.</li>
+<li><b>Modelo agroexportador</b>: durante el gobierno de Roca se consolida y beneficia sobre todo a los grandes terratenientes y a sectores de la burguesía, socios del capital extranjero. Las élites locales apoyan al presidente y se esfuerzan por mantener ese orden.</li>
+<li><b>PAN</b>: el único partido capaz de alcanzar el poder; es el espacio donde se relacionan los gobernadores, el presidente y quien aspira a sucederlo. Los cargos se reparten por devolución de favores políticos, intereses económicos y parentesco. Las elecciones solo convalidan lo decidido de antemano.</li>
+<li><b>Frente a los reclamos</b>: cuando Roca vuelve en 1898 encuentra una sociedad distinta, con conflictos: la clase obrera reclama derechos, los inmigrantes traen ideas socialistas y anarquistas, los radicales piden reforma política. Responde con 'una mezcla de represión y negociación' y reformas que 'no modifican la raíz de las desigualdades'.</li>
+<li><b>Resultado</b>: una Argentina con derechos para pocos. Cuando por fin hubo elecciones libres (1916), la mayor parte de la sociedad rechazó a los conservadores liberales. Después apoyaron golpes de Estado (1930, 1955, 1966, 1976).</li>
+<li>La fila de abajo es la mirada de ESTA estación: cómo se concreta ese orden en la vida cotidiana de los personajes.</li>
+<li><b>Reprimir</b>: la Ley de Residencia (1902) y la Ley de Defensa Social (1910) son «medidas represivas» frente a los reclamos de los trabajadores (video 'Ni dios ni amo'). El video cuenta que el anarquismo era visto no como un pensamiento político sino como «una enfermedad, una secta», lo que habilita todos los mecanismos de represión que el Estado puede proponer. En 1904, según la CCI, la manifestación del 1° de mayo en plaza Mazzini fue atacada a tiros por la policía, con casi un centenar de heridos.</li>
+<li><b>Reformar</b>: el gobierno encarga al médico Juan Bialet Massé un informe sobre las clases obreras (1904) y el ministro Joaquín V. González impulsa un proyecto de ley del trabajo; la CCI lo cuestiona porque González advertía que su propósito era «evitar las agitaciones» desde 1902, y cuenta que la Unión Industrial lo rechazó por la jornada de 8 horas y el descanso dominical. En 1912, Sáenz Peña modifica el sistema electoral.</li>
+<li><b>Controlar</b>: Pigna cuenta la farsa electoral con el testimonio de Dickmann: había que esperar turno en un grupo reconocido por el presidente de mesa, que era el caudillo de comité; cuando llegaban a la urna, «ya habían votado por nosotros»; los pocos votos socialistas eran anulados en el escrutinio. Y en 1904 el gobierno nombra al jefe de policía como árbitro de los conflictos laborales.</li>
+<li><b>Idea clave</b>: el diputado conservador no niega que haya que cambiar algo («ciertos cambios sociales»); lo que quiere es controlar <b>cuáles</b> y <b>quién</b> los decide.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 3. ¿Qué dejó?</div>
+  <h2>Un orden con derechos para pocos</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Estos grupos de inadaptados borran con el codo lo que escriben con la mano» <i>— Diputado conservador</i></div>
+  <div class="row" style="margin:6px 0 10px;align-items:stretch">
+    <div class="box sm grow" style="background:var(--manteca)"><h3>Modelo agroexportador</h3><ul><li>Favorece a grandes terratenientes y al capital extranjero</li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--malva)"><h3>El PAN</h3><ul><li>Cargos por favores, intereses y parentesco</li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--azul)"><h3>Elecciones controladas</h3><ul><li><b>Control de comicios y fraude</b></li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--durazno)"><h3>Frente a obreros e inmigrantes</h3><ul><li><b>Represión y negociación</b></li></ul></div>
+  </div>
+  <div class="lens" style="margin:0 0 8px"><b>En esta estación: ante los reclamos obreros, el orden reprime, reforma y controla</b></div>
+  <div class="row" style="flex:1;align-items:stretch;margin-bottom:10px"><div class="box sm grow" style="background:var(--lila)"><h3>Reprimir</h3><ul><li>Ley de Residencia (1902)</li><li>Ley de Defensa Social (1910)</li></ul></div><div class="box sm grow" style="background:var(--azul)"><h3>Reformar</h3><ul><li>Ley Sáenz Peña (1912)</li><li>Proyecto de ley del trabajo (1904)</li></ul></div><div class="box sm grow" style="background:var(--salvia)"><h3>Controlar</h3><ul><li>Fraude electoral</li><li>Policía como árbitro de conflictos</li></ul></div></div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>La idea central</b> (video 'Los socialistas'): los inmigrantes traían ideas políticas. Algunos eran anarquistas, que niegan la autoridad y quieren abolir el Estado; otros abrazaban el pensamiento de Marx y de pensadores socialistas como Kautsky. Querían acabar con el capitalismo y crear un estado más justo, un estado socialista. Estaban dispersos en clubes, bibliotecas, sociedades de fomento y organizaciones gremiales (el club Vorwärts reunía a los alemanes; también había franceses e italianos).</li>
+<li><b>La Declaración de principios</b> (Justo, 1896): la clase trabajadora debe tomar el control del Estado para terminar con el capitalismo. Se adaptan las ideas internacionales a las particularidades del país.</li>
+<li><b>Revisionismo</b> (Pigna): el socialismo argentino adhería a la corriente de Eduardo Bernstein, que proponía revisar las ideas de Marx y Engels a la luz de los hechos posteriores. Justo decía: «Necesitamos y debemos saber más que Marx en materia histórica y social. Marx nunca fue marxista». Se parecía a Jean Jaurès, que se oponía a la acción violenta y proponía organizar las fuerzas bajo la ley de la democracia parlamentaria y el sufragio universal; según Jaurès, el orden socialista llegaría «gradualmente» por el crecimiento del proletariado.</li>
+<li><b>Moderados</b> (Pigna): influidos más por el liberalismo que por el marxismo, apuntaban más a la distribución de los ingresos que de la riqueza; proponían cooperativas de consumo y de vivienda; llegaban a defender la libre entrada de productos importados para bajar los precios; apoyaban separar Iglesia y Estado y reemplazar el ejército permanente por una milicia civil. Fueron pioneros del voto femenino, luchaban contra la trata de blancas y por el divorcio, el aumento del presupuesto educativo y las ocho horas.</li>
+<li><b>Programa mínimo</b> (video): jornada laboral de 8 horas, suspensión de los impuestos indirectos, ley de divorcio, nacionalización automática de extranjeros tras un año de residencia, separación de la Iglesia y el Estado, e impuestos a la gran propiedad y a la herencia. El estatuto consideraba a las mujeres iguales a los hombres.</li>
+<li><b>Quiénes eran</b>: aunque se definía como obrero, la mayoría de los cuadros venía de los sectores medios urbanos: médicos, abogados, trabajadores especializados; confiaban en la acción parlamentaria y privilegiaban la política sobre lo sindical (Pigna).</li>
+<li><b>Pregunta al grupo</b>: ¿por qué podía ser atractivo participar en elecciones que estaban controladas?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · Socialista · 1. ¿Quiénes son y qué creen?</div>
+  <h2>El socialismo: tomar el Estado para cambiar el sistema</h2>
+  <div class="gancho"><b>Del diálogo:</b> «hay gente que ya está cansada de ser discriminada, burlada y de promesas que nunca llegan ni van a llegar, porque no hay voluntad política para que así sea» <i>— Diputado socialista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--azul)"><h3>Qué proponen</h3><ul><li>Que la clase trabajadora <b>tome el control del Estado</b> para terminar con el capitalismo</li><li>Un <b>partido</b> de los trabajadores</li><li>Cambio por la vía <b>legal</b> y parlamentaria</li></ul></div>
+    <div class="box grow " style="background:var(--lila)"><h3>Quiénes lo pensaron</h3><ul><li><b>Marx y Engels</b>: «socialismo científico»</li><li><b>Bernstein</b> y <b>Jaurès</b>: reformar, no derrumbar</li><li><b>Juan B. Justo</b>: «Marx nunca fue marxista»</li></ul></div>
+    <div class="box grow " style="background:var(--salvia)"><h3>Programa mínimo (1896)</h3><ul><li>Jornada de <b>8 horas</b> y ley de divorcio</li><li>Separar <b>Iglesia y Estado</b></li><li>Impuesto a la gran propiedad y a la herencia</li></ul></div>
+  </div>
+  <div class="lens">Defienden la <b>participación en las elecciones</b>: para ellos, los derechos se conquistan con votos y leyes.</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">video Los socialistas (28:47)</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>El comienzo</b> (video): en una mañana de agosto de 1893 el médico Juan B. Justo lee un aviso y esa noche va a un café del centro; el 2 de agosto de 1893 un pequeño grupo de trabajadores socialistas (un tonelero, un carpintero catalán, un tipógrafo alemán y uno español) deciden editar un periódico. El 7 de abril de 1894 sale el primer número de <i>La Vanguardia</i>, que se define como defensor de la clase obrera. Justo vendió el coche que usaba en sus visitas de médico y empeñó la medalla de oro de la Facultad de Medicina para pagar los gastos (Pigna). En su primer editorial pedía «construir una alternativa política al pillaje y la plutocracia».</li>
+<li><b>El partido</b>: a mediados de 1894 algunas organizaciones se unen en un partido; el 28 y 29 de junio de 1896 se funda el Partido Socialista Obrero Argentino en un Congreso Constituyente, con Justo como figura principal. Más tarde adopta el nombre de Partido Socialista (la CCI cuenta los cambios de nombre).</li>
+<li><b>El debut</b>: elecciones legislativas de 1896. La lista incluía las profesiones de sus candidatos (el médico Justo, un zapatero, un pintor, un foguista...). El voto no era secreto ni obligatorio. Pigna: Justo obtuvo 138 votos, y un militante bromeaba «ni siquiera nos votaron todos nuestros parientes». Dickmann cuenta que los presidentes de mesa decían que ya habían votado por ellos, la policía los echaba del atrio, y los votos socialistas se anulaban porque «son como la mala yerba: si hoy se presentan mil, mañana vendrán diez mil».</li>
+<li><b>La Ley de Residencia</b> (1902) golpea también a los socialistas y sus militantes extranjeros; por eso proponían la <b>nacionalización automática</b> de los inmigrantes (video: la lucha por la nacionalización explica la insistencia en participar en elecciones).</li>
+<li><b>Palacios</b> (video): en 1904 recorre La Boca conventillo por conventillo, hablando en español y en italiano, atendiendo gratis a los pobres. El 13 de marzo de 1904 es el primer diputado socialista elegido en el país y en toda América. Desde su banca lucha por medidas para los trabajadores, las mujeres, los niños y los ancianos; va a plantear que las banderas argentinas vayan al frente de las manifestaciones socialistas.</li>
+<li><b>Sáenz Peña</b> (video): en 1912 el presidente establece el voto secreto, obligatorio y universal para los hombres. Entre 1912 y 1914 los socialistas obtienen 10 bancas de diputados y una de senador (Palacios, Justo, Repetto, Bravo, todos por la Capital); en el resto del país siguen siendo débiles.</li>
+<li><b>1916</b>: la fórmula Justo-Repetto apenas obtiene el 7% y gana Yrigoyen, a quien consideran «un simple caudillo» sin plan de gobierno.</li>
+<li><b>Pregunta al grupo</b>: ¿qué significa para una persona de la clase trabajadora ver que la votaron «por ella»?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · Socialista · 2. ¿Qué pasó?</div>
+  <h2>Del café a la banca: el Partido Socialista</h2>
+  <div class="gancho"><b>Del diálogo:</b> «¿Les negamos la expresión?» <i>— Diputado socialista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--lila)"><h3>Cómo nacen</h3><ul><li><b>1893</b>: reunión en un café del centro; <b>1894</b>: <i>La Vanguardia</i></li><li>Justo vendió su coche de médico para sostener el diario</li><li><b>1896</b>: se funda el Partido Socialista</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Contra el fraude</h3><ul><li>Voto ni secreto ni obligatorio</li><li><b>138 votos</b> para Justo en 1896</li><li>«Ya habían votado por nosotros»</li></ul></div>
+    <div class="box grow " style="background:var(--salvia)"><h3>Llegan al Congreso</h3><ul><li><b>1904</b>: Alfredo Palacios, <b>primer diputado</b> socialista de América</li><li><b>1912-1914</b>: 10 diputados y 1 senador</li><li><b>1931</b>: 43 diputados y 2 senadores</li></ul></div>
+  </div>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Para el diputado socialista, el camino era <b>votar y legislar</b></div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">video Los socialistas (28:47)</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>Legislación obrera</b> (video): «el socialismo construye la legislación obrera pero no tiene la posibilidad de ejecutarla»; cuando llega el peronismo, comienza la aplicación de esa legislación, que es de origen socialista, como el aguinaldo. Para un entrevistado, fue «uno de los más grandes errores» del socialismo no entender al peronismo. Pigna: a lo largo de su historia cumplirán un papel fundamental en la lucha por la dignidad de los trabajadores a través de propuestas innovadoras de legislación obrera.</li>
+<li><b>Cooperativismo y asistencia</b> (video): se introdujo el cooperativismo como respuesta a las necesidades de los inmigrantes; las figuras del socialismo se dedicaron cada una en su área a brindar educación, asistencia y atención a los trabajadores y a la gente sin recursos.</li>
+<li><b>Mujeres</b> (video): en 1905 Alicia Moreau, Sara Justo y Julieta Lanteri fundan el Centro Feminista, que busca la igualdad jurídica, política y social entre el hombre y la mujer. En 1910 se realiza el primer congreso femenino internacional, que impulsa un proyecto de ley para el voto femenino; Palacios lo presenta y defiende en el Congreso. Las mujeres tendrán que luchar muchos años más para obtener ese derecho.</li>
+<li><b>Divisiones</b> (video): en 1914 estalla la Primera Guerra Mundial y la dirigencia expresa simpatía por Francia y Gran Bretaña; un grupo marxista considera que es una guerra imperialista, es expulsado y funda el Partido Socialista Internacional (1918), que en 1920 se llamará Partido Comunista. En 1927, Antonio de Tomaso y Federico Pinedo fundan el Partido Socialista Independiente. Justo muere de un ataque cardíaco en ese contexto (enero de 1928).</li>
+<li><b>Años 30</b>: el 6 de septiembre de 1930 hay un golpe militar; el independiente lo apoya; el tradicional lo rechaza pero se beneficia: en 1931 logra su mayor representación (43 diputados y 2 senadores). Con la crisis, los trabajadores se trasladan a las ciudades; la dirigencia mantiene a los sindicatos separados del partido («lo político partidario y lo sindical»). El video lo llama «la oportunidad histórica» de conducir el movimiento obrero, que no se aprovechó.</li>
+<li><b>El peronismo</b>: desde 1943 el partido cierra filas con radicales, comunistas y conservadores; muchos militantes pasan al peronismo (Bramuglia, Borlenghi) y el socialismo pierde gran parte de su base obrera: se convierte, en su mayoría, en un partido de sectores medios. Después sigue dividiéndose.</li>
+<li><b>Derechos humanos y hoy</b> (video): durante la dictadura, dirigentes socialistas se destacan en la defensa de los derechos humanos (Simón Lázara, Alfredo Bravo, Alicia Moreau, que a los 90 años acompaña a las Madres). En 2007 Hermes Binner es el primer gobernador socialista de Santa Fe.</li>
+<li><b>Críticas</b>: la CCI, desde la izquierda revolucionaria, sostiene que el partido se alejó «de las trincheras proletarias» al priorizar la vía parlamentaria. Podemos usarlo como contrapunto: ¿es lo mismo conseguir leyes que cambiar el sistema?</li>
+<li><b>Pregunta al grupo</b>: ¿sirve tener leyes que protegen si no hay quien las aplique?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · Socialista · 3. ¿Qué dejó?</div>
+  <h2>Leyes, derechos y una división</h2>
+  <div class="gancho"><b>Del diálogo:</b> «La represión y la falta de respuesta a sus demandas es lo que ha llevado a tanto cansancio y enojo» <i>— Diputado socialista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--lila)"><h3>Leyes y organización</h3><ul><li><b>Legislación obrera</b>, luego aplicada por otros</li><li>Cooperativas de consumo y vivienda</li><li><b>La Vanguardia</b>: periódico del partido</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Mujeres y derechos</h3><ul><li><b>1905</b>: Centro Feminista (Moreau, Justo, Lanteri)</li><li><b>1910</b>: proyecto de voto femenino (Palacios)</li><li>Alicia Moreau y las Madres de Plaza de Mayo</li></ul></div>
+    <div class="box grow " style="background:var(--salvia)"><h3>Divisiones y límites</h3><ul><li><b>1918-1920</b>: nace el Partido Comunista</li><li><b>1927</b>: Partido Socialista Independiente</li><li>Con el peronismo, <b>pierde su base obrera</b></li></ul></div>
+  </div>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Una política de <b>leyes</b> que otros terminaron aplicando</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">video Los socialistas (28:47)</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>La idea</b> (video 'Ni dios ni amo', cap. 3): el anarcosindicalismo sostenía que el movimiento obrero debía estar representado por sindicatos autónomos del poder político. La primera organización argentina regida por esos principios fue la FORA, la Federación Obrera Regional Argentina. El sindicato anarquista tenía la idea de que, a través de la huelga general u otras movilizaciones, el Estado debía desaparecer cuanto antes para dar paso a una sociedad de hombres libres capaz de alcanzar la justicia social.</li>
+<li><b>Diferencia con el socialismo</b> (Arturo Fernández en el video): «el sindicalismo socialista siempre fue conformista y buscó a través de su partido una vía parlamentaria; el anarquismo buscó mucho más la acción directa». En las huelgas de 1907 a 1910 participaron anarquistas y socialistas, y en el Centenario la represión «no distinguía demasiado» entre unos y otros.</li>
+<li><b>Cómo se decide</b>: «nadie es necesario, todo tiene que resolverse en la asamblea»; si hace falta delegados, son representantes que después de un término bastante breve vuelven a trabajar y los reemplazan otros. Las asambleas de la FORA duraban días porque todos tenían derecho a hablar (video). No es una central sino una <b>federación</b>: busca la autonomía de cada núcleo, y lo que se decide, se decide desde la base.</li>
+<li><b>Dos tendencias</b> (Pigna): los <b>individualistas</b> creían que cualquier organización limitaba la libertad individual; editaban <i>El Perseguido</i> (1890-1897). Los <b>organizadores</b> (con <i>La Protesta Humana</i>, desde 1897) impulsan los sindicatos de albañiles, cigarreros, carreros, yeseros, ebanistas y marmoleros, con acción directa, organización sindical y huelga general. Antonio Pellicer Paraire (Pellico) escribe en 1900 doce artículos sobre «La organización obrera» y propone la federación como «germen de la comuna del futuro» (CCI). Malatesta, que estuvo en Argentina entre 1885 y 1889, sostenía que «los anarquistas deben entrar en los sindicatos».</li>
+<li><b>Discusión con otros</b>: la CCI (una corriente marxista) critica al anarcosindicalismo por no ver la necesidad del partido político y por sobredimensionar el sindicato. Podemos señalarlo como una tercera crítica: el marxismo discute a los dos.</li>
+<li><b>Pregunta al grupo</b>: ¿qué ventajas y qué problemas tiene tomar todas las decisiones en asamblea?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · Anarcosindicalista · 1. ¿Quiénes son y qué creen?</div>
+  <h2>El anarcosindicalismo: el sindicato como herramienta</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Es necesario organizarnos entre trabajadores» <i>— Anarcosindicalista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--salvia)"><h3>Qué proponen</h3><ul><li>Sindicatos <b>autónomos del poder político</b></li><li><b>Acción directa</b> y huelga general</li><li>Una sociedad de hombres libres, <b>sin Estado</b></li></ul></div>
+    <div class="box grow " style="background:var(--lila)"><h3>Cómo se decide</h3><ul><li><b>Asamblea</b>: «nadie es necesario»</li><li>Delegados por poco tiempo, que <b>vuelven a trabajar</b></li><li>Federación, no central: decide la <b>base</b></li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Dos caminos anarquistas</h3><ul><li><b>Individualistas</b>: desconfían de toda organización</li><li><b>Organizadores</b>: entran a los sindicatos</li><li>Pellicer Paraire y Malatesta</li></ul></div>
+  </div>
+  <div class="lens">Frente a los socialistas: <b>sindicato sí; partido y Estado, no</b>.</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>Cómo llegan</b> (video): hacia 1871 llegan los primeros anarquistas a la Argentina como consecuencia de la Comuna de París; los que no fueron asesinados por el ejército francés huyeron, algunos a Argelia y unos pocos a Buenos Aires. Se suman italianos y españoles. Los inmigrantes, llamados por la Constitución de 1853 «a poblar el país», se encontraron con todas las tierras ocupadas por grandes propietarios y tuvieron que arreglarse en ciudades como Buenos Aires y Rosario.</li>
+<li><b>Los panaderos</b> (video): la Sociedad Cosmopolita de Resistencia y Colocación de Obreros Panaderos fue fundada en 1887; según su secretario general, el fundador fue Malatesta. Se trabajaba de tres de la tarde a seis o siete de la mañana por sueldos ínfimos. Crearon las <b>bolsas de trabajo solidarias</b>: cada trabajador ponía un jornal para los desocupados. En 1888, la huelga de los «diez días» consigue mejoras laborales. El video asocia a los panaderos con los nombres de las facturas (ver estación Mercado).</li>
+<li><b>La FORA</b> (video y CCI): en 1901 se funda la Federación Obrera Argentina con 27 sociedades gremiales, socialistas y anarquistas, con mayoría anarquista; en 1902 los socialistas se van. En 1904 pasa a llamarse FORA. En 1905 (V Congreso) se establece que quien quiera adherirse debe practicar los principios del <b>comunismo anárquico</b>.</li>
+<li><b>Ley de Residencia</b> (Costanzo, en el video): se sanciona el día después de una huelga muy grande en el puerto, protagonizada por estibadores y la Federación de Rodados; permite expulsar a cualquier extranjero que amenace «el orden social». En la primera semana, 500 deportados. Con el estado de sitio (noviembre de 1902) terminan temporalmente las movilizaciones.</li>
+<li><b>Defensa Social</b> (1910): sancionada al día siguiente de una bomba en el Teatro Colón; prohíbe el estandarte anarquista, las reuniones y las publicaciones, y condena a los expulsados que vuelvan. Fue derogada en 1921, la de Residencia en 1958.</li>
+<li><b>Violencia estatal</b> (CCI): el 1° de mayo de 1904 la manifestación de la Federación Obrera fue atacada a tiros por la policía en plaza Mazzini (casi un centenar de heridos). En mayo de 1909, tras otra masacre, el joven anarquista Simón Radowitzky mata al jefe de policía, el coronel Falcón. La CCI cuenta que en los años siguientes la FORA casi no pudo dar señales de vida hasta 1916.</li>
+<li><b>Pregunta al grupo</b>: ¿por qué el Estado respondía con leyes de expulsión y no con leyes laborales?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · Anarcosindicalista · 2. ¿Qué pasó?</div>
+  <h2>De los panaderos a la FORA: organizarse sin Estado</h2>
+  <div class="gancho"><b>Del diálogo:</b> «El Estado no puede o no quiere hacer nada al respecto» <i>— Anarcosindicalista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--lila)"><h3>Cómo llegan y se organizan</h3><ul><li><b>1871</b>: llegan anarquistas tras la <b>Comuna de París</b></li><li><b>1887</b>: sociedad de obreros panaderos; <b>1888</b>, huelga de los 10 días</li><li><b>Bolsas de trabajo</b> solidarias</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>De la FOA a la FORA</h3><ul><li><b>1901</b>: se funda la FOA con socialistas</li><li><b>1904</b>: pasa a ser <b>FORA</b></li><li><b>1905</b>: declara el «comunismo anárquico»</li></ul></div>
+    <div class="box grow " style="background:var(--salvia)"><h3>Cómo respondió el poder</h3><ul><li><b>Ley de Residencia</b> (1902): 500 deportados en una semana</li><li>Estado de sitio y <b>Defensa Social</b> (1910)</li><li>1904: policía dispara en la marcha del 1° de mayo</li></ul></div>
+  </div>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Para el anarcosindicalista, el sindicato era <b>escuela, caja y arma</b></div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>Conquistas</b> (cierre del video): la presencia del anarquismo en las luchas gremiales actuales es marginal, pero «las principales conquistas laborales, como el salario mínimo, la jornada de 8 horas, la prohibición del trabajo infantil y la igualdad de género fueron los motivos por los cuales los anarquistas dieron su vida un siglo atrás». Las mujeres anarquistas eran «profundamente feministas»: la opresión en el hogar, el uso del propio cuerpo, el amor libre; su lema: <b>«ni dios, ni patrón, ni marido»</b>.</li>
+<li><b>El declive</b> (video y CCI): en 1915, en el IX Congreso, los sindicalistas lograron eliminar la cláusula del «comunismo anárquico»; los gremios anarquistas que no aceptaron formaron la FORA del V Congreso, que se volvió muy débil. La FORA del IX creció y se acercó al Estado; en 1922 se disolvió para formar la Unión Sindical Argentina (USA), que en 1930 dio origen a la CGT. En la década del 30 la FORA «era una sombra de lo que había llegado a ser»; en España, en cambio, la CNT llegó a tener un millón de afiliados.</li>
+<li><b>Por qué perdieron</b>: la represión, la llegada de nuevas industrias y, sobre todo, la fuerza del peronismo desde el 45: «ninguna de las agrupaciones obreras tuvo la trascendencia y la masificación que tuvo el peronismo». Aun así, en los primeros años del siglo XX la agrupación que más representaba a los obreros era el anarquismo, con grandes luchas (video).</li>
+<li><b>Hoy</b> (video): la FORA existe en una casita del barrio de La Boca; tienen biblioteca, folletos, un periódico que escriben cada dos meses; su secretario general (23 años en el video) habla de «libertad sindical», asambleas horizontales, y de que nadie cobra por ir al sindicato. «No es sostener un kiosquito o un archivo, sino llevar la organización a la calle y ponerla a vivir de nuevo.»</li>
+<li><b>Los panaderos hoy</b>: el sindicato tiene retratos de Perón y Evita; solo queda de la época anarquista el nombre de las facturas. Es un buen ejemplo de cómo se transforma la memoria de un gremio.</li>
+<li><b>Otros países</b> (video): la IWW (EE.UU., 1905), sindicato único, sin líderes que negocien individualmente, que aceptó mujeres, niños e inmigrantes; sigue vigente en pequeña escala.</li>
+<li><b>Críticas</b>: la CCI sostiene que el anarcosindicalismo pensaba que la sociedad futura podía nacer dentro del capitalismo con «comunas federadas», y que sobredimensionó el sindicato. Y en el video, el Primero de Mayo actual muestra una izquierda dividida en cinco actos.</li>
+<li><b>Pregunta al grupo</b>: ¿qué sindicatos conocemos hoy? ¿se parecen a lo que propone el anarcosindicalista?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · Anarcosindicalista · 3. ¿Qué dejó?</div>
+  <h2>Conquistas, división y un sindicato que sigue</h2>
+  <div class="gancho"><b>Del diálogo:</b> «ponerle límites a estos cuervos que nos quieren sacar los ojos» <i>— Anarcosindicalista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--lila)"><h3>Lo que conquistaron</h3><ul><li>Jornada de <b>8 horas</b></li><li>Salario mínimo y fin del <b>trabajo infantil</b></li><li>Igualdad de género: «ni dios, ni patrón, ni marido»</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Divisiones y declive</h3><ul><li><b>1915</b>: IX Congreso, nacen la FORA del <b>IX</b> y la del <b>V</b></li><li>La del IX llega a la <b>CGT</b> (1930)</li><li>En los años 30, «una sombra»</li></ul></div>
+    <div class="box grow " style="background:var(--salvia)"><h3>Lo que queda hoy</h3><ul><li><b>FORA</b> en La Boca: asambleas y biblioteca</li><li>Nadie cobra por dirigir</li><li>Los panaderos y el nombre de las facturas</li></ul></div>
+  </div>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Una forma de organizarse <b>sin jefes</b> que sigue interrogando a los sindicatos</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a> · <a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas (Pigna)</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (5 min)</b><ul>
+<li>Lo leemos por filas: cada fila es una pregunta (¿qué es el Estado?, ¿quién decide?, ¿cómo se cambia?, ¿cómo se responde a los reclamos?, ¿qué quedó?).</li>
+<li>El orden conservador liberal quiere que cambie poco; los otros dos quieren un cambio profundo, pero por caminos <b>opuestos</b>: uno con el voto y las leyes dentro del sistema, el otro con la huelga y el sindicato fuera del sistema.</li>
+<li>Un punto de unión: ambos nacen entre inmigrantes y trabajadores, en el mismo mundo de conventillos y fábricas, y la represión no distinguía entre ellos (video). Y se pelearon entre sí (se van de la FOA en 1902, se acusan de «claudicantes»).</li>
+<li><b>Síntesis</b>: frente a un mismo conflicto, hay quien ve «inadaptados», quien ve gente cansada y quien ve compañeros que deben organizarse.</li>
+<li><b>Pregunta al grupo</b>: si fuéramos trabajadores en 1904, ¿con quién iríamos? ¿qué nos haría cambiar de idea?</li></ul>">
+  <div class="kicker">Comparación y síntesis</div>
+  <h2>Tres maneras de pensar el cambio social</h2>
+  <table class="tight" style="margin-top:4px;font-size:20px"><tr><th></th><th style="background:var(--malva)">Conservador liberal</th><th style="background:var(--azul)">Socialista</th><th style="background:var(--salvia)">Anarcosindicalista</th></tr>
+    <tr><td>El Estado</td><td>Garantiza el orden y el progreso</td><td>Hay que <b>conquistarlo</b> y usarlo</td><td>Hay que <b>abolirlo</b></td></tr>
+    <tr><td>Quién decide</td><td>Las élites, con elecciones controladas</td><td>El partido y los <b>representantes</b></td><td>La <b>asamblea</b> y los delegados</td></tr>
+    <tr><td>Cómo se cambia</td><td>Reformas graduales y orden</td><td><b>Votos y leyes</b></td><td><b>Huelga</b> y acción directa</td></tr>
+    <tr><td>Frente a los reclamos</td><td>Represión y negociación</td><td>Proyectos de ley y banca</td><td>Organización sindical propia</td></tr>
+    <tr><td>Lo que dejó</td><td>Derechos para pocos</td><td>Legislación obrera</td><td>Conquistas y una forma de organizarse</td></tr>
+  </table>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Tres maneras de responder a la misma pregunta: <b>¿quién decide y cómo se cambia?</b></div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">video Los socialistas (28:47)</a> · <a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">video Ni dios ni amo (cap. 3)</a> · <a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (5 min)</b><ul>
+<li>Esta es la 'llave' para la actividad: cada frase del diálogo se conecta con una idea que vimos. La columna de la derecha dice en qué diapositiva está.</li>
+<li>Se puede hacer así: leo una frase, el grupo propone con qué idea se conecta, y recién después muestro la columna.</li>
+<li>Las dos primeras filas son del diputado conservador, las dos siguientes del socialista y las dos últimas del anarcosindicalista: así queda claro qué teoría sostiene cada uno.</li>
+<li>El mapa no tiene una respuesta alternativa para esta estación: en el PPT cada grupo elige uno de los tres personajes y escribe cómo seguiría su intervención.</li>
+<li>La última frase, «ponerle límites a estos cuervos que nos quieren sacar los ojos», se puede abrir al grupo: ¿a quiénes se refiere el anarcosindicalista?</li></ul>">
+  <div class="kicker">Puente a la actividad</div>
+  <h2>Cada frase del diálogo tiene historia</h2>
+  <table class="tight" style="margin-top:2px;font-size:20px"><tr><th>Lo que dice el personaje</th><th>Idea con la que se conecta</th><th></th></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Mantener un equilibrio entre el respeto a las tradiciones y la promoción de cambios sociales»</td><td>Conservadurismo y liberalismo: tradición, jerarquías y progreso</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 4</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Grupos de inadaptados… una ciudad limpia, ordenada y tranquila»</td><td>Recelo frente a las masas; «paz y administración»; Ley de Residencia</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 5 y 6</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«¿Les negamos la expresión? La represión… ha llevado a tanto cansancio y enojo»</td><td>Palacios, voto y libertad de expresión; Ley de Defensa Social</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 8 y 9</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Promesas que nunca llegan… porque no hay voluntad política»</td><td>Fraude electoral (1896) y legislación obrera que no se aplicaba</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 7 y 8</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«El Estado no puede o no quiere hacer nada al respecto»</td><td>Sindicatos autónomos del poder político</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 10</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Es necesario organizarnos entre trabajadores»</td><td>FORA, bolsas de trabajo, asambleas y huelga general</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 11 y 12</td></tr>
+  </table>
+  <span class="fuente">Fuente: diálogo de la estación (mapa interactivo)</span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Actividad (aprox. 20-25 min)</b><ul>
+<li>Primero, 5 min con las tres preguntas entre todos. Volvemos a las respuestas que anotamos al comienzo: ¿qué cambiaríamos?</li>
+<li>Después, grupos de 3 o 6: cada integrante asume un personaje (diputado conservador, diputado socialista o anarcosindicalista). Entran a la estación Congreso del mapa, leen el debate y continúan la intervención en el PPT (hay tres inicios posibles).</li>
+<li>Si el grupo es de 4, el cuarto observa: anota los argumentos y los vincula con una frase de la diapositiva 14.</li>
+<li>Puesta en común: cada grupo completa la frase de cierre en voz alta.</li></ul>">
+  <div class="kicker">Trabajo en la clase</div>
+  <h2>Pensamos juntos y seguimos la conversación</h2>
+  <div class="row" style="flex:1;margin-top:8px;margin-bottom:14px;align-items:stretch">
+    <div class="box grow" style="background:var(--manteca)"><h3>Para pensar entre todos y todas</h3><ul><li>¿Se puede cambiar el sistema desde adentro o hay que hacerlo desde afuera?</li><li>¿Quién decide qué reclamos son «legítimos» y cuáles son «inadaptados»?</li><li>¿Qué derechos que hoy damos por hechos fueron conquistados por organizaciones como estas?</li></ul></div>
+    <div class="box grow" style="background:var(--lila);border-color:var(--ciruela)"><h3>Actividad en grupos</h3><ul>
+      <li>En grupos de 4: <b>dos asumimos los roles</b> y dos observamos.</li>
+      <li>Continuemos el diálogo en el <a href="https://docs.google.com/presentation/d/1qGb7OgrErvh9ustKzJv-4jZjCzQiSRAU5w089JIeEwA/edit?usp=sharing" target="_blank" rel="noopener">PPT</a> sin salirnos del personaje y usando <b>al menos un concepto</b> de la clase.</li>
+      <li>Observadores: anotamos <b>argumentos</b> y los relacionamos con la teoría.</li></ul>
+      <div class="lens" style="margin-top:8px"><b>Cierre grupal:</b> «Para el diputado conservador, el orden es ______; para el socialista, cambiar es ______; para el anarcosindicalista, organizarse es ______.»</div></div>
+  </div>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (1 min)</b><ul><li>Los enlaces funcionan en el HTML y en el PDF. Es la diapositiva para compartir por Moodle o por el grupo.</li></ul>">
+  <div class="kicker">Para seguir</div>
+  <h2>Recursos y enlaces de la estación</h2>
+  <div class="row" style="flex:1;margin-top:8px;margin-bottom:14px;align-items:stretch">
+    <div class="box grow sm" style="background:var(--lila)"><h3>Para el trabajo</h3><ul><li><a href="https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1-1" target="_blank" rel="noopener">Sitio de la estación</a></li><li><a href="https://docs.google.com/presentation/d/1qGb7OgrErvh9ustKzJv-4jZjCzQiSRAU5w089JIeEwA/edit?usp=sharing" target="_blank" rel="noopener">PPT para continuar el debate</a></li></ul></div>
+    <div class="box grow sm" style="background:var(--azul)"><h3>Videos</h3><ul><li><a href="https://www.youtube.com/watch?v=-wlyNjZKIaE" target="_blank" rel="noopener">Los socialistas (28:47)</a></li><li><a href="https://www.youtube.com/watch?v=NP0ziw0s6Uk" target="_blank" rel="noopener">Ni dios ni amo (cap. 3): el anarcosindicalismo</a></li><li><a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">Los conservadores liberales (28:36)</a></li></ul></div>
+    <div class="box grow sm" style="background:var(--malva)"><h3>Textos</h3><ul><li><a href="https://www.elhistoriador.com.ar/anarquistas-y-socialistas-en-los-origenes-del-movimiento-obrero-argentino/" target="_blank" rel="noopener">Anarquistas y socialistas en los orígenes del movimiento obrero (Pigna)</a></li><li><a href="https://es.internationalism.org/revista-internacional/201803/4283/historia-del-movimiento-obrero-la-fora-el-anarcosindicalismo-en-ar" target="_blank" rel="noopener">La FORA. El anarcosindicalismo en Argentina</a></li><li><a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">Los conservadores liberales (educ.ar)</a></li></ul></div>
+  </div>
+  <span class="num">0</span>
+</section>
+</div></div>
+
+<div id="ctrl">
+  <button id="prev">◀ Anterior</button>
+  <button id="nb">Notas (N)</button>
+  <button id="fs">Pantalla completa (F)</button>
+  <button id="next">Siguiente ▶</button>
+</div>
+<div id="notes"></div>
+
+<script>
+(function(){
+  /* ---- Presentador ---- */
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,
+      stage=document.getElementById('stage'),notes=document.getElementById('notes');
+  function fit(){
+    var k=Math.min(innerWidth/1280,innerHeight/720);
+    stage.style.transform='scale('+k+')';
+  }
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,j){s.classList.toggle('on',j===i)});
+    notes.innerHTML=slides[i].getAttribute('data-notes')||'';
+    document.getElementById('prev').style.display=(i===0)?'none':'';
+    document.getElementById('next').style.display=(i===slides.length-1)?'none':'';
+    try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+  }
+  function go(d){show(i+d)}
+  addEventListener('resize',fit);
+  addEventListener('hashchange',function(){var h=parseInt((location.hash||'').slice(1),10);if(!isNaN(h)&&h-1!==i)show(h-1)});
+  addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(1)}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(-1)}
+    else if(e.key==='Home')show(0);
+    else if(e.key==='End')show(slides.length-1);
+    else if(e.key==='n'||e.key==='N')document.body.classList.toggle('notes');
+    else if(e.key==='f'||e.key==='F')tfs();
+  });
+  function tfs(){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  document.getElementById('prev').onclick=function(){go(-1)};
+  document.getElementById('next').onclick=function(){go(1)};
+  document.getElementById('nb').onclick=function(){document.body.classList.toggle('notes')};
+  document.getElementById('fs').onclick=tfs;
+  var tx=null;
+  addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+  addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(d<0?1:-1);tx=null});
+  stage.addEventListener('click',function(e){
+    if(e.target.closest('a'))return;
+    var r=stage.getBoundingClientRect();if(e.clientX-r.left>r.width*.5)go(1);else go(-1);
+  });
+  slides.forEach(function(s,j){var n=s.querySelector('.num');if(n)n.textContent=j+1});
+  fit();
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>
