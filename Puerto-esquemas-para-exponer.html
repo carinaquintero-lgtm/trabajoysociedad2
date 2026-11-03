@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estación Puerto · Esquemas para exponer</title>
+<script>document.documentElement.className="js"</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sepia:#2F3E5C; --gamuza:#7FA8D9; --arena:#E1E8F1; --marfil:#F7FAFD;
+  --azul:#BFD8EE; --rosa:#E8D9F5; --lila:#E3DAF4; --salvia:#C6E3DA;
+  --manteca:#D6ECF5; --durazno:#AFC3F0; --malva:#C9CCF0; --turquesa:#B4D8D8;
+  --ciruela:#4A4FA3;           /* lila profundo: acento de la estación Escuela */
+  --tinta:#1B2742; --tinta-suave:#5F6F8C; --linea:#C5D0E0;
+  --sombra:rgba(47,62,92,.18);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--arena);color:var(--tinta);font-family:'Inter',system-ui,sans-serif}
+#stage{width:1280px;margin:0 auto;background:var(--marfil)}
+.slide{position:relative;width:1280px;height:720px;padding:44px 64px 56px;display:flex;flex-direction:column;overflow:hidden;border-bottom:6px solid var(--arena)}
+#ctrl{display:none}
+/* modo presentación (requiere JS) */
+html.js,html.js body{height:100%;overflow:hidden}
+html.js #viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+html.js #stage{height:720px;position:relative;flex:none;transform-origin:center center;box-shadow:0 10px 40px var(--sombra);overflow:hidden;margin:0}
+html.js .slide{position:absolute;inset:0;width:auto;display:none;border:0}
+html.js .slide.on{display:flex}
+html.js #ctrl{display:flex}
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .18 0 0 0 0 .24 0 0 0 0 .36 0 0 0 .05 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+.slide>*{position:relative}
+.kicker{font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ciruela);margin-bottom:6px}
+h1,h2{font-family:'Playfair Display',Georgia,serif;color:var(--sepia);line-height:1.1}
+h2{font-size:40px;margin-bottom:6px}
+.lead{font-size:21px;color:var(--tinta-suave);margin-bottom:18px;max-width:1040px}
+.fuente{position:absolute!important;left:64px;bottom:18px;font-size:13px;color:var(--tinta-suave)}
+.num{position:absolute!important;right:64px;bottom:18px;font-size:13px;color:var(--tinta-suave)}
+.box{border-radius:16px;padding:16px 20px;border:2px solid var(--sepia);box-shadow:4px 4px 0 var(--sombra);background:var(--marfil)}
+.box h3{font-family:'Playfair Display',serif;font-size:29px;color:var(--sepia);margin-bottom:8px}
+.box ul{list-style:none}
+.box li{font-size:24px;line-height:1.3;padding-left:22px;position:relative;margin:8px 0}
+.box li::before{content:"✦";position:absolute;left:0;color:var(--ciruela);font-size:14px;top:8px}
+.row{display:flex;gap:20px}
+.grow{flex:1}
+.arrow{align-self:center;font-size:34px;color:var(--ciruela);flex:none}
+.tag{display:inline-block;font-size:14px;font-weight:700;padding:3px 10px;border-radius:99px;background:var(--lila);color:var(--ciruela);border:1.5px solid var(--ciruela);margin:2px 4px 2px 0}
+/* portada */
+.cover{justify-content:center;align-items:flex-start;background:linear-gradient(135deg,var(--lila) 0%,var(--marfil) 62%)}
+.cover h1{font-size:68px;max-width:960px;margin:10px 0 18px}
+.cover p{font-size:24px;color:var(--tinta-suave);max-width:820px}
+/* hoja de ruta */
+.step{flex:1;border-radius:18px;padding:22px;border:2px solid var(--sepia);box-shadow:4px 4px 0 var(--sombra)}
+.step .n{font-family:'Playfair Display',serif;font-size:54px;color:var(--sepia);line-height:1}
+.step h3{font-size:30px;margin:8px 0;font-family:'Playfair Display',serif}
+.step p{font-size:24px;line-height:1.35}
+/* tablas */
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:22px}
+th,td{padding:15px 14px;text-align:left;vertical-align:top;border-bottom:1.5px solid var(--linea)}
+th{font-family:'Playfair Display',serif;font-size:26px;color:var(--sepia);border-bottom:3px solid var(--sepia)}
+td:first-child{font-weight:700;color:var(--ciruela);width:160px}
+/* tarjetas maestras */
+.maestra{flex:1;border-radius:18px;border:2px solid var(--sepia);box-shadow:4px 4px 0 var(--sombra);overflow:hidden;display:flex;flex-direction:column;background:var(--marfil)}
+.maestra header{padding:14px 18px;display:flex;gap:14px;align-items:center}
+.maestra .ini{width:58px;height:58px;border-radius:50%;background:var(--marfil);border:2px solid var(--sepia);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:28px;color:var(--sepia);flex:none}
+.maestra h3{font-family:'Playfair Display',serif;font-size:29px;line-height:1.05;color:var(--sepia)}
+.maestra .vida{font-size:17px;color:var(--tinta);font-weight:600}
+.maestra .body{padding:14px 20px 18px;font-size:23px;line-height:1.35}
+.maestra .body p{margin:9px 0}
+a{color:var(--ciruela);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.lk{margin-top:10px!important;font-size:20px;line-height:1.5}
+.lk a{white-space:nowrap}
+.fuente a{color:var(--tinta-suave);font-weight:500}
+/* controles */
+#ctrl{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);gap:8px;z-index:5;opacity:.0;transition:opacity .2s}
+body:hover #ctrl{opacity:.95}
+#ctrl button{font:600 15px 'Inter';padding:7px 14px;border-radius:99px;border:2px solid var(--sepia);background:var(--marfil);color:var(--sepia);cursor:pointer}
+#ctrl button:hover{background:var(--lila)}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:36vh;overflow:auto;background:rgba(27,39,66,.96);color:var(--marfil);padding:16px 28px 20px;font-size:18px;line-height:1.45;display:none;z-index:4}
+body.notes #notes{display:block}
+#notes b{color:var(--durazno)}
+#notes ul{margin-left:22px}
+@media print{.vid iframe{display:none}.vid{width:auto;padding:30px;border:2px dashed var(--ciruela);border-radius:14px;background:#fff}.vid-cap{font-size:22px;color:var(--tinta)}
+  html,body,html.js,html.js body{overflow:visible!important;height:auto!important;background:#fff}
+  html.js #viewport{position:static;display:block}
+  html.js #stage,#stage{transform:none!important;width:1280px;height:auto!important;box-shadow:none;overflow:visible!important;margin:0}
+  html.js .slide,.slide{position:relative!important;inset:auto!important;display:flex!important;width:1280px;height:720px;page-break-after:always;border:0}
+  #ctrl,#notes{display:none!important}
+  .slide::before{display:none}
+  @page{size:1280px 720px;margin:0}
+}
+</style>
+<style id="diseno-frio">
+:root{--ciruela:#4A4FA3}
+.slide{background:linear-gradient(180deg,#F7FAFD 0%,#EDF2F9 100%)}
+.slide::after{content:"";position:absolute;left:0;right:0;top:0;height:9px;z-index:2;background:linear-gradient(90deg,#1B2742 0%,#4A4FA3 38%,#7FA8D9 72%,#C6E3DA 100%)}
+.cover{background:radial-gradient(circle at 88% 18%,rgba(127,168,217,.55) 0,transparent 36%),radial-gradient(circle at 96% 96%,rgba(198,227,218,.42) 0,transparent 34%),linear-gradient(135deg,#1B2742 0%,#2A3A66 58%,#3B4A9A 100%)}
+.cover::before{opacity:.18}
+.cover h1{color:#fff;font-size:64px}
+.cover .kicker{background:rgba(255,255,255,.14);color:#D5E4F8}
+.cover p{color:#C9D8EE}
+.kicker{display:inline-block;align-self:flex-start;padding:5px 14px;border-radius:99px;background:#E3DAF4;color:var(--ciruela);font-size:14px;margin-bottom:12px}
+h2{font-size:42px;letter-spacing:-.01em}
+h2::after{content:"";display:block;width:72px;height:5px;border-radius:3px;background:linear-gradient(90deg,var(--ciruela),#7FA8D9);margin:10px 0 4px}
+.slide{padding-top:40px}
+.box,.step,.maestra{border:1.5px solid rgba(47,62,92,.22);box-shadow:0 10px 24px rgba(47,62,92,.12);border-radius:20px}
+.box{border-top:6px solid rgba(74,79,163,.6)}
+.box li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ciruela);opacity:.85;font-size:0;top:12px}
+.step .n{width:58px;height:58px;border-radius:50%;background:#fff;color:var(--ciruela);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 12px rgba(47,62,92,.16);margin-bottom:6px}
+.arrow{color:var(--ciruela)}
+th{border-bottom:3px solid var(--ciruela)}
+td{border-bottom:1.5px solid #C5D0E0}
+tbody tr:nth-child(even) td,tr:nth-child(even) td{background:rgba(255,255,255,.65)}
+.num{background:#fff;border-radius:99px;padding:2px 11px;box-shadow:0 2px 6px rgba(47,62,92,.14);font-weight:600;color:var(--ciruela)}
+#ctrl button{border-color:var(--ciruela);color:var(--ciruela);background:#fff}
+#ctrl button:hover{background:#E3DAF4}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.dlg{display:flex;align-items:flex-end;gap:10px;margin:5px 0}.dlg.right{flex-direction:row-reverse}.dlg .av{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:top;border:3px solid #fff;box-shadow:0 4px 12px rgba(47,62,92,.2);background:#fff;flex:none}.dlg .bub{max-width:960px;padding:7px 16px 8px;border-radius:18px;font-size:17.5px;line-height:1.28;box-shadow:0 6px 16px rgba(47,62,92,.10);border:1.5px solid rgba(47,62,92,.18)}.dlg.left .bub{background:#E3DAF4;border-bottom-left-radius:4px}.dlg.right .bub{background:#D6ECF5;border-bottom-right-radius:4px}.dlg.mid{margin-left:70px}.dlg.mid .bub{background:#D4EBE3}.dlg .who{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ciruela);margin-bottom:2px}.sm li{font-size:20px!important;margin:5px 0!important}.sm h3{font-size:24px!important;margin-bottom:6px!important}.sm.box{padding:12px 16px}.tight th,.tight td{padding:8px 12px!important}.vid{flex:none;width:520px;align-self:flex-start}.vid iframe{width:520px;height:293px;border:0;border-radius:14px;box-shadow:0 10px 24px rgba(47,62,92,.2);background:#000;display:block}.vid-cap{font-size:15px;color:var(--tinta-suave);margin-top:8px}.gancho{font-size:19px;color:var(--tinta);background:#fff;border-left:5px solid var(--ciruela);border-radius:0 12px 12px 0;padding:5px 14px;margin:2px 0 8px;box-shadow:0 2px 8px rgba(47,62,92,.08)}.gancho b{color:var(--ciruela)}.gancho i{color:var(--tinta-suave)}.lens{font-size:20px;color:var(--tinta);background:#fff;border:1.5px dashed var(--ciruela);border-radius:14px;padding:8px 16px;margin:6px 0 0}.lens b{color:var(--ciruela)}.legend{font-size:15px;color:var(--tinta-suave);margin-top:2px}.credito{position:absolute!important;right:150px;bottom:18px;font-size:12px;color:var(--tinta-suave)}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+<section class="slide " data-notes="<b>Para abrir (4 min)</b><ul>
+<li>Leemos el diálogo en voz alta: dos voluntarios leen el papel del hijo del huelguista y el del argentino liberal, trabajador portuario.</li>
+<li>El hijo cuenta que su padre fue asesinado en la huelga de 1919 (la Semana Trágica) y pregunta cómo se puede apoyar un sistema que trata a los trabajadores como esclavos. El otro responde que hay que respetar la propiedad privada y la libertad individual: «si no te gusta, buscáte otro trabajo». El hijo insiste: su padre y sus compañeros solo querían que les pagaran lo justo.</li>
+<li>Si en el mapa el estudiante continúa como argentino liberal, la respuesta es: <i>«Hay que tener paciencia, mirá... la libre competencia puede llevar a mejores sueldos, claro... no va a pasar ya. Si las empresas compiten por trabajadores calificados, a la larga van a tener que ofrecer mejores condiciones para retener empleados, pero ustedes se tienen que esforzar, tienen que poner voluntad y trabajar más, estudiar... hacer las cosas mejor, no peor.»</i></li>
+<li><b>Pregunta disparadora</b>: ¿qué derechos tenía un trabajador a comienzos del siglo XX? ¿quién los defendía? Anotamos 3 o 4 respuestas y las retomamos en la diapositiva 12.</li></ul>">
+  <div class="kicker">Estación Puerto · El diálogo del mapa</div>
+<div class="dlg left"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Hijo de un Huelguista</span>Mi viejo murió luchando por mejores condiciones de trabajo en la Semana Trágica. Fue asesinado durante la huelga de 1919. Estaba harto de la explotación y las condiciones inhumanas en las que trabajaba. ¿Cómo podés apoyar un sistema que permite que los trabajadores sean tratados como esclavos?</div></div>
+<div class="dlg right"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Argentino Liberal</span>Lamento lo de tu viejo, pero vivimos en una sociedad en la que tenemos que respetar la propiedad privada y la libertad individual. Los propietarios de las tierras y las empresas tienen derecho a llevar sus negocios como quieran y si no te gusta, buscáte otro trabajo.</div></div>
+<div class="dlg left"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Hijo de un Huelguista</span>¿Entonces no tenemos derecho a condiciones de trabajo seguras y salarios justos? Mi viejo y sus compañeros no querían hacerse ricos, lo único que querían era que les pagaran y que les pagaran lo justo.</div></div>
+  <span class="fuente">Fuente: diálogo de la estación (mapa interactivo)</span><span class="credito">Ilustraciones: Lic. Martín Castañeda</span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (2 min)</b><ul>
+<li>Es el mapa de toda la clase. <b>Hegemónico</b>: lo que se impone como lo normal, lo natural (acá, que el trabajo es un trato libre entre privados y que el que no está conforme se va). <b>Contrahegemónico</b>: lo que lo discute y propone otra cosa (organizarse, huelgas, leyes obreras).</li>
+<li>Primero entendemos el orden que defendía el liberal y cómo respondió a los reclamos. Después, cómo se organizó el movimiento obrero y qué pasó en la Semana Trágica. Al final cruzamos todo y trabajamos con el diálogo.</li>
+<li>Sugerencia de tiempos para una hora: diap. 1-3 unos 12 min; 4-6 unos 15; 7-9 unos 22; 10-11 unos 8; 12-13, trabajo del grupo y cierre. Podés acelerar o frenar donde necesites.</li></ul>">
+  <div class="kicker">Recorrido</div>
+  <h2>Cuatro movimientos para entender la estación</h2>
+  <p class="lead">Partimos del diálogo y volvemos a él con otras herramientas.</p>
+  <div class="row" style="flex:1;align-items:stretch;margin-bottom:14px">
+    <div class="step" style="background:var(--lila)"><div class="n">1</div><h3>Escuchamos</h3><p>El diálogo y las <b>dos miradas</b> sobre el trabajo. <i>Diap. 1-3</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--malva)"><div class="n">2</div><h3>La mirada hegemónica</h3><p>El orden <b>liberal</b> y su respuesta a las huelgas. <i>Diap. 4-6</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--salvia)"><div class="n">3</div><h3>La mirada contrahegemónica</h3><p>El <b>movimiento obrero</b> y la Semana Trágica. <i>Diap. 7-9</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--azul)"><div class="n">4</div><h3>Cruzamos y trabajamos</h3><p>Comparamos, volvemos a las frases y <b>seguimos el diálogo</b>. <i>Diap. 10-13</i></p></div>
+  </div>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (5 min)</b><ul>
+<li>Cada fila sale de lo que dicen los dos personajes. No son 'el bueno' y 'el malo': son dos maneras de entender qué es el trabajo y qué le debe el uno al otro.</li>
+<li>El argentino liberal lamenta la muerte del padre, pero ordena el mundo con dos ideas: la propiedad privada y la libertad individual. Para él el trabajador es libre de aceptar o irse; la solución es la competencia y el esfuerzo personal.</li>
+<li>El hijo del huelguista habla de derechos: condiciones seguras, salarios justos, no ser 'tratados como esclavos'. Su padre 'no quería hacerse rico, solo que le pagaran lo justo'.</li>
+<li><b>Pregunta al grupo</b>: ¿qué significa 'buscarse otro trabajo' cuando todos los dueños pagan lo mismo?</li></ul>">
+  <div class="kicker">Las dos miradas</div>
+  <h2>Dos miradas sobre el trabajo</h2>
+  <table class="" style="margin-top:4px;font-size:25px"><tr><th></th><th style="background:var(--malva)">Argentino liberal</th><th style="background:var(--lila)">Hijo del huelguista</th></tr>
+    <tr><td>El trabajo</td><td>Los dueños «llevan sus negocios como quieran»</td><td>Trabajadores «tratados como esclavos»</td></tr>
+    <tr><td>Los derechos</td><td><b>Propiedad privada</b> y libertad individual</td><td>Condiciones <b>seguras</b> y salarios <b>justos</b></td></tr>
+    <tr><td>Ante el reclamo</td><td>«Si no te gusta, buscáte otro trabajo»</td><td>«Solo querían que les pagaran lo justo»</td></tr>
+    <tr><td>La salida</td><td>Paciencia, esfuerzo y <b>libre competencia</b></td><td>Luchar juntos, como en la huelga de 1919</td></tr>
+  </table>
+  <span class="fuente">Fuente: diálogo de la estación Puerto (mapa interactivo)</span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (6-8 min)</b><ul>
+<li>En teoría política, <b>conservadurismo</b> y <b>liberalismo</b> son identidades distintas y a veces opuestas. Se pregunta: ¿cómo pudieron gobernar juntos?</li>
+<li><b>Conservadurismo</b>: nace como respuesta a las transformaciones de la modernidad (Revolución Francesa e Industrial). Defiende la tradición, las jerarquías sociales ('orden natural'), la familia patriarcal y la propiedad privada.</li>
+<li><b>Liberalismo</b>: es una expresión de la modernidad. El individuo es el sujeto político, la libertad es 'negativa' (hago lo que quiero mientras no afecte la libertad de otro), confía en el progreso y ve al Estado como un 'mal necesario'.</li>
+<li><b>Coinciden en dos puntos</b>: la defensa a ultranza de la propiedad privada y el recelo frente a las masas. Eso permitió la fórmula: <b>liberales en lo económico, conservadores en lo político</b>.</li>
+<li>Del video: 'en un punto son contradictorios, pero en la Argentina caminaron juntos bastante tiempo. Eran conservadores en unas cosas y liberales en otras'.</li>
+<li><b>Pregunta al grupo</b>: ¿qué escuela, qué policía, qué hospital querría alguien que desconfía de las masas pero necesita un país 'moderno'?</li>
+<li>Conexión con el diálogo: «si no te gusta, buscáte otro trabajo» es la <b>libertad negativa</b> del liberalismo: cada uno es libre de aceptar o irse. Y los dueños, en el liberalismo económico, «llevan sus negocios como quieran». El conservadurismo político aporta el <b>recelo frente a las masas</b>: el reclamo obrero se vive como amenaza al orden.</li><li>Cuando llegan los inmigrantes con ideas socialistas y anarquistas, la clase dirigente reacciona por un lado reprimiendo y por el otro explicando la conflictividad por la presencia de «extranjeros mal intencionados» (video Orígenes del movimiento obrero).</li></ul>">
+  <div class="kicker">Mirada hegemónica · 1. ¿Quiénes son y qué creen?</div>
+  <h2>El orden conservador liberal</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Tenemos que respetar la propiedad privada y la libertad individual» <i>— Argentino liberal</i></div>
+  <svg viewBox="0 0 1150 565" style="width:100%;flex:1">
+<circle cx="430" cy="275" r="230" fill="#C9CCF0" fill-opacity=".75" stroke="#2F3E5C" stroke-width="3"/>
+<circle cx="720" cy="275" r="230" fill="#BFD8EE" fill-opacity=".75" stroke="#2F3E5C" stroke-width="3"/>
+<text x="345" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#1B2742">CONSERVADURISMO</text><text x="805" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#1B2742">LIBERALISMO</text>
+<text x="355" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Valor de la <tspan font-weight="700">tradición</tspan></text><text x="355" y="185" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Jerarquías</tspan> sociales</text><text x="355" y="210" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">(«orden natural»)</text>
+<text x="355" y="255" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Familia <tspan font-weight="700">patriarcal</tspan></text><text x="355" y="300" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Mira al <tspan font-weight="700">pasado</tspan></text>
+<text x="355" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">Reacción ante los cambios</text><text x="355" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">de la modernidad</text>
+<text x="795" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">El <tspan font-weight="700">individuo</tspan> libre</text><text x="795" y="170" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">es el sujeto político</text><text x="795" y="215" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Libertad «negativa»</text>
+<text x="795" y="260" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Confía en el <tspan font-weight="700">progreso</tspan></text><text x="795" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Estado = «mal necesario»</text>
+<text x="795" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">Una expresión</text><text x="795" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">de la modernidad</text>
+<text x="575" y="175" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#4A4FA3">LO QUE</text><text x="575" y="195" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#4A4FA3">COMPARTEN</text>
+<text x="575" y="240" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Propiedad</tspan></text><text x="575" y="262" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">privada</tspan></text><text x="575" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Recelo frente</tspan></text><text x="575" y="327" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">a las <tspan font-weight="700">masas</tspan></text>
+<rect x="95" y="522" width="960" height="38" rx="19" fill="#E3DAF4" stroke="#4A4FA3" stroke-width="2.5"/>
+<text x="575" y="548" text-anchor="middle" font-family="Inter" font-size="20" font-weight="700"  fill="#4A4FA3">Liberalismo económico + conservadurismo político = fórmula de las élites argentinas</text>
+</svg>
+  <div class="lens"><b>En esta estación:</b> el argentino liberal habla de <b>propiedad privada</b> y <b>libertad individual</b>: dos ideas del liberalismo.</div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=ilchOOCoR2k" target="_blank" rel="noopener">video Orígenes del movimiento obrero</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (6-8 min)</b><ul>
+<li><b>1874</b>: el Partido Nacional de Avellaneda y el Partido Autonomista de Alsina se unen y forman el <b>Partido Autonomista Nacional (PAN)</b>. Antes, en 1861, Mitre había impuesto en Pavón la hegemonía de Buenos Aires y los liberales se dividieron por el destino de la ciudad y su aduana.</li>
+<li><b>1880</b>: Roca es elegido presidente (11 de abril). Tejedor, gobernador de Buenos Aires, no acepta la derrota y encabeza una revolución: unos 20.000 hombres, 6.000 muertos según el video. Buenos Aires se federaliza. Roca gobierna con el lema <b>'paz y administración'</b>: asegurar el orden político para conseguir el progreso. Se consolida el <b>modelo agroexportador</b>.</li>
+<li><b>1890</b>: Revolución del Parque (26 de julio): la Unión Cívica de Alem y Mitre reclama respeto a las instituciones y elecciones limpias. La sofocan, pero el presidente (Juárez Celman) renuncia por la crisis financiera. El video escribe 'Juárez Zelman'; el apellido es Juárez Celman.</li>
+<li><b>1910-16</b>: Sáenz Peña impulsa la reforma: padrón único, voto secreto y obligatorio, lista incompleta. El 2 de abril de 1916 gana Yrigoyen: <b>termina un período de 35 años</b> de gobiernos conservadores liberales.</li>
+<li><b>1930</b>: los conservadores apoyan el primer golpe de Estado (Uriburu). En los años 30 vuelven con el llamado <b>'fraude patriótico'</b>: por eso se la conoce como década infame.</li>
+<li>Los nodos oscuros son los hechos de ESTA estación: mostrar cómo se insertan dentro del mismo régimen.</li>
+<li><b>Pregunta al grupo</b>: ¿qué cambia para la gente común cuando las elecciones 'solo convalidan lo que está decidido de antemano'?</li>
+<li><b>La Argentina de las huelgas</b> (video 'Orígenes del movimiento obrero'): en la Argentina agroexportadora faltaban brazos; los ferrocarriles y puertos concentraban grandes cantidades de trabajadores, con condiciones precarias y leyes obreras inexistentes. En 1878, la Unión Tipográfica Bonaerense hace una de las primeras huelgas organizadas; el Estado casi no interviene y el 60% de las huelgas de la etapa consigue lo que pretende.</li>
+<li><b>1902</b>: se aprueba la <b>Ley de Residencia</b>, que permite expulsar sin juicio previo a extranjeros considerados peligrosos. La Federación Obrera Argentina declara la primera huelga general de la historia argentina; el gobierno decreta el estado de sitio y lanza una redada sobre las barriadas obreras: a los detenidos argentinos los encarcelan y a los extranjeros les aplican la ley.</li>
+<li><b>1904 y 1909</b>: el 1.º de mayo de 1904 la policía carga contra el acto de la plaza Lavalle (cuatro muertos y más de 50 heridos), siendo jefe de policía el coronel Ramón Falcón. El 1.º de mayo de 1909, con Falcón al mando, el tiroteo deja ocho obreros muertos y 105 heridos; 60.000 personas acompañan los restos a la Chacarita. El 14 de noviembre Simón Radowitzky, que había presenciado la masacre, arroja una bomba al carruaje de Falcón; Falcón y su secretario mueren. Radowitzky evita el fusilamiento por ser menor de edad y pasa 21 años preso en Ushuaia.</li>
+<li><b>1919</b>: la Semana Trágica ocurre bajo el primer gobierno radical, que había empezado mediando en los conflictos (ver diapositiva 6).</li></ul>">
+  <div class="kicker">Mirada hegemónica · 2. ¿Qué pasó?</div>
+  <h2>35 años de gobiernos conservadores liberales</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Si no te gusta, buscáte otro trabajo» <i>— Argentino liberal</i></div>
+  <svg viewBox="0 0 1150 400" style="width:100%;flex:1"><line x1="30" y1="185" x2="1120" y2="185" stroke="#2F3E5C" stroke-width="3"/><circle cx="100" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="100" y1="172" x2="100" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="100" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Se forma el PAN</text><text x="100" y="105" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1874</text><circle cx="218.75" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="218.75" y1="198" x2="218.75" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="218.75" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1880</text><text x="218.75" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Roca: «paz y</text><text x="218.75" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">administración»</text><circle cx="337.5" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="337.5" y1="172" x2="337.5" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="337.5" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Revolución del Parque</text><text x="337.5" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">y Unión Cívica</text><text x="337.5" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1890</text><circle cx="456.25" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="456.25" y1="198" x2="456.25" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="456.25" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1902</text><text x="456.25" y="279" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Ley de Residencia</text><text x="456.25" y="301" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">y primera huelga general</text><circle cx="575" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="575" y1="172" x2="575" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="575" y="111" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Masacre del 1.º de mayo</text><text x="575" y="133" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">y atentado a Falcón</text><text x="575" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1909</text><circle cx="693.75" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="693.75" y1="198" x2="693.75" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="693.75" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1910-16</text><text x="693.75" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Sáenz Peña y</text><text x="693.75" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">triunfo de Yrigoyen</text><circle cx="812.5" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="812.5" y1="172" x2="812.5" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="812.5" y="111" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">La Semana</text><text x="812.5" y="133" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Trágica</text><text x="812.5" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1919</text><circle cx="931.25" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="931.25" y1="198" x2="931.25" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="931.25" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1930</text><text x="931.25" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Primer golpe</text><text x="931.25" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">de Estado</text><circle cx="1050" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="1050" y1="172" x2="1050" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="1050" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">«Fraude patriótico»:</text><text x="1050" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">década infame</text><text x="1050" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">Años 30</text><circle cx="60" cy="380" r="9" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="2.5"/><text x="78" y="386" font-family="Inter" font-size="16" fill="#1B2742">El régimen conservador liberal</text><circle cx="400" cy="380" r="11" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="2.5"/><text x="420" y="386" font-family="Inter" font-size="16" fill="#1B2742">Lo que vemos en esta estación</text></svg>
+  <div class="lens"><b>En esta estación:</b> las huelgas se enfrentan con <b>Ley de Residencia</b>, estado de sitio y fuerza; en 1919, la <b>Semana Trágica</b>.</div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=ilchOOCoR2k" target="_blank" rel="noopener">video Orígenes del movimiento obrero</a> · <a href="https://www.youtube.com/watch?v=DrdmZH9dwhQ" target="_blank" rel="noopener">video Movimiento obrero II</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8-10 min)</b><ul>
+<li>El mecanismo (fila de arriba) es el mismo en todas las estaciones: <b>modelo agroexportador → PAN → elecciones controladas → represión y negociación</b>.</li>
+<li><b>Modelo agroexportador</b>: durante el gobierno de Roca se consolida y beneficia sobre todo a los grandes terratenientes y a sectores de la burguesía, socios del capital extranjero. Las élites locales apoyan al presidente y se esfuerzan por mantener ese orden.</li>
+<li><b>PAN</b>: el único partido capaz de alcanzar el poder; es el espacio donde se relacionan los gobernadores, el presidente y quien aspira a sucederlo. Los cargos se reparten por devolución de favores políticos, intereses económicos y parentesco. Las elecciones solo convalidan lo decidido de antemano.</li>
+<li><b>Frente a los reclamos</b>: cuando Roca vuelve en 1898 encuentra una sociedad distinta, con conflictos: la clase obrera reclama derechos, los inmigrantes traen ideas socialistas y anarquistas, los radicales piden reforma política. Responde con 'una mezcla de represión y negociación' y reformas que 'no modifican la raíz de las desigualdades'.</li>
+<li><b>Resultado</b>: una Argentina con derechos para pocos. Cuando por fin hubo elecciones libres (1916), la mayor parte de la sociedad rechazó a los conservadores liberales. Después apoyaron golpes de Estado (1930, 1955, 1966, 1976).</li>
+<li>La fila de abajo es la mirada de ESTA estación: cómo se concreta ese orden en la vida cotidiana de los personajes.</li>
+<li><b>Los años 1916-1918</b> (texto 'Las encrucijadas del poder', educ.ar): con la economía recuperándose, los salarios estancados eran licuados por la inflación; entre 1917 y 1919 hay una ola de huelgas que golpea a los capitales extranjeros en ferrocarriles, frigoríficos y puertos. El primer gobierno radical de Yrigoyen inaugura una relación nueva con los sindicatos más fuertes (la FORA sindicalista): en noviembre de 1916, en una huelga portuaria, promete no usar la policía portuaria para reclutar esquiroles y media (el sindicato eligió el momento: la primera semana de los embarques de la cosecha). En enero de 1917 el ministro Torello escucha a los ferroviarios y amenaza a las empresas con la justicia si no cumplen la ley jubilatoria.</li>
+<li><b>La reacción</b>: desde mediados de 1917 crece la oposición de la patronal y de la prensa. <i>La Nación</i> critica la 'debilidad absoluta' del gobierno; el presidente del Ferrocarril Gran Sur recuerda las vías construidas con el capital de las compañías; la Sociedad Rural ofrece mediar y luego pide acabar con el conflicto; los gerentes de los frigoríficos amenazan con trasladarse a Uruguay; el representante británico advierte que se cancelarían convenios de venta de cereales y habría un boicot a los puertos. En mayo de 1918, empresarios locales y capital extranjero (frigoríficos, ferrocarriles, navieras, importadores y exportadores, Unión Industrial, Sociedad Rural) forman la <b>Asociación Nacional del Trabajo</b>, que condena unánimemente a los sindicatos y combate al gobierno porque lo considera responsable de las huelgas.</li>
+<li><b>El cambio de actitud</b>: a fines de 1917, en las huelgas de los frigoríficos de Berisso y Avellaneda se envían infantes de marina para proteger las instalaciones, y los gerentes reclutan esquiroles; a principios de 1918 un decreto prohíbe nuevas huelgas ferroviarias y el ministro habla de 'acto de traición'. De la conciliación se pasa a la represión, y la Semana Trágica la confirma: el gobierno recurre al ejército, apacigua a los grupos que pedían un golpe de Estado y pierde el apoyo de ciertos grupos de trabajadores.</li>
+<li><b>Idea clave del texto</b>: el presidente no es el único depositario del poder; hay otros actores (empresarios, prensa, capital extranjero) con sus recursos. Los obreros usan su número y su organización para parar actividades estratégicas; los empresarios contratan esquiroles y presionan al gobierno.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 3. ¿Qué dejó?</div>
+  <h2>Un orden con derechos para pocos</h2>
+  <div class="gancho"><b>Del diálogo:</b> «La libre competencia puede llevar a mejores sueldos… pero ustedes se tienen que esforzar» <i>— Argentino liberal (respuesta alternativa)</i></div>
+  <div class="row" style="margin:6px 0 10px;align-items:stretch">
+    <div class="box sm grow" style="background:var(--manteca)"><h3>Modelo agroexportador</h3><ul><li>Favorece a grandes terratenientes y al capital extranjero</li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--malva)"><h3>El PAN</h3><ul><li>Cargos por favores, intereses y parentesco</li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--azul)"><h3>Elecciones controladas</h3><ul><li><b>Control de comicios y fraude</b></li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--durazno)"><h3>Frente a obreros e inmigrantes</h3><ul><li><b>Represión y negociación</b></li></ul></div>
+  </div>
+  <div class="lens" style="margin:0 0 8px"><b>En esta estación: el poder no es solo el presidente: Estado, patrones y prensa</b></div>
+  <div class="row" style="flex:1;align-items:stretch;margin-bottom:10px"><div class="box sm grow" style="background:var(--lila)"><h3>El Estado</h3><ul><li>1916-17: el radicalismo <b>media</b> y evita usar la policía portuaria</li><li>Desde fines de 1917: tropas y decretos contra las huelgas</li></ul></div><div class="box sm grow" style="background:var(--azul)"><h3>La patronal</h3><ul><li>1918: <b>Asociación Nacional del Trabajo</b></li><li>Amenazan con irse a Uruguay o con un boicot británico</li></ul></div><div class="box sm grow" style="background:var(--salvia)"><h3>La prensa</h3><ul><li><i>La Nación</i> (1917): «debilidad absoluta» del gobierno</li><li>Pide más «policía» y menos diálogo</li></ul></div></div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://docs.google.com/document/d/1XPOB8Qm5brYwRjYQUrKAfHT3UiNAxOKm4jP00LOod48/edit?usp=sharing" target="_blank" rel="noopener">Las encrucijadas del poder</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>Los primeros reclamos</b> (video 'Orígenes del movimiento obrero'): en 1878 la Unión Tipográfica Bonaerense resiste una rebaja de salarios; más de 1.000 trabajadores en asamblea votan la huelga; los tipógrafos uruguayos se niegan a reemplazarlos en solidaridad y las patronales vuelven a los sueldos originales y reducen la jornada a 10 horas en invierno y 12 en verano. Los reclamos siempre son parecidos: aumento salarial, pago de haberes atrasados, reducción de jornadas y mejores condiciones.</li>
+<li><b>Socialistas</b>: promueven la acción política de los trabajadores. En 1894 el médico Juan B. Justo funda <i>La Vanguardia</i>; en 1896 organiza el Partido Socialista Obrero Argentino, con dirigentes de clase media como Nicolás Repetto, Adolfo Dickmann y Alfredo Palacios. Justo hace la primera traducción al castellano del tomo 1 de <i>El Capital</i>. Promueven cooperativas de producción, consumo y vivienda, la Universidad Popular de Barracas, la sociedad Luz, bibliotecas y escuelas. En 1904 Palacios es elegido en La Boca: el primer diputado socialista de América; logra la ley de descanso semanal. Alicia Moreau, segunda esposa de Justo, es un ícono del movimiento de mujeres.</li>
+<li><b>Anarquistas</b>: tienen difusión desde mediados de 1880, sobre todo entre inmigrantes italianos. Proponen eliminar toda forma de opresión (patrones, Iglesia): 'destruir la sociedad injusta y construir una nueva sin patrones, gobiernos ni religiones'. Unos promueven la organización sindical y la huelga general revolucionaria; otros, la acción directa, del sabotaje a las bombas. La mujer cumple un rol activo; en 1897 fundan el periódico <i>La Protesta</i>. Logran sindicatos de albañiles, cigarreros, carreros, ebanistas y marmoleros.</li>
+<li><b>Sindicalistas</b> (video 'Movimiento obrero II'): sectores fuertes de la economía (ferroviarios, portuarios; La Fraternidad, FOM) que negocian con el Estado; los anarquistas no están dispuestos por principio a negociar con él. En 1901 nace la Federación Obrera Argentina, que reúne a la mayoría de los gremios. Tras la huelga general de 1902 se fractura: la central queda en manos anarquistas y los socialistas fundan la Unión General de Trabajadores. Más tarde, FORA del V Congreso (anarquista) y FORA del IX (sindicalista).</li>
+<li><b>Pregunta al grupo</b>: ¿por qué tres corrientes que querían mejorar la vida de los trabajadores discutían tanto entre sí?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · 1. ¿Quiénes son y qué creen?</div>
+  <h2>El movimiento obrero: tres corrientes</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Estaba harto de la explotación y las condiciones inhumanas en las que trabajaba» <i>— Hijo del huelguista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--salvia)"><h3>Socialistas</h3><ul><li><b>Acción política</b> y leyes</li><li><i>La Vanguardia</i> (1894), partido (1896)</li><li>Justo, Repetto, Palacios</li></ul></div>
+    <div class="box grow " style="background:var(--lila)"><h3>Anarquistas</h3><ul><li>Eliminar <b>toda opresión</b>: patrones, Iglesia, Estado</li><li>Huelga general o <b>acción directa</b></li><li><i>La Protesta</i> (1897)</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Sindicalistas</h3><ul><li><b>Negociar</b> con el Estado</li><li>Fuertes en ferrocarriles y puertos</li><li>FORA del IX Congreso</li></ul></div>
+  </div>
+  <div class="lens"><b>1878</b>: primeras huelgas organizadas (tipógrafos) · <b>1901</b>: la FOA reúne a la mayoría de los gremios.</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=ilchOOCoR2k" target="_blank" rel="noopener">video Orígenes del movimiento obrero</a> · <a href="https://www.youtube.com/watch?v=DrdmZH9dwhQ" target="_blank" rel="noopener">video Movimiento obrero II</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (9 min)</b><ul>
+<li><b>El origen</b>: el 2 de diciembre de 1918 comienza la huelga de los 2.500 metalúrgicos de los talleres Pedro Vasena e Hijos, en Nueva Pompeya. Pedían jornada de ocho horas, salubridad laboral y un salario justo. La industria metalúrgica estaba afectada por la guerra e intentaba bajar costos. Los dueños se mostraron intransigentes con lo que llamaban la 'insolencia obrera'. Vasena tenía buena relación con el gobierno (el radical Melo era su asesor legal). A principios de enero, la empresa fragmenta a los huelguistas y logra que algunos se reincorporen.</li>
+<li><b>7 de enero</b>: un piquete trata de impedir la llegada de materia prima; los rompehuelgas disparan y se suman policías: el saldo son cuatro muertos (tres baleados en sus casas, uno a sablazos) y más de 30 heridos. Según <i>La Prensa</i>, unos 110 policías y bomberos dispararon más de 2.000 proyectiles; ninguno de los muertos estaba agrediendo a las fuerzas. Los nombres de los muertos: Juan Fiorini, Toribio Barrios, Santiago Gómez Metrolles y Miguel Britos. La FORA del V Congreso (anarquista) declara la huelga general y adhiere la FORA del IX (sindicalista).</li>
+<li><b>8 y 9 de enero</b>: la huelga es total, la ciudad se paraliza. El 9 se hace el entierro hacia la Chacarita con una 'autodefensa obrera'; hay disparos desde un templo en Yatay, las armerías son 'expropiadas' y, al llegar al cementerio, tropas del ejército y la policía disparan sobre la multitud: los diarios cuentan 12 muertos y casi 200 heridos; la prensa obrera, 100 muertos y más de 400 heridos. Mientras tanto, un grupo rodea la fábrica Vasena y la policía responde con 24 muertos y 60 heridos según su propio parte. La prensa oficial habla de 40 muertos y la obrera de un centenar (video).</li>
+<li><b>La Liga Patriótica</b>: jóvenes de las 'mejores familias', apoyados por marinos y policías, reciben armas y brazaletes y atacan barrios obreros, bibliotecas y sedes sindicales; en el Once producen el que Bayer llama el primer pogrom de la Argentina: incendian sinagogas y las bibliotecas Avangard y Paole Sión. La Liga se constituye el 16 de enero de 1919; Manuel Carlés la preside desde abril.</li>
+<li><b>11 al 14 de enero</b>: el gobierno acuerda con la FORA del IX la libertad de más de 2.000 presos, aumentos del 20 al 40%, jornada de nueve horas y la reincorporación de los despedidos. La FORA anarquista sigue la huelga. El 14, el general Dellepiane acepta las condiciones de las dos FORA, pero policías y miembros de la Liga saquean la sede de <i>La Protesta</i>. Los obreros de Vasena vuelven el 20, tras comprobar que se cumplieron sus reivindicaciones.</li>
+<li><b>Los nombres</b> (Bayer): los anarquistas nunca la llamaron 'trágica' sino 'la semana de enero', porque nada trágico hay en la lucha de los pueblos por su dignidad. La Protesta (8/1/1919) cerraba su crónica llamando a las organizaciones obreras: 'vengad este crimen'.</li>
+<li><b>Pregunta al grupo</b>: ¿qué significa que una huelga haya 'triunfado' con tantos muertos?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · 2. ¿Qué pasó?</div>
+  <h2>La Semana Trágica: 7 al 14 de enero de 1919</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Mi viejo murió luchando por mejores condiciones de trabajo en la Semana Trágica» <i>— Hijo del huelguista</i></div>
+  <svg viewBox="0 0 1150 330" style="width:100%;flex:1"><line x1="30" y1="185" x2="1120" y2="185" stroke="#2F3E5C" stroke-width="3"/><circle cx="100" cy="185" r="13" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="3"/><line x1="100" y1="172" x2="100" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="100" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Huelga en Vasena:</text><text x="100" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">2.500 obreros</text><text x="100" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">2 dic. 1918</text><circle cx="290" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="290" y1="198" x2="290" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="290" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">7 ene.</text><text x="290" y="279" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Balas en el piquete:</text><text x="290" y="301" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">4 muertos</text><circle cx="480" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="480" y1="172" x2="480" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="480" y="111" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Entierro: masacre</text><text x="480" y="133" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">en la Chacarita</text><text x="480" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">9 ene.</text><circle cx="670" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="670" y1="198" x2="670" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="670" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">10 ene.</text><text x="670" y="279" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Liga Patriótica</text><text x="670" y="301" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">y pogrom en el Once</text><circle cx="860" cy="185" r="13" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="3"/><line x1="860" y1="172" x2="860" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="860" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Acuerdo y</text><text x="860" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">liberación de presos</text><text x="860" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">11 ene.</text><circle cx="1050" cy="185" r="13" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="3"/><line x1="1050" y1="198" x2="1050" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="1050" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">14 ene.</text><text x="1050" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Fin de la</text><text x="1050" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">«semana de enero»</text></svg>
+  <div class="lens"><b>Pedían</b>: jornada de 8 horas, salubridad laboral y un salario justo.</div>
+  <span class="fuente">Fuentes: <a href="https://elhistoriador.com.ar/la-semana-tragica/" target="_blank" rel="noopener">La Semana Trágica (Pigna)</a> · <a href="https://contrahegemoniaweb.com.ar/2022/01/10/osvaldo-bayer-y-la-semana-de-enero-2/" target="_blank" rel="noopener">Bayer: la semana de enero</a> · <a href="https://www.youtube.com/watch?v=DrdmZH9dwhQ" target="_blank" rel="noopener">video Movimiento obrero II</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li><b>El costo</b>: las cifras no coinciden. La prensa oficial hablaba de 40 muertos; la obrera, de un centenar y más del doble de heridos; Pigna, siguiendo a <i>La Vanguardia</i>, habla de 700 muertos y cerca de 4.000 heridos. Para Pigna, 'el precio no lo pusieron los trabajadores sino los dueños del poder'.</li>
+<li><b>La respuesta del poder</b>: no hubo sanciones para las fuerzas represivas; el gobierno las felicitó. Elpidio González, jefe de policía, escribió: 'felicito al personal policial por la energía y el valor demostrado'; Dellepiane dio gracias por 'la sofocación del brutal e inicuo estallido'. El embajador en Londres tranquilizó a los inversores diciendo que bastaron la aplicación de la ley de residencia y la deportación de más de doscientos cabecillas. Se organizó una colecta 'pro defensores del orden' con aportes de frigoríficos (Swift, Armour), del Jockey Club y otras empresas. Para las viudas y los hijos de los obreros no hubo colectas; meses después, las damas de caridad y la Iglesia lanzaron una colecta con una frase reveladora: 'los bárbaros ya están a las puertas de Roma'.</li>
+<li><b>El giro del gobierno</b>: Yrigoyen abandonó los aspectos más progresistas de su política obrera y perdió el apoyo de ciertos grupos de trabajadores. Bayer lo ve como una contradicción: primer presidente surgido del voto universal, secreto y obligatorio, pero que 'dejó que la oligarquía reprimiera'.</li>
+<li><b>Después de 1919</b> (video 'Movimiento obrero II'): sigue la conflictividad (en 1919 hubo cerca de 50 huelgas). En La Forestal (Chaco), empresa británica, los obreros presentan un pliego y el gobierno envía la gendarmería volante: persecuciones, despidos, listas negras e incendio de casas y sedes sindicales; no consiguen ninguna mejora. En la Patagonia (1920-21), los trabajadores rurales de las estancias ovejeras se organizan; la represión de las tropas del ejército, la policía territorial y la Liga Patriótica deja más de 100 obreros muertos y 600 detenidos y torturados. El teniente coronel Varela fue luego muerto por el anarquista alemán Kurt Wilckens. La Semana Trágica marca el fin de la estrategia insurreccional, el debilitamiento del anarquismo, la consolidación del sindicalismo y el surgimiento de una derecha militante.</li>
+<li><b>Leyes obreras</b>: con diputados socialistas, descanso dominical, trabajo femenino e infantil, accidentes de trabajo y licencia por maternidad. La jornada de 8 horas, ganada en algunas industrias, se convierte en ley nacional recién en 1929.</li>
+<li><b>La memoria</b> (Bayer): 'la fecha histórica más negada de nuestro pasado', junto con la Patagonia y La Forestal: ¿se habló alguna vez de esto en la escuela? Cuando se quiso bautizar la plaza de los talleres Vasena como 'Héroes obreros de la semana de enero', se la llamó oficialmente 'Martín Fierro'.</li>
+<li><b>Pregunta al grupo</b>: ¿por qué algunos hechos se recuerdan y otros se silencian?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · 3. ¿Qué dejó?</div>
+  <h2>Cifras en disputa, respuesta del poder y memoria</h2>
+  <div class="gancho"><b>Del diálogo:</b> «Mi viejo y sus compañeros no querían hacerse ricos, lo único que querían era que les pagaran lo justo» <i>— Hijo del huelguista</i></div>
+  <div class="row" style="flex:1;margin-top:4px;margin-bottom:10px;align-items:stretch">
+    <div class="box grow " style="background:var(--malva)"><h3>Cifras en disputa</h3><ul><li>Prensa oficial: <b>40</b> muertos</li><li>Prensa obrera: <b>un centenar</b></li><li><i>La Vanguardia</i> y Pigna: <b>700</b> muertos y 4.000 heridos</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>La respuesta del poder</h3><ul><li>Felicitaciones a la policía</li><li>Colecta «pro defensores del orden»</li><li>Nace la <b>Liga Patriótica</b></li></ul></div>
+    <div class="box grow " style="background:var(--salvia)"><h3>Memoria y después</h3><ul><li>«La semana de enero»: la plaza Vasena se llamó <b>«Martín Fierro»</b></li><li>Patagonia (1921) y La Forestal: más represión</li><li><b>8 horas</b>: ley nacional recién en 1929</li></ul></div>
+  </div>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Una huelga que <b>ganó mejoras</b> a un costo enorme</div>
+  <span class="fuente">Fuentes: <a href="https://elhistoriador.com.ar/la-semana-tragica/" target="_blank" rel="noopener">La Semana Trágica (Pigna)</a> · <a href="https://contrahegemoniaweb.com.ar/2022/01/10/osvaldo-bayer-y-la-semana-de-enero-2/" target="_blank" rel="noopener">Bayer: la semana de enero</a> · <a href="https://www.youtube.com/watch?v=DrdmZH9dwhQ" target="_blank" rel="noopener">video Movimiento obrero II</a> · <a href="https://docs.google.com/document/d/1XPOB8Qm5brYwRjYQUrKAfHT3UiNAxOKm4jP00LOod48/edit?usp=sharing" target="_blank" rel="noopener">Las encrucijadas del poder</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (4 min)</b><ul>
+<li>Lo leemos por filas: cada fila es una pregunta (¿qué es el trabajo?, ¿cómo se ve el conflicto?, ¿cómo se responde?, ¿cuál es la salida?, ¿cómo se recuerda?).</li>
+<li>Las frases de la columna izquierda salen de las fuentes: Elpidio González felicitó a la policía y habló de 'dar una severa lección a elementos disolventes de la nacionalidad argentina'; el gobierno llamó 'subversión' a los reclamos.</li>
+<li>La columna derecha reúne tres corrientes (socialistas, anarquistas, sindicalistas) con estrategias distintas, pero con la misma idea: el trabajo es un derecho y se defiende de manera colectiva.</li>
+<li><b>Síntesis</b>: el mismo hecho (una huelga) puede leerse como 'subversión' o como defensa de la dignidad.</li>
+<li><b>Pregunta al grupo</b>: ¿qué derechos laborales que hoy damos por naturales fueron una conquista de huelgas como esta?</li></ul>">
+  <div class="kicker">Comparación y síntesis</div>
+  <h2>Dos maneras de pensar el trabajo</h2>
+  <table class="tight" style="margin-top:4px;font-size:21px"><tr><th></th><th style="background:var(--malva)">Mirada hegemónica</th><th style="background:var(--salvia)">Mirada contrahegemónica</th></tr>
+    <tr><td>El trabajo</td><td>Un trato libre entre privados</td><td>Un derecho: jornada, salario, seguridad</td></tr>
+    <tr><td>El conflicto</td><td>«Elementos disolventes» y «subversión»</td><td>Defensa de la dignidad</td></tr>
+    <tr><td>La respuesta</td><td>Fuerza, estado de sitio y Ley de Residencia</td><td>Huelga, solidaridad y organización</td></tr>
+    <tr><td>La salida</td><td>Esfuerzo individual y libre competencia</td><td>Organización colectiva y leyes</td></tr>
+    <tr><td>La memoria</td><td>Orden restablecido: «una severa lección»</td><td>«La semana de enero»: una gesta</td></tr>
+  </table>
+  <div style="margin-top:12px"></div><div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Dos ideas de justicia: <b>cada uno por su cuenta</b> o <b>organizados</b></div>
+  <span class="fuente">Fuentes: <a href="https://elhistoriador.com.ar/la-semana-tragica/" target="_blank" rel="noopener">La Semana Trágica (Pigna)</a> · <a href="https://contrahegemoniaweb.com.ar/2022/01/10/osvaldo-bayer-y-la-semana-de-enero-2/" target="_blank" rel="noopener">Bayer: la semana de enero</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (5 min)</b><ul>
+<li>Esta es la 'llave' para la actividad: cada frase del diálogo se conecta con una idea que vimos. La columna de la derecha dice en qué diapositiva está.</li>
+<li>Se puede hacer así: leo una frase, el grupo propone con qué idea se conecta, y recién después muestro la columna.</li>
+<li>La respuesta alternativa del argentino liberal (paciencia, competencia, esfuerzo) es la idea de que la mejora llega sola si cada uno se esfuerza; la historia de 1919 muestra que las mejoras llegaron por organización y a un costo altísimo.</li></ul>">
+  <div class="kicker">Puente a la actividad</div>
+  <h2>Cada frase del diálogo tiene historia</h2>
+  <table class="tight" style="margin-top:2px;font-size:20px"><tr><th>Lo que dice el personaje</th><th>Idea con la que se conecta</th><th></th></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Mi viejo murió luchando… en la Semana Trágica»</td><td>Huelga de Vasena y los hechos del 7 al 14 de enero de 1919</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 8</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Condiciones inhumanas… tratados como esclavos»</td><td>Condiciones precarias y sin leyes obreras; reclamos de los gremios</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 5 y 7</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Respetar la propiedad privada y la libertad individual»</td><td>Liberalismo económico y libertad «negativa»</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 4</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Si no te gusta, buscáte otro trabajo»</td><td>El trabajo como trato libre; Ley de Residencia, estado de sitio y fuerza</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 5 y 6</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Que les pagaran lo justo»</td><td>Pliego de Vasena: 8 horas, salubridad y salario justo</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 8</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%"><span class="tag" style="font-size:12px;display:block;width:max-content">respuesta alternativa del mapa</span>«Hay que tener paciencia… ustedes se tienen que esforzar»</td><td>Libre competencia y esfuerzo individual frente a la organización obrera</td><td style="width:130px;white-space:nowrap;text-align:right;color:var(--ciruela);font-weight:700">diap. 6 y 10</td></tr>
+  </table>
+  <span class="fuente">Fuente: diálogo de la estación (mapa interactivo)</span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Actividad (aprox. 20-25 min)</b><ul>
+<li>Primero, 5 min con las tres preguntas entre todos. Volvemos a las respuestas que anotamos al comienzo: ¿qué cambiaríamos?</li>
+<li>Después, grupos de 4: dos asumen los roles (hijo del huelguista y argentino liberal) y dos observan. Entran a la estación Puerto del mapa, leen el diálogo y continúan en el PPT.</li>
+<li>Los observadores anotan argumentos y los vinculan con una frase de la diapositiva 11.</li>
+<li>Puesta en común: cada grupo completa la frase de cierre en voz alta.</li></ul>">
+  <div class="kicker">Trabajo en la clase</div>
+  <h2>Pensamos juntos y seguimos la conversación</h2>
+  <div class="row" style="flex:1;margin-top:8px;margin-bottom:14px;align-items:stretch">
+    <div class="box grow" style="background:var(--manteca)"><h3>Para pensar entre todos y todas</h3><ul><li>¿Qué derechos laborales damos hoy por naturales y cuáles se conquistaron?</li><li>¿Qué significa «buscarse otro trabajo» cuando no hay otro?</li><li>¿Por qué algunos hechos, como la semana de enero, casi no se enseñan?</li></ul></div>
+    <div class="box grow" style="background:var(--lila);border-color:var(--ciruela)"><h3>Actividad en grupos</h3><ul>
+      <li>En grupos de 4: <b>dos asumimos los roles</b> y dos observamos.</li>
+      <li>Continuemos el diálogo en el <a href="https://docs.google.com/presentation/d/1t3hd_NudSNgE5tTWIEIum7qzrmCqflxgaDsly5WZ5n8/edit?usp=sharing" target="_blank" rel="noopener">PPT</a> sin salirnos del personaje y usando <b>al menos un concepto</b> de la clase.</li>
+      <li>Observadores: anotamos <b>argumentos</b> y los relacionamos con la teoría.</li></ul>
+      <div class="lens" style="margin-top:8px"><b>Cierre grupal:</b> «Para el argentino liberal el trabajador es ______; para el hijo del huelguista, es ______.»</div></div>
+  </div>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (1 min)</b><ul><li>Los enlaces funcionan en el HTML y en el PDF. Es la diapositiva para compartir por Moodle o por el grupo.</li></ul>">
+  <div class="kicker">Para seguir</div>
+  <h2>Recursos y enlaces de la estación</h2>
+  <div class="row" style="flex:1;margin-top:8px;margin-bottom:14px;align-items:stretch">
+    <div class="box grow sm" style="background:var(--lila)"><h3>Para el trabajo</h3><ul><li><a href="https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-4" target="_blank" rel="noopener">Sitio de la estación</a></li><li><a href="https://docs.google.com/presentation/d/1t3hd_NudSNgE5tTWIEIum7qzrmCqflxgaDsly5WZ5n8/edit?usp=sharing" target="_blank" rel="noopener">PPT para continuar el diálogo</a></li></ul></div>
+    <div class="box grow sm" style="background:var(--azul)"><h3>Videos</h3><ul><li><a href="https://www.youtube.com/watch?v=ilchOOCoR2k" target="_blank" rel="noopener">Orígenes del movimiento obrero</a></li><li><a href="https://www.youtube.com/watch?v=DrdmZH9dwhQ" target="_blank" rel="noopener">La Semana Trágica (Movimiento obrero II)</a></li><li><a href="https://www.youtube.com/watch?v=mDQPxmRiM6k" target="_blank" rel="noopener">Huellas de un siglo: La Semana Trágica (2 de 2)</a></li><li><a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">Los conservadores liberales (28:36)</a></li></ul></div>
+    <div class="box grow sm" style="background:var(--malva)"><h3>Textos</h3><ul><li><a href="https://contrahegemoniaweb.com.ar/2022/01/10/osvaldo-bayer-y-la-semana-de-enero-2/" target="_blank" rel="noopener">Osvaldo Bayer y la semana de enero</a></li><li><a href="https://elhistoriador.com.ar/la-semana-tragica/" target="_blank" rel="noopener">La Semana Trágica (Felipe Pigna)</a></li><li><a href="https://www.educ.ar/recursos/128768/cronica-la-protesta-sobre-semana-tragica" target="_blank" rel="noopener">Crónica de La Protesta (educ.ar)</a></li><li><a href="https://docs.google.com/document/d/1XPOB8Qm5brYwRjYQUrKAfHT3UiNAxOKm4jP00LOod48/edit?usp=sharing" target="_blank" rel="noopener">Las encrucijadas del poder</a></li><li><a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">Los conservadores liberales (educ.ar)</a></li></ul></div>
+  </div>
+  <span class="num">0</span>
+</section>
+</div></div>
+
+<div id="ctrl">
+  <button id="prev">◀ Anterior</button>
+  <button id="nb">Notas (N)</button>
+  <button id="fs">Pantalla completa (F)</button>
+  <button id="next">Siguiente ▶</button>
+</div>
+<div id="notes"></div>
+
+<script>
+(function(){
+  /* ---- Presentador ---- */
+  var slides=[].slice.call(document.querySelectorAll('.slide')),i=0,
+      stage=document.getElementById('stage'),notes=document.getElementById('notes');
+  function fit(){
+    var k=Math.min(innerWidth/1280,innerHeight/720);
+    stage.style.transform='scale('+k+')';
+  }
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,j){s.classList.toggle('on',j===i)});
+    notes.innerHTML=slides[i].getAttribute('data-notes')||'';
+    document.getElementById('prev').style.display=(i===0)?'none':'';
+    document.getElementById('next').style.display=(i===slides.length-1)?'none':'';
+    try{history.replaceState(null,'','#'+(i+1))}catch(e){}
+  }
+  function go(d){show(i+d)}
+  addEventListener('resize',fit);
+  addEventListener('hashchange',function(){var h=parseInt((location.hash||'').slice(1),10);if(!isNaN(h)&&h-1!==i)show(h-1)});
+  addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(1)}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(-1)}
+    else if(e.key==='Home')show(0);
+    else if(e.key==='End')show(slides.length-1);
+    else if(e.key==='n'||e.key==='N')document.body.classList.toggle('notes');
+    else if(e.key==='f'||e.key==='F')tfs();
+  });
+  function tfs(){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+  document.getElementById('prev').onclick=function(){go(-1)};
+  document.getElementById('next').onclick=function(){go(1)};
+  document.getElementById('nb').onclick=function(){document.body.classList.toggle('notes')};
+  document.getElementById('fs').onclick=tfs;
+  var tx=null;
+  addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+  addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(d<0?1:-1);tx=null});
+  stage.addEventListener('click',function(e){
+    if(e.target.closest('a'))return;
+    var r=stage.getBoundingClientRect();if(e.clientX-r.left>r.width*.5)go(1);else go(-1);
+  });
+  slides.forEach(function(s,j){var n=s.querySelector('.num');if(n)n.textContent=j+1});
+  fit();
+  var h=parseInt((location.hash||'').slice(1),10);
+  show(isNaN(h)?0:h-1);
+})();
+</script>
+</body>
+</html>
