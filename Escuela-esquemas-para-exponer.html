@@ -9,12 +9,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sepia:#8B4513; --gamuza:#F4A460; --arena:#E6D7B8; --marfil:#FFFFF0;
-  --azul:#AEC6CF; --rosa:#FFD1DC; --lila:#E8D7F1; --salvia:#B8CBB0;
-  --manteca:#F2E2A8; --durazno:#F3C2A0; --malva:#D9B8C4; --turquesa:#A8C4C2;
-  --ciruela:#6E4C8A;           /* lila profundo: acento de la estación Escuela */
-  --tinta:#5A2E0E; --tinta-suave:#A9744F; --linea:#D5C09B;
-  --sombra:rgba(139,69,19,.18);
+  --sepia:#2F3E5C; --gamuza:#7FA8D9; --arena:#E1E8F1; --marfil:#F7FAFD;
+  --azul:#BFD8EE; --rosa:#E8D9F5; --lila:#E3DAF4; --salvia:#C6E3DA;
+  --manteca:#D6ECF5; --durazno:#AFC3F0; --malva:#C9CCF0; --turquesa:#B4D8D8;
+  --ciruela:#4A4FA3;           /* lila profundo: acento de la estación Escuela */
+  --tinta:#1B2742; --tinta-suave:#5F6F8C; --linea:#C5D0E0;
+  --sombra:rgba(47,62,92,.18);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--arena);color:var(--tinta);font-family:'Inter',system-ui,sans-serif}
@@ -29,7 +29,7 @@ html.js .slide{position:absolute;inset:0;width:auto;display:none;border:0}
 html.js .slide.on{display:flex}
 html.js #ctrl{display:flex}
 .slide::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .27 0 0 0 0 .07 0 0 0 .05 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .18 0 0 0 0 .24 0 0 0 0 .36 0 0 0 .05 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
 .slide>*{position:relative}
 .kicker{font-size:15px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ciruela);margin-bottom:6px}
 h1,h2{font-family:'Playfair Display',Georgia,serif;color:var(--sepia);line-height:1.1}
@@ -68,12 +68,16 @@ td:first-child{font-weight:700;color:var(--ciruela);width:160px}
 .maestra .vida{font-size:17px;color:var(--tinta);font-weight:600}
 .maestra .body{padding:14px 20px 18px;font-size:23px;line-height:1.35}
 .maestra .body p{margin:9px 0}
+a{color:var(--ciruela);font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.lk{margin-top:10px!important;font-size:20px;line-height:1.5}
+.lk a{white-space:nowrap}
+.fuente a{color:var(--tinta-suave);font-weight:500}
 /* controles */
 #ctrl{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);gap:8px;z-index:5;opacity:.0;transition:opacity .2s}
 body:hover #ctrl{opacity:.95}
 #ctrl button{font:600 15px 'Inter';padding:7px 14px;border-radius:99px;border:2px solid var(--sepia);background:var(--marfil);color:var(--sepia);cursor:pointer}
 #ctrl button:hover{background:var(--lila)}
-#notes{position:fixed;left:0;right:0;bottom:0;max-height:36vh;overflow:auto;background:rgba(90,46,14,.96);color:var(--marfil);padding:16px 28px 20px;font-size:18px;line-height:1.45;display:none;z-index:4}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:36vh;overflow:auto;background:rgba(27,39,66,.96);color:var(--marfil);padding:16px 28px 20px;font-size:18px;line-height:1.45;display:none;z-index:4}
 body.notes #notes{display:block}
 #notes b{color:var(--durazno)}
 #notes ul{margin-left:22px}
@@ -87,359 +91,288 @@ body.notes #notes{display:block}
   @page{size:1280px 720px;margin:0}
 }
 </style>
+<style id="diseno-frio">
+:root{--ciruela:#4A4FA3}
+.slide{background:linear-gradient(180deg,#F7FAFD 0%,#EDF2F9 100%)}
+.slide::after{content:"";position:absolute;left:0;right:0;top:0;height:9px;z-index:2;background:linear-gradient(90deg,#1B2742 0%,#4A4FA3 38%,#7FA8D9 72%,#C6E3DA 100%)}
+.cover{background:radial-gradient(circle at 88% 18%,rgba(127,168,217,.55) 0,transparent 36%),radial-gradient(circle at 96% 96%,rgba(198,227,218,.42) 0,transparent 34%),linear-gradient(135deg,#1B2742 0%,#2A3A66 58%,#3B4A9A 100%)}
+.cover::before{opacity:.18}
+.cover h1{color:#fff;font-size:64px}
+.cover .kicker{background:rgba(255,255,255,.14);color:#D5E4F8}
+.cover p{color:#C9D8EE}
+.kicker{display:inline-block;align-self:flex-start;padding:5px 14px;border-radius:99px;background:#E3DAF4;color:var(--ciruela);font-size:14px;margin-bottom:12px}
+h2{font-size:42px;letter-spacing:-.01em}
+h2::after{content:"";display:block;width:72px;height:5px;border-radius:3px;background:linear-gradient(90deg,var(--ciruela),#7FA8D9);margin:10px 0 4px}
+.slide{padding-top:40px}
+.box,.step,.maestra{border:1.5px solid rgba(47,62,92,.22);box-shadow:0 10px 24px rgba(47,62,92,.12);border-radius:20px}
+.box{border-top:6px solid rgba(74,79,163,.6)}
+.box li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ciruela);opacity:.85;font-size:0;top:12px}
+.step .n{width:58px;height:58px;border-radius:50%;background:#fff;color:var(--ciruela);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 12px rgba(47,62,92,.16);margin-bottom:6px}
+.arrow{color:var(--ciruela)}
+th{border-bottom:3px solid var(--ciruela)}
+td{border-bottom:1.5px solid #C5D0E0}
+tbody tr:nth-child(even) td,tr:nth-child(even) td{background:rgba(255,255,255,.65)}
+.num{background:#fff;border-radius:99px;padding:2px 11px;box-shadow:0 2px 6px rgba(47,62,92,.14);font-weight:600;color:var(--ciruela)}
+#ctrl button{border-color:var(--ciruela);color:var(--ciruela);background:#fff}
+#ctrl button:hover{background:#E3DAF4}
+@media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+.dlg{display:flex;align-items:flex-end;gap:10px;margin:5px 0}.dlg.right{flex-direction:row-reverse}.dlg .av{width:58px;height:58px;border-radius:50%;object-fit:cover;object-position:top;border:3px solid #fff;box-shadow:0 4px 12px rgba(47,62,92,.2);background:#fff;flex:none}.dlg .bub{max-width:960px;padding:7px 16px 8px;border-radius:18px;font-size:17.5px;line-height:1.28;box-shadow:0 6px 16px rgba(47,62,92,.10);border:1.5px solid rgba(47,62,92,.18)}.dlg.left .bub{background:#E3DAF4;border-bottom-left-radius:4px}.dlg.right .bub{background:#D6ECF5;border-bottom-right-radius:4px}.dlg .who{display:block;font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ciruela);margin-bottom:2px}.sm li{font-size:20px!important;margin:5px 0!important}.sm h3{font-size:24px!important;margin-bottom:6px!important}.sm.box{padding:12px 16px}.lens{font-size:20px;color:var(--tinta);background:#fff;border:1.5px dashed var(--ciruela);border-radius:14px;padding:8px 16px;margin:6px 0 0}.lens b{color:var(--ciruela)}.legend{font-size:15px;color:var(--tinta-suave);margin-top:2px}.credito{position:absolute!important;right:150px;bottom:18px;font-size:12px;color:var(--tinta-suave)}
+</style>
 </head>
 <body>
 <div id="viewport"><div id="stage">
-
-<!-- 1 PORTADA -->
-<section class="slide cover" data-notes="
-<b>Para abrir (2 min)</b><ul>
-<li>Entramos a la estación Escuela del mapa: acá no hay una sola voz, hay una discusión sobre para qué sirve la escuela.</li>
-<li>Pregunta disparadora: <i>¿para qué se creó la escuela pública? ¿para quién? ¿para qué tipo de sociedad?</i> Anotar 3 o 4 respuestas en el pizarrón y retomarlas al final.</li>
-<li>Hoja de ruta: primero el poder, después la ley, después las disputas pedagógicas y, al final, las maestras y el diálogo.</li></ul>">
-  <div class="kicker">Estación Escuela · Cartografías y conversaciones</div>
-  <h1>La escuela en disputa: maestras, élites y proyectos de país</h1>
-  <p>Del orden conservador liberal a la Escuela Nueva (1880–1950). Trabajo y Sociedad aplicado a la Educación 2 · CENS 3458</p>
+<section class="slide " data-notes="<b>Para abrir (4 min)</b><ul>
+<li>Leemos el diálogo en voz alta: dos estudiantes voluntarios leen los papeles de la maestra socialista y de la directora.</li>
+<li>Una maestra quiere trabajar en el aula lo que pasa en el país, porque dos alumnos se pelearon por lo que dicen sus padres. La directora está de acuerdo en que hay que hacer algo, pero distinto: temas de adultos, tradición y autoridad.</li>
+<li>Si en el mapa el estudiante elige continuar como directora, la respuesta es: <i>«La escuela no es lugar para las ideologías ni todas esas ideas extranjeras subversivas, estamos para enseñar nuestra cultura para que sean personas de bien, educados y con buenos valores.»</i></li>
+<li><b>Pregunta disparadora</b>: ¿para qué se creó la escuela pública? ¿para quién? ¿para qué tipo de sociedad? Anotamos 3 o 4 respuestas en el pizarrón y las retomamos en la diapositiva 12.</li></ul>">
+  <div class="kicker">Estación Escuela · El diálogo del mapa</div>
+<div class="dlg left"><img class="av" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQECWAJYAAD/2wBDAAwICQoJBwwKCQoNDAwOER0TERAQESMZGxUdKiUsKyklKCguNEI4LjE/MigoOk46P0RHSktKLTdRV1FIVkJJSkf/2wBDAQwNDREPESITEyJHMCgwR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0f/wAARCACgAHoDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD1WiiigAoopCQqkk4AGSaAAkAZJwB3NMWaJjhZUY+gYGsWa4mv5GZZjDbxtg46n8Kh+y2kg8uGaVGYD5+5oA1b/WLGwOLiYBv7o5NUh4ns5Rm2R5M9zwKgsfDFuJHlu5PtWeULZ4+op6WESs32ZrdeegGCMUAPPiEoy+ZasVbjKHdz6VYtfEFlcSLGS8bMcDcvGeOM/iKj2XEa5lZD+RFV7iKwm5ukQsPTrQB0CsGGVIIPcUtclpMt1p128hybCRtqhj9011isGUMpyCMg0ALRRRQAUUUUAFFFFABVe/k8qylfnhe1WKyvEkxi0xgv3mPTOKAM2yVpIY0j3EM2ScYzWi9vbq3lrncvUj1qDSQwYEnhY/XPap7P55JZCPujIoAS1dzLtU8YOKTT7WC7hkaRcPvIJHBo01mkuZGYABQak0Hd5EuenmHb7igCVdKiBGZHIHapE061Uk7MknPJq3RQBDPbRTWrW7KAjDHA6VR0N3WGS2kJJhbaM+lalZeksXurpuCN+BigDUooooAKKKKACqWqS3MFuJrYBth+ZSOoq7SEZBB70AZ9trVjPCH89VbHKnqKy76c6lc/MjLAg4yvOai1TSkJZ0iwynJC5AIqrZXhjxG4KqBgACgDVsZPIs5TIME/Kp9antCqWU7jCgjC1nXVzHPCIlwix/xdc5phkn2eRGw8vqcCgDR05litbmUddvcdzVvRI9mngkHLsTzWXDItzKliGKoOXPrXQxIscaogwqjAoAfRRSMwUZJoAZO4igdz/CpNUtFjC2rOAQGYnn/PvTL6U3Z+zQt1I3Y9K0YoxFEsa9FGKAH0UUUAFFFFABRRUcs0cI/eOFzQBBe2ZnAaNyjj8j9a5+6tFS4/0hHjI4Djoc10D6jbRkB3IJ9qqahqNvLGsMWJHfge1AGIsUCozIHn75HXP0qJ7i/Ti1t8o3DMRyK6y0tIreFUVFDY+bA70+aBZR06dPagTOa0yWCBfmYo5+9kECtiPUFwCkiEfWqep6awtzLtDlOefSstdKmks47naVUkN14AoFzHQy6osSgu6YPTHNUmvp7rK28bNnv6VT/s22ghdr53jCsADuJO7tiuh03d/Z6F4hGcdMYyPWgobplolvDu3b3f7zZzV2svRnKvPbs2drnb9P8AJrT6CgCOedIE3Oaqf2kxwUtZGB7gZqld3Di/abyjMkYwEwahbxBcXjY0iDzNpw4I5H/1qANq1vEuHaPBSReqt1qzWTp1tfNfNd32FJXAUYrWoAKoQhHvJTMRuU4UMav1BPaQztudfm9R1oAbLFaXH7p1jYjt6VzXiS1TSnhvbMFSW2lRk8+tat4bbRmS52SNuJGBzis5ba51v7RNd7o4gcwrnjpQBszXjDSBccBnUYJ9TVqy8w2cZmILlcnFYlyzN4dhQHLK+wkVuLKkVvGXbAIAFABeRtNZyxJjc6EDNY8Ed8kaaakkThU2uQpwo+vrW9VH7FJbySS2kxy7bjG/IP8AhQBntNG1m7XOHDRGN19WHFWb+aWw0eJt+WUBWJ71mWErajqcdu0bRiB2eZSuMHPA/Wt3U7YXdhJCRyRlfrQBn3b/AGSa0vl/1TACQqPX1qbWtRWC2SOJsvPwuOTiovD0327Sjb3BDtGdjc5qO00hodb82cmRFBMZPb0FAGlCPsOm7pSC6rk+5rM8Naa1vPc3zDaLk5CegzU+sytPcRWMR5Y5b2+tasUYiiWNeijFAD6KKKACiiigCrqESy2jBgDg55FR2MizQ7BgArgACrjoJEZG6MMGuftrn7Pq8tvJlNjZUnoRQJkmoW/2PTFhZgS02RjvWndW32rT/KbglR+BqixGp6mhVd0EfOfWtmgZhx6rLYSi2voXK9ElXnP1qzFrdtNMscauS3f0rQkijkGJEVh7iqd3FBaW7NDCiO/GQOaBalO1e0s7u81CZyn2h8bjyMCprjxDpkIx9qRnIyq5xn86sDT4ZtPS3uF3jGfQg1ljw1pianGfKZtoz8zE+tAyHw7c7HnuXj8mGZsqS2QTya6G4nWKDzMgk/d96RrSA2wt/LAjAwAOMVUTSVWVSZnaNeiHoKBBpds++S7n+/KcgEYwK0qQAAYAwBS0DCiiigAooooAa7bULegzWFYQw6hNPcTr5nz4XI6Cte+k8qylfIGF7mszw4D/AGWrE53MT1oE9jXhhjgTbGuBUlJS0DCqF8DJeQRcYzuOav1QkwdYjHfZQBfqrn/iZYyfu1aqghZtYcj7qrg80AX6KKKACiiigAooooAKKKa7KiFmOABk0AUNfmSLSZt7Y3DApmkpt0qFYjztJUt396huFOq8q5WJWwcdfpWhs8uzcRL0QhQPpQS9dCCO8vfIVnsvMJ7xuMH8DU1reST3MkL2zxbACWJBHNVLe0tpIUMV5NH8oDIsvAP0qXS4Nk9zKJnlRiqqWOc470FGjVCUFdZibnDJjpV+qOpEpJBKDja/NAF6se0c/wDCS3SnoUGK2K5+ylA8X3UZHJXg59hQB0FFFFABRRRQAUUUUAFU9UsTf2ZgErRHOQy1cooA51Le80WBWeRJLdT85x+uKvJqc7KpjtdykZBzgEVPrEYk0uZWOBjNGlhTp8C53YjHNAijJcySyH/iWqW7kjr+NSpNqONqQqg7cYqxql4bKAGGISSscKtUoNWvxGxudPYFfTv+FAakok1VSMhW9eBUN42pzpgRKMHIyuam/tK9eMtFY/QE8019R1CFHkls8qvPAI49aA1GPNrLKNiKnPJOKyWi1b+345lBMmQWAIxt711VpcrdRB0BGRyD2qpeDyNUt7gD5X+RjnpQCNEUtFFAwooooAKKKKACohOmcE4qQ8jFQy24kTbuI96AK2ryxvpk6K4JK4AqLR5o00+HdMnCc802TTJw5MboVPYrUB8Ph0AMjIe4U8flQJonjlFxqJnlIWKLhc9P/wBdX/tttkDzVye1UW0uZYlSOUbQeQRnNDaaO8Ctkdc0DL4u7c9JQfpTJLm3miaJZl3OpArK/sTDkqpA9iajbSbhFJij3tjgNkY9qALumTpArpKdpDEHNGo3InZIoXxhgc+9Z39mam+XKgMf9qrdnpM/nCS5bkDrnmgSVjajz5agnJwM06qwsogBgtx71YAwAPSgYtFFFABRRRQB/9k=" alt=""><div class="bub"><span class="who">Maestra Socialista</span>¡Buenos días, directora!</div></div>
+<div class="dlg right"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Directora</span>Buenos días, Señorita.</div></div>
+<div class="dlg left"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Maestra Socialista</span>Quería hablar con usted porque tengo algunas ideas para trabajar con mis alumnos sobre lo que está pasando en el país, ellos cuentan lo que sus padres dicen en sus casas y ya he tenido dos alumnos que han terminado peleando, cuando se supone que deberían dialogar.</div></div>
+<div class="dlg right"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Directora</span>Me parece muy interesante lo que contás, coincido con usted en que hay que hacer algo. Es importante que los niños sepan que se trata de temas de adultos en los que no se tienen que meter y trabajemos con ellos nuestros más altos valores, como el respeto a la tradición y a la autoridad. No están en edad para entender estos temas, mucho menos para debatirlos.</div></div>
+<div class="dlg left"><img class="av" src="data:image/jpeg;base64,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" alt=""><div class="bub"><span class="who">Maestra Socialista</span>Entiendo su perspectiva, pero creo que es importante que en la escuela sí hablemos de estos temas. Es cierto que son niños, pero es importante promover el diálogo y la solidaridad. Muchos de ellos la están pasando mal en sus casas, la comida no alcanza y el casero los apura con los pagos, que además son altísimos. Además, ¿si acá no enseñamos sobre participación, justicia, derechos, entonces dónde?</div></div>
+  <span class="fuente">Fuente: diálogo de la estación (mapa interactivo)</span><span class="credito">Ilustraciones: Lic. Martín Castañeda</span>
+  <span class="num">0</span>
 </section>
 
-<!-- 2 HOJA DE RUTA -->
-<section class="slide" data-notes="
-<b>Para decir (1 min)</b><ul>
-<li>Cuatro paradas. Cada una responde una pregunta: <i>¿quién mandaba?, ¿qué ley se escribió?, ¿qué otras escuelas se imaginaron?, ¿quiénes la hicieron?</i></li>
-<li>El diálogo del mapa (maestra socialista vs. directora conservadora) es el punto de llegada: ya van a tener todas las herramientas para entenderlo.</li></ul>">
+<section class="slide " data-notes="<b>Para decir (2 min)</b><ul>
+<li>Es el mapa de toda la clase: cuatro movimientos. Lo importante: <b>hegemónico</b> es lo que se impone como lo normal, lo natural; <b>contrahegemónico</b> es lo que lo discute y propone otra cosa.</li>
+<li>Primero entendemos la mirada que organizó la escuela pública. Después, las que la disputaron. Al final cruzamos todo y trabajamos con el diálogo.</li>
+<li>Sugerencia de tiempos para una hora: diap. 1-3 unos 12 min; 4-6 unos 17; 7-9 unos 17; 10-11 unos 9; 12-13, para el trabajo del grupo y cierre. Podés acelerar o frenar donde necesites.</li></ul>">
   <div class="kicker">Recorrido</div>
-  <h2>Cuatro paradas para entender la estación</h2>
-  <p class="lead">Cada parada responde una pregunta que después vuelve en el diálogo.</p>
-  <div class="row" style="flex:1;align-items:stretch;margin-bottom:20px">
-    <div class="step" style="background:var(--malva)"><div class="n">1</div><h3>El poder</h3><p>¿Quién gobierna y con qué ideas? Los <b>conservadores liberales</b> y el régimen del PAN.</p></div>
-    <div class="arrow">➜</div>
-    <div class="step" style="background:var(--azul)"><div class="n">2</div><h3>La ley</h3><p>¿Qué escuela se diseñó? <b>Congreso Pedagógico (1882)</b> y <b>Ley 1420 (1884)</b>.</p></div>
-    <div class="arrow">➜</div>
-    <div class="step" style="background:var(--salvia)"><div class="n">3</div><h3>Las disputas</h3><p>¿Qué otras escuelas se imaginaron? Tradicional, <b>Escuela Nueva</b>, libertaria y socialista.</p></div>
-    <div class="arrow">➜</div>
-    <div class="step" style="background:var(--lila)"><div class="n">4</div><h3>Las maestras</h3><p>¿Quiénes la hicieron? Seis trayectorias y el <b>diálogo</b> del mapa.</p></div>
+  <h2>Cuatro movimientos para entender la estación</h2>
+  <p class="lead">Partimos del diálogo y volvemos a él con otras herramientas.</p>
+  <div class="row" style="flex:1;align-items:stretch;margin-bottom:14px">
+    <div class="step" style="background:var(--lila)"><div class="n">1</div><h3>Escuchamos</h3><p>El diálogo y las <b>dos miradas</b> sobre la escuela. <i>Diap. 1-3</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--malva)"><div class="n">2</div><h3>La mirada hegemónica</h3><p>El orden <b>conservador liberal</b> y su escuela. <i>Diap. 4-6</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--salvia)"><div class="n">3</div><h3>La mirada contrahegemónica</h3><p><b>Escuela Nueva</b>, libertarias y las seis maestras. <i>Diap. 7-9</i></p></div>
+    <div class="arrow">➜</div><div class="step" style="background:var(--azul)"><div class="n">4</div><h3>Cruzamos y trabajamos</h3><p>Comparamos, volvemos a las frases y <b>seguimos el diálogo</b>. <i>Diap. 10-13</i></p></div>
   </div>
-  <span class="num">2</span>
+  <span class="num">0</span>
 </section>
 
-<!-- 3 LINEA DE TIEMPO -->
-<section class="slide" data-notes="
-<b>Para decir (2 min)</b><ul>
-<li>Esta línea es el mapa de toda la clase: arriba, los hitos del sistema; abajo, las vidas de las seis maestras.</li>
-<li>Fíjense cómo las vidas <b>atraviesan</b> los hitos: Manso nace antes de todo esto; Eccleston llega en 1884, el año de la ley; Fossatti, Brumana y Cossettini viven la Escuela Nueva.</li>
-<li>Agrupación en dos colores: orientativa, para discutir. Unas <b>construyen el sistema desde el Estado</b>; otras lo <b>cuestionan o lo renuevan</b> desde adentro.</li>
-<li>⚠ Fechas de muerte de Manso (1875) y de Cossettini (1987): no figuran en tu Wix, las puse por dato general; verificalas si querés citarlas.</li></ul>">
-  <div class="kicker">Parada 0 · Panorama</div>
-  <h2>Cien años de escuela, en una línea</h2>
-  <svg id="tl" viewBox="0 0 1150 556" style="width:100%;flex:1"><line x1="30" y1="170" x2="1120" y2="170" stroke="#8B4513" stroke-width="3"/><line x1="151.11111111111111" y1="162" x2="151.11111111111111" y2="178" stroke="#8B4513" stroke-width="3"/><text x="151.11111111111111" y="198" text-anchor="middle" font-family="Inter" font-size="16" font-weight="600" fill="#A9744F">1830</text><line x1="332.77777777777777" y1="162" x2="332.77777777777777" y2="178" stroke="#8B4513" stroke-width="3"/><text x="332.77777777777777" y="198" text-anchor="middle" font-family="Inter" font-size="16" font-weight="600" fill="#A9744F">1860</text><line x1="514.4444444444445" y1="162" x2="514.4444444444445" y2="178" stroke="#8B4513" stroke-width="3"/><text x="514.4444444444445" y="198" text-anchor="middle" font-family="Inter" font-size="16" font-weight="600" fill="#A9744F">1890</text><line x1="696.1111111111111" y1="162" x2="696.1111111111111" y2="178" stroke="#8B4513" stroke-width="3"/><text x="696.1111111111111" y="198" text-anchor="middle" font-family="Inter" font-size="16" font-weight="600" fill="#A9744F">1920</text><line x1="877.7777777777778" y1="162" x2="877.7777777777778" y2="178" stroke="#8B4513" stroke-width="3"/><text x="877.7777777777778" y="198" text-anchor="middle" font-family="Inter" font-size="16" font-weight="600" fill="#A9744F">1950</text><line x1="1059.4444444444443" y1="162" x2="1059.4444444444443" y2="178" stroke="#8B4513" stroke-width="3"/><text x="1059.4444444444443" y="198" text-anchor="middle" font-family="Inter" font-size="16" font-weight="600" fill="#A9744F">1980</text><rect x="393.3333333333333" y="150" width="181.66666666666669" height="40" rx="8" fill="#D9B8C4" stroke="#8B4513" stroke-width="2.5"/><line x1="484.16666666666663" y1="150" x2="484.16666666666663" y2="84" stroke="#8B4513" stroke-width="1.5" stroke-dasharray="4 3"/><text x="484.16666666666663" y="70" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700" fill="#5A2E0E">1870-1900</text><text x="484.16666666666663" y="90" text-anchor="middle" font-family="Inter" font-size="15" fill="#5A2E0E">PAN y conservadores liberales</text><rect x="453.8888888888889" y="150" width="24.22222222222217" height="40" rx="8" fill="#AEC6CF" stroke="#8B4513" stroke-width="2.5"/><text x="466" y="228" text-anchor="middle" font-family="Inter" font-size="16" font-weight="700" fill="#5A2E0E">1880-84</text><text x="466" y="248" text-anchor="middle" font-family="Inter" font-size="14" fill="#5A2E0E">Consejo, Congreso, Ley 1420</text><rect x="696.1111111111111" y="150" width="121.11111111111109" height="40" rx="8" fill="#B8CBB0" stroke="#8B4513" stroke-width="2.5"/><line x1="756.6666666666666" y1="150" x2="756.6666666666666" y2="84" stroke="#8B4513" stroke-width="1.5" stroke-dasharray="4 3"/><text x="756.6666666666666" y="70" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700" fill="#5A2E0E">Años 20 y 30</text><text x="756.6666666666666" y="90" text-anchor="middle" font-family="Inter" font-size="15" fill="#5A2E0E">Escuela Nueva en Argentina</text><rect x="84.5" y="268" width="339.1111111111111" height="28" rx="14" fill="#AEC6CF" stroke="#8B4513" stroke-width="2.5"/><text x="433.6111111111111" y="288" font-family="Inter" font-size="17" font-weight="600" fill="#5A2E0E">Juana Manso  (1819–1875)</text><rect x="211.66666666666666" y="306" width="460.2222222222223" height="28" rx="14" fill="#AEC6CF" stroke="#8B4513" stroke-width="2.5"/><text x="681.8888888888889" y="326" font-family="Inter" font-size="17" font-weight="600" fill="#5A2E0E">Sara Eccleston  (1840–1916)</text><rect x="411.5" y="344" width="466.2777777777778" height="28" rx="14" fill="#AEC6CF" stroke="#8B4513" stroke-width="2.5"/><text x="401.5" y="364" text-anchor="end" font-family="Inter" font-size="17" font-weight="600" fill="#5A2E0E">Rosario Vera Peñaloza  (1873–1950)</text><rect x="502.3333333333333" y="382" width="545.0000000000002" height="28" rx="14" fill="#F3C2A0" stroke="#8B4513" stroke-width="2.5"/><text x="492.3333333333333" y="402" text-anchor="end" font-family="Inter" font-size="17" font-weight="600" fill="#5A2E0E">Florencia Fossatti  (1888–1978)</text><rect x="556.8333333333334" y="420" width="345.16666666666663" height="28" rx="14" fill="#D9B8C4" stroke="#8B4513" stroke-width="2.5"/><text x="546.8333333333334" y="440" text-anchor="end" font-family="Inter" font-size="17" font-weight="600" fill="#5A2E0E">Herminia Brumana  (1897–1954)</text><rect x="562.8888888888889" y="458" width="538.9444444444443" height="28" rx="14" fill="#E8D7F1" stroke="#8B4513" stroke-width="2.5"/><text x="552.8888888888889" y="478" text-anchor="end" font-family="Inter" font-size="17" font-weight="600" fill="#5A2E0E">Olga Cossettini  (1898–1987)</text><line x1="478.1111111111111" y1="262" x2="478.1111111111111" y2="502" stroke="#6E4C8A" stroke-width="1.5" stroke-dasharray="3 5" opacity=".7"/><line x1="756.6666666666666" y1="262" x2="756.6666666666666" y2="502" stroke="#6E4C8A" stroke-width="1.5" stroke-dasharray="3 5" opacity=".7"/><line x1="877.7777777777778" y1="262" x2="877.7777777777778" y2="502" stroke="#6E4C8A" stroke-width="1.5" stroke-dasharray="3 5" opacity=".7"/><text x="472.1111111111111" y="520" text-anchor="end" font-family="Inter" font-size="14" font-weight="700" fill="#6E4C8A">1884 · Ley 1420</text><text x="750.6666666666666" y="520" text-anchor="end" font-family="Inter" font-size="14" font-weight="700" fill="#6E4C8A">1930 · Escuela Serena</text><text x="883.7777777777778" y="520" font-family="Inter" font-size="14" font-weight="700" fill="#6E4C8A">1950 · Cossettini cesante</text><rect x="30" y="532" width="16" height="16" rx="4" fill="#AEC6CF" stroke="#8B4513" stroke-width="2"/><text x="52" y="545" font-family="Inter" font-size="15" fill="#5A2E0E">Construyen el sistema</text><rect x="250" y="532" width="16" height="16" rx="4" fill="#F3C2A0" stroke="#8B4513" stroke-width="2"/><text x="272" y="545" font-family="Inter" font-size="15" fill="#5A2E0E">Lo cuestionan o renuevan (una forma de agruparlas, para discutir)</text></svg>
-  <span class="num">3</span>
-</section>
-
-<!-- 4 VENN -->
-<section class="slide" data-notes="
-<b>Para decir (3 min)</b><ul>
-<li>En teoría política, <b>conservadurismo</b> y <b>liberalismo</b> son distintos y a veces opuestos.</li>
-<li>Conservadurismo: reacción frente a los cambios de la modernidad (Revolución Francesa e Industrial). Defiende la tradición, las jerarquías, la familia patriarcal y la propiedad.</li>
-<li>Liberalismo: expresión de la modernidad. El individuo libre, el progreso, el Estado como 'mal necesario'.</li>
-<li><b>Coinciden en dos cosas</b>: defensa a ultranza de la propiedad privada y recelo frente a las masas. Eso permitió la fórmula: liberales en lo económico, conservadores en lo político.</li>
-<li>Pregunta a los estudiantes: ¿qué escuela querría alguien que desconfía de las masas pero necesita un país 'moderno'?</li></ul>">
-  <div class="kicker">Parada 1 · El poder</div>
-  <h2>¿Qué es un «conservador liberal»?</h2>
-  <svg viewBox="0 0 1150 565" style="width:100%;flex:1">
-<circle cx="430" cy="275" r="230" fill="#D9B8C4" fill-opacity=".75" stroke="#8B4513" stroke-width="3"/>
-<circle cx="720" cy="275" r="230" fill="#AEC6CF" fill-opacity=".75" stroke="#8B4513" stroke-width="3"/>
-<text x="345" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#5A2E0E">CONSERVADURISMO</text><text x="805" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#5A2E0E">LIBERALISMO</text>
-<text x="355" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">Valor de la <tspan font-weight="700">tradición</tspan></text><text x="355" y="185" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E"><tspan font-weight="700">Jerarquías</tspan> sociales</text><text x="355" y="210" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">(«orden natural»)</text>
-<text x="355" y="255" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">Familia <tspan font-weight="700">patriarcal</tspan></text><text x="355" y="300" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">Mira al <tspan font-weight="700">pasado</tspan></text>
-<text x="355" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#5A2E0E">Reacción ante los cambios</text><text x="355" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#5A2E0E">de la modernidad</text>
-<text x="795" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">El <tspan font-weight="700">individuo</tspan> libre</text><text x="795" y="170" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">es el sujeto político</text><text x="795" y="215" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">Libertad «negativa»</text>
-<text x="795" y="260" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">Confía en el <tspan font-weight="700">progreso</tspan></text><text x="795" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">Estado = «mal necesario»</text>
-<text x="795" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#5A2E0E">Una expresión</text><text x="795" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#5A2E0E">de la modernidad</text>
-<text x="575" y="175" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#6E4C8A">LO QUE</text><text x="575" y="195" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#6E4C8A">COMPARTEN</text>
-<text x="575" y="240" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E"><tspan font-weight="700">Propiedad</tspan></text><text x="575" y="262" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E"><tspan font-weight="700">privada</tspan></text><text x="575" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E"><tspan font-weight="700">Recelo frente</tspan></text><text x="575" y="327" text-anchor="middle" font-family="Inter" font-size="20"   fill="#5A2E0E">a las <tspan font-weight="700">masas</tspan></text>
-<rect x="95" y="522" width="960" height="38" rx="19" fill="#E8D7F1" stroke="#6E4C8A" stroke-width="2.5"/>
-<text x="575" y="548" text-anchor="middle" font-family="Inter" font-size="20" font-weight="700"  fill="#6E4C8A">Liberalismo económico + conservadurismo político = fórmula de las élites argentinas</text>
-</svg>
-  <span class="fuente">Fuente: «Historia de los partidos políticos. Los conservadores liberales» (educ.ar)</span><span class="num">4</span>
-</section>
-
-<!-- 5 REGIMEN PAN -->
-<section class="slide" data-notes="
-<b>Para decir (3 min)</b><ul>
-<li>Último tercio del siglo XIX: las élites se asocian en el <b>Partido Autonomista Nacional</b>. Con eso terminan los grandes conflictos entre facciones liberales.</li>
-<li>Los cargos se reparten por <b>devolución de favores, intereses económicos y parentesco</b>.</li>
-<li>Los ciudadanos <b>no elegían</b> a sus representantes: el gobierno controlaba los comicios con fraude.</li>
-<li>Es el contexto del capítulo 2 de <i>Historia Argentina</i>: «una Argentina con derechos para pocos».</li>
-<li>Idea clave para pasar a la escuela: <b>una élite que no quiere compartir el poder, pero que necesita población alfabetizada y disciplinada</b>.</li></ul>">
-  <div class="kicker">Parada 1 · El poder</div>
-  <h2>El régimen: cómo se sostenía el orden conservador</h2>
-  <p class="lead">Modelo agroexportador + Partido Autonomista Nacional (PAN).</p>
-  <div class="row" style="align-items:stretch;flex:1;margin-bottom:26px">
-    <div class="box grow" style="background:var(--manteca)"><h3>1. Élites económicas</h3><ul><li>Sectores privilegiados</li><li>Modelo agroexportador</li></ul></div>
-    <div class="arrow">➜</div>
-    <div class="box grow" style="background:var(--malva)"><h3>2. El PAN</h3><ul><li>Asocia a los sectores dominantes</li><li>Termina la pelea entre facciones liberales</li></ul></div>
-    <div class="arrow">➜</div>
-    <div class="box grow" style="background:var(--durazno)"><h3>3. Reparto de cargos</h3><ul><li>Devolución de favores</li><li>Intereses económicos</li><li>Parentesco</li></ul></div>
-    <div class="arrow">➜</div>
-    <div class="box grow" style="background:var(--azul)"><h3>4. Elecciones controladas</h3><ul><li>El gobierno controla los comicios</li><li>Fraude</li></ul></div>
-  </div>
-  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:23px;font-family:'Playfair Display',serif;margin-bottom:18px">Resultado: una Argentina con derechos para pocos</div>
-  <span class="fuente">Fuentes: educ.ar · <i>Historia Argentina</i>, cap. 2 (pp. 50-64)</span><span class="num">5</span>
-</section>
-
-<!-- 6 ESCUELA PARA QUE -->
-<section class="slide" data-notes="
-<b>Para decir (3 min)</b><ul>
-<li>Del video del Congreso/Ley 1420: la élite <b>quería y temía</b> la inmigración. Era a la vez problema, aspiración y utopía.</li>
-<li>Resultado: la escuela cumple <b>dos funciones a la vez</b>, y entre ellas hay tensión.</li>
-<li>Una, <b>control social</b>: integrar y ordenar a una población nueva y diversa. Otra, <b>formación del ciudadano</b>: ciudadanía, identidad y pertenencia nacional.</li>
-<li>Una especialista del video dice que el debate sobre escuela laica o católica <b>escondía el debate profundo por el poder</b>.</li>
-<li>Esta doble cara es la que después se ve en el diálogo: la directora defiende la primera, la maestra socialista empuja la segunda y más.</li></ul>">
-  <div class="kicker">Parada 2 · La ley</div>
-  <h2>La escuela pública: dos caras de una misma institución</h2>
-  <div style="flex:1;display:flex;align-items:center">
-    <svg viewBox="0 0 1150 440" style="width:100%">
-      <rect x="40" y="165" width="300" height="110" rx="18" fill="#F3C2A0" stroke="#8B4513" stroke-width="3"/>
-      <text x="190" y="210" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#5A2E0E">Una élite que</text>
-      <text x="190" y="242" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#5A2E0E">quiere y teme</text>
-      <text x="190" y="262" text-anchor="middle" font-family="Inter" font-size="16" fill="#5A2E0E">la inmigración y a las masas</text>
-      <path d="M340 220 H430" stroke="#6E4C8A" stroke-width="4" marker-end="url(#a)"/>
-      <defs><marker id="a" markerWidth="12" markerHeight="12" refX="8" refY="6" orient="auto"><path d="M0 0 L10 6 L0 12 z" fill="#6E4C8A"/></marker></defs>
-      <rect x="430" y="150" width="270" height="140" rx="70" fill="#E8D7F1" stroke="#6E4C8A" stroke-width="4"/>
-      <text x="565" y="212" text-anchor="middle" font-family="Playfair Display" font-size="30" font-weight="700" fill="#6E4C8A">ESCUELA</text>
-      <text x="565" y="246" text-anchor="middle" font-family="Playfair Display" font-size="30" font-weight="700" fill="#6E4C8A">PÚBLICA</text>
-      <path d="M660 175 L780 90" stroke="#6E4C8A" stroke-width="4" marker-end="url(#a)"/>
-      <path d="M660 265 L780 350" stroke="#6E4C8A" stroke-width="4" marker-end="url(#a)"/>
-      <rect x="780" y="25" width="340" height="140" rx="18" fill="#D9B8C4" stroke="#8B4513" stroke-width="3"/>
-      <text x="950" y="65" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#5A2E0E">Instrumento de control</text>
-      <text x="950" y="100" text-anchor="middle" font-family="Inter" font-size="19" fill="#5A2E0E">Ordenar y homogeneizar</text>
-      <text x="950" y="126" text-anchor="middle" font-family="Inter" font-size="19" fill="#5A2E0E">a la sociedad</text>
-      <rect x="780" y="275" width="340" height="140" rx="18" fill="#B8CBB0" stroke="#8B4513" stroke-width="3"/>
-      <text x="950" y="315" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#5A2E0E">Formación ciudadana</text>
-      <text x="950" y="350" text-anchor="middle" font-family="Inter" font-size="19" fill="#5A2E0E">Derechos básicos, identidad</text>
-      <text x="950" y="376" text-anchor="middle" font-family="Inter" font-size="19" fill="#5A2E0E">y pertenencia nacional</text>
-      <text x="565" y="395" text-anchor="middle" font-family="Inter" font-size="20" font-style="italic" fill="#8B4513">El debate «laica o católica»</text>
-      <text x="565" y="420" text-anchor="middle" font-family="Inter" font-size="20" font-style="italic" fill="#8B4513">escondía una disputa por el poder</text>
-    </svg>
-  </div>
-  <span class="fuente">Fuente: video sobre el Congreso Pedagógico y la Ley 1420</span><span class="num">6</span>
-</section>
-
-<!-- 7 CONGRESO -->
-<section class="slide" data-notes="
-<b>Para decir (4 min)</b><ul>
-<li>1880: se capitaliza Buenos Aires y la Nación se hace cargo de las escuelas de la ciudad. Roca crea el <b>Consejo Nacional de Educación</b> y lo rodea de vocales católicos, también para controlar a Sarmiento.</li>
-<li><b>11 de abril de 1882</b>: primer Congreso Pedagógico, en Plaza Miserere. <b>125 educadores</b>, con delegaciones de otros países.</li>
-<li><b>Escena para contar</b>: Sarmiento, presidente honorario, no va y critica en el diario que cuestiones de Estado y de ciencia las resuelva una mayoría de 'señoras apenas preparadas'.</li>
-<li>Los católicos se retiran (15 congresistas) porque no se incluye la religión. Esperaban el apoyo de las maestras, pero <b>las maestras apoyaron la continuidad</b>. Quince días después, Sarmiento cambia el tono: las maestras 'se pusieron de pie con decisión'.</li>
-<li>Acuerdo: común, obligatoria, graduada, gratuita. Desacuerdo irreconciliable: la <b>laicidad</b>.</li></ul>">
-  <div class="kicker">Parada 2 · La ley</div>
-  <h2>Congreso Pedagógico, 1882: las maestras entran en escena</h2>
-  <div class="row" style="flex:1;margin-top:8px">
-    <div style="flex:1.25;border-left:4px solid var(--ciruela);padding-left:22px;display:flex;flex-direction:column;justify-content:space-between;margin-bottom:22px">
-      <div><b style="color:var(--ciruela);font-size:18px">1880</b><div style="font-size:22px">Se capitaliza Buenos Aires. Roca crea el <b>Consejo Nacional de Educación</b> con vocales católicos.</div></div>
-      <div><b style="color:var(--ciruela);font-size:18px">11 DE ABRIL DE 1882</b><div style="font-size:22px">Primer <b>Congreso Pedagógico</b> en Plaza Miserere: <b>125 educadores</b> de provincias y de otros países.</div></div>
-      <div><b style="color:var(--ciruela);font-size:18px">EN EL CONGRESO</b><div style="font-size:22px">Sarmiento (presidente honorario) no asiste y critica la cantidad de <b>maestras</b>: «señoras apenas preparadas».</div></div>
-      <div><b style="color:var(--ciruela);font-size:18px">EL QUIEBRE</b><div style="font-size:22px">Se retiran 15 congresistas católicos. <b>Las maestras apoyan seguir</b> y Sarmiento celebra que «se pusieron de pie».</div></div>
-    </div>
-    <div style="flex:1;display:flex;flex-direction:column;gap:14px;margin-bottom:22px">
-      <div class="box" style="background:var(--salvia)"><h3>Hubo acuerdo</h3><ul><li>Común</li><li>Obligatoria (nivel primario)</li><li>Graduada (por cursos y edades)</li><li>Gratuita</li></ul></div>
-      <div class="box" style="background:var(--malva)"><h3>No hubo acuerdo</h3><ul><li><b>Laicidad</b>: ¿se enseña religión en la escuela?</li></ul></div>
-    </div>
-  </div>
-  <span class="fuente">Fuente: video sobre el Congreso Pedagógico y la Ley 1420</span><span class="num">7</span>
-</section>
-
-<!-- 8 LEY 1420 -->
-<section class="slide" data-notes="
-<b>Para decir (4 min)</b><ul>
-<li>Sancionada el <b>8 de julio de 1884</b>. Aunque ya no rige, dejó una huella enorme en el sistema escolar.</li>
-<li><b>Católicos y liberales</b>: no eran dos bloques homogéneos. El conflicto fuerte fue por la religión. Terminó ganando la posición liberal: la religión puede enseñarse <b>solo fuera del horario de clase</b> y por ministros de cada culto.</li>
-<li>Los catorce artículos importan: el art. 14 dice que las clases se alternan con recreos, ejercicio físico y canto. <b>Los castigos corporales quedan prohibidos.</b></li>
-<li>El video usa dos objetos: el disciplinador (látigo) y la regla de geometría usada para pegar. Se pasa de una educación basada en el castigo a una basada en la enseñanza.</li>
-<li>Currículo: ya no sólo leer, escribir y contar. Aparecen geometría, ciencias, educación física.</li></ul>">
-  <div class="kicker">Parada 2 · La ley</div>
-  <h2>Ley 1420 (1884): una escuela para todos y todas</h2>
-  <div class="row" style="margin:10px 0 16px">
-    <div class="box grow" style="background:var(--azul);text-align:center"><h3>Común</h3><div style="font-size:21px">Para toda la población</div></div>
-    <div class="box grow" style="background:var(--turquesa);text-align:center"><h3>Obligatoria</h3><div style="font-size:21px">Nivel primario</div></div>
-    <div class="box grow" style="background:var(--salvia);text-align:center"><h3>Gratuita</h3><div style="font-size:21px">Sin costo para las familias</div></div>
-    <div class="box grow" style="background:var(--manteca);text-align:center"><h3>Gradual</h3><div style="font-size:21px">Cursos o grados por edad</div></div>
-    <div class="box grow" style="background:var(--lila);text-align:center"><h3>Laica</h3><div style="font-size:21px">Religión fuera del horario de clase</div></div>
-  </div>
-  <div class="row" style="flex:1;align-items:stretch;margin-bottom:20px">
-    <div class="box grow" style="background:var(--arena)"><h3>Antes</h3><ul><li>Enseñanza: leer, escribir, contar y catecismo</li><li>La disciplina era un látigo («descolgar las disciplinas»)</li><li>Preceptores, convento o cabildo, sin aulas ni pupitres</li></ul></div>
-    <div class="arrow">➜</div>
-    <div class="box grow" style="background:var(--marfil)"><h3>Después</h3><ul><li>Geometría, ciencias, educación física, lecciones de cosas</li><li>Castigos corporales prohibidos</li><li>Recreos, ejercicio físico y canto (art. 14)</li></ul></div>
-  </div>
-  <span class="fuente">Fuente: video sobre el Congreso Pedagógico y la Ley 1420</span><span class="num">8</span>
-</section>
-
-<!-- 9 CATOLICOS Y LIBERALES -->
-<section class="slide" data-notes="
-<b>Para decir (2 min)</b><ul>
-<li>El debate de fondo fue <b>cómo se ve el Estado y la religión</b>. Ni los católicos ni los liberales eran bloques homogéneos.</li>
-<li>Católicos: sin religión la escuela sería atea y bajaría el nivel moral de la población.</li>
-<li>Liberales (Eduardo Wilde, ministro): la enseñanza religiosa sería atraso e intolerancia, y excluiría a los extranjeros.</li>
-<li>Roca prefería una escuela laica para vincularse con otras naciones y <b>atraer inmigración</b>. Mirada de la oligarquía: educación para un país abierto, pero ordenado.</li>
-<li>Pregunta: ¿qué ganaba y qué perdía cada sector?</li></ul>">
-  <div class="kicker">Parada 2 · La ley</div>
-  <h2>El gran debate: ¿escuela laica o escuela con religión?</h2>
-  <div class="row" style="flex:1;margin-top:10px;margin-bottom:22px">
-    <div class="box grow" style="background:var(--malva)"><h3>Posición católica</h3><ul><li>Sin religión, la escuela sería <b>atea</b></li><li>Habría una «catástrofe moral» en la población</li><li>Bajaría el nivel de civilización</li><li>Opositores en el Congreso: Estrada, Goyena, Van Gelderen</li></ul></div>
-    <div class="box grow" style="background:var(--azul)"><h3>Posición liberal</h3><ul><li>Enseñar religión sería <b>atraso e intolerancia</b></li><li>Excluiría a los extranjeros</li><li>Frenaría el progreso de la joven nación</li><li>Referente: Eduardo Wilde (ministro). Roca la apoyó para atraer inmigración</li></ul></div>
-  </div>
-  <div class="box" style="background:var(--lila);border-color:var(--ciruela);font-size:25px;margin-bottom:20px">Se resolvió así: religión sólo <b>antes o después de las horas de clase</b>, a cargo de ministros de cada culto.</div>
-  <span class="fuente">Fuente: video sobre el Congreso Pedagógico y la Ley 1420</span><span class="num">9</span>
-</section>
-
-<!-- 10 ESCUELA NUEVA -->
-<section class="slide" data-notes="
-<b>Para decir (5 min)</b><ul>
-<li>Tras la Primera Guerra, entre los años 20 y 30, llegan a la Argentina propuestas pedagógicas de Europa y EEUU: la <b>Escuela Nueva</b>. Raíces: Rousseau, Pestalozzi, Fröbel, Tolstoi.</li>
-<li>Proponía otra relación docente/alumno: en el siglo XIX había distancia y obediencia a veces autoritaria.</li>
-<li><b>Siete principios de Adolphe Ferrière</b>, pedagogo suizo que visitó Argentina. En el video aparecen: respeto por la individualidad del niño, disciplina y cooperación, instrucción común para ambos sexos (coeducación) y ciudadanía plena.</li>
-<li><b>Paidocentrismo</b>: el centro pasa a ser el alumno y el docente pierde centralidad.</li>
-<li>Cambios concretos: pupitres móviles, imprenta escolar, cuaderno de clase único, sin tarima, arte y dibujo libre, centros de interés en lugar de asignaturas.</li>
-<li>Adriana Puiggrós distingue tres grupos: <b>orgánicos</b> (dentro del sistema), <b>transgresores</b> (cambian currículo y prácticas) y <b>radicalizados</b> (quieren que la escuela cambie la sociedad).</li>
-<li>Críticas de otros historiadores: no cambió el alcance, los contenidos ni la estructura del sistema. Se dio desde la escuela pública. En los años 30 la Iglesia recupera peso y se suman rituales militares.</li></ul>">
-  <div class="kicker">Parada 3 · Las disputas</div>
-  <h2>Escuela Nueva: el niño en el centro</h2>
-  <div class="row" style="flex:1;margin-top:8px;margin-bottom:22px">
-    <div class="box grow" style="background:var(--salvia)"><h3>Principios (Ferrière)</h3><ul><li>Respeto por la <b>individualidad</b> del niño</li><li>Disciplina y <b>cooperación</b></li><li><b>Coeducación</b>: niños y niñas juntos</li><li>Ciudadanía: ser humano pleno</li><li><b>Paidocentrismo</b></li></ul></div>
-    <div class="box grow" style="background:var(--manteca)"><h3>Cambios en el aula</h3><ul><li>Pupitres móviles</li><li>Imprenta en la escuela</li><li>Cuaderno de clase único</li><li>Sin tarima docente</li><li>Arte, dibujo y composición libre</li><li>Centros de interés</li></ul></div>
-    <div class="box grow" style="background:var(--lila)"><h3>Tres grupos (Puiggrós)</h3><ul><li><b>Orgánicos</b>: dentro del sistema</li><li><b>Transgresores</b>: cambian currículo y prácticas</li><li><b>Radicalizados</b>: la escuela cambia la sociedad</li></ul><div style="font-size:17px;margin-top:8px;color:var(--tinta-suave)"><b>Críticas:</b> no amplió el alcance ni cambió la estructura del sistema.</div></div>
-  </div>
-  <span class="fuente">Fuente: video sobre Escuela Nueva</span><span class="num">10</span>
-</section>
-
-<!-- 11 TABLA COMPARATIVA -->
-<section class="slide" data-notes="
-<b>Para decir (4 min)</b><ul>
-<li>Este es el cuadro que ordena todo. Lo leemos <b>por filas</b>, no por columnas.</li>
-<li><b>Tradicional</b>: pedagogía herbartiana, 'la ciencia de enseñar'. Sistematizó la pedagogía en la segunda mitad del siglo XIX (cita de Dono Rubio y Lázzari en tu Wix).</li>
-<li><b>Escuela Nueva</b>: el centro es el niño. Cambia el aula cotidiana, pero (según las críticas) menos la estructura.</li>
-<li><b>Libertaria y socialista</b>: esta columna es la más abierta. En tus fuentes aparecen como ejemplos Brumana (socialista y anarquista) y Fossatti (escuela laica, democrática y autogestiva). ⚠ Completala con el recurso de la estación sobre escuela anarquista.</li>
-<li>Pregunta para el aula: ¿en qué columna estaba su escuela primaria?</li></ul>">
-  <div class="kicker">Parada 3 · Las disputas</div>
-  <h2>Tres modelos de escuela, cara a cara</h2>
-  <table style="margin-top:6px">
-    <tr><th></th><th style="background:var(--arena)">Tradicional (normalista)</th><th style="background:var(--salvia)">Escuela Nueva</th><th style="background:var(--durazno)">Libertaria y socialista*</th></tr>
-    <tr><td>Centro</td><td>El docente y el contenido</td><td>El niño (paidocentrismo)</td><td>La comunidad y la emancipación</td></tr>
-    <tr><td>Vínculo</td><td>Distancia y obediencia</td><td>Respeto y cooperación</td><td>Horizontal y solidario</td></tr>
-    <tr><td>Aula</td><td>Tarima, hileras de pupitres</td><td>Pupitres móviles, imprenta, arte</td><td>Autogestión, escuela laica y democrática</td></tr>
-    <tr><td>Para qué</td><td>Ordenar e integrar a la población</td><td>Formar un ser humano pleno</td><td>Que la escuela cambie a la sociedad</td></tr>
-    <tr><td>Ejemplos</td><td>Herbartismo, normalismo</td><td>Ferrière, Escuela Serena</td><td>Brumana, Fossatti</td></tr>
+<section class="slide " data-notes="<b>Para decir (4 min)</b><ul>
+<li>Cada fila sale de lo que dicen los personajes. No son 'la buena' y 'la mala': son dos <b>proyectos de escuela y de sociedad</b>.</li>
+<li>La directora representa la mirada que organizó el sistema: tradición, autoridad, escuela para 'enseñar nuestra cultura'. Por eso en la alternativa habla de 'ideas extranjeras subversivas'.</li>
+<li>La maestra socialista pide que la escuela se haga cargo de la realidad de los chicos: en las casas la comida no alcanza y el casero apura con alquileres altísimos.</li>
+<li><b>Pregunta al grupo</b>: ¿quién decide qué entra al aula y qué queda afuera?</li></ul>">
+  <div class="kicker">Las dos miradas</div>
+  <h2>Dos miradas sobre para qué sirve la escuela</h2>
+  <table style="margin-top:4px;font-size:25px"><tr><th></th><th style="background:var(--malva)">Directora conservadora</th><th style="background:var(--lila)">Maestra socialista</th></tr>
+    <tr><td>Para qué sirve</td><td>Enseñar «nuestra cultura» y formar «personas de bien»</td><td>Promover el <b>diálogo y la solidaridad</b></td></tr>
+    <tr><td>Los niños y la política</td><td>«Temas de adultos»: no tienen edad para debatir</td><td>Hablar de lo que pasa: <b>ya lo traen de sus casas</b></td></tr>
+    <tr><td>Valores</td><td><b>Tradición y autoridad</b></td><td><b>Participación, justicia, derechos</b></td></tr>
+    <tr><td>Lo que la inquieta</td><td>«Ideologías» e «ideas extranjeras subversivas»</td><td>Que la escuela calle: «si acá no enseñamos, ¿dónde?»</td></tr>
   </table>
-  <div style="font-size:15px;color:var(--tinta-suave);margin-top:10px">*Columna armada con los ejemplos de la estación (Brumana y Fossatti). Entre todos y todas la vamos a completar con el recurso sobre escuela anarquista.</div>
-  <span class="fuente">Fuentes: Dono Rubio y Lázzari (2005) · videos y sitio de la estación</span><span class="num">11</span>
+  <span class="fuente">Fuente: diálogo de la estación Escuela (mapa interactivo)</span>
+  <span class="num">0</span>
 </section>
 
-<!-- 12 MAESTRAS 1 -->
-<section class="slide" data-notes="
-<b>Para decir (3 min)</b><ul>
-<li><b>Juana Manso</b>: nació en Buenos Aires en 1819, vivió en Montevideo, Río de Janeiro, Estados Unidos y Cuba. Volvió definitivamente en 1859. Conoció a Sarmiento y fue la primera mujer funcionaria pública.</li>
-<li><b>Sara Eccleston</b>: estadounidense (1840-1916), una de las docentes contratadas por el Estado argentino. Llegó en 1884. Pionera de los jardines de infantes.</li>
-<li><b>Rosario Vera Peñaloza</b> (1873-1950): de familia tradicional riojana. Educación común, jardines de infantes y perfeccionamiento docente.</li>
-<li>Estas tres <b>construyen el sistema</b> que la Ley 1420 consolida.</li>
-<li>⚠ Las ideas pedagógicas de las tres no figuran en tu Wix. Si querés, las ampliamos.</li></ul>">
-  <div class="kicker">Parada 4 · Las maestras (1 de 2)</div>
-  <h2>Las que construyeron el sistema</h2>
-  <div class="row" style="flex:1;margin-top:10px;margin-bottom:22px">
-    <div class="maestra"><header style="background:var(--azul)"><div class="ini">J</div><div><h3>Juana Manso</h3><div class="vida">Buenos Aires, 1819</div></div></header><div class="body"><p>Vivió en Montevideo, Río de Janeiro, Estados Unidos y Cuba.</p><p>Vuelve definitivamente a Buenos Aires en <b>1859</b>.</p><p>Conoce a Sarmiento. Es la <b>primera mujer funcionaria pública</b>.</p></div></div>
-    <div class="maestra"><header style="background:var(--turquesa)"><div class="ini">S</div><div><h3>Sara Eccleston</h3><div class="vida">EE. UU. 1840 – Buenos Aires 1916</div></div></header><div class="body"><p>Docente <b>contratada por el Estado</b> argentino a fines del siglo XIX. Llega en 1884.</p><p>Pionera de la educación inicial: «la Abuela de los Jardines de Infantes».</p></div></div>
-    <div class="maestra"><header style="background:var(--manteca)"><div class="ini">R</div><div><h3>Rosario Vera Peñaloza</h3><div class="vida">1873 – 1950 · La Rioja</div></div></header><div class="body"><p>De familias tradicionales de la política y los militares riojanos.</p><p>Dedicada a la <b>educación común</b>, a la creación de <b>jardines de infantes</b> y al perfeccionamiento docente.</p></div></div>
+<section class="slide " data-notes="<b>Para decir (6-8 min)</b><ul>
+<li>En teoría política, <b>conservadurismo</b> y <b>liberalismo</b> son identidades distintas y a veces opuestas. Se pregunta: ¿cómo pudieron gobernar juntos?</li>
+<li><b>Conservadurismo</b>: nace como respuesta a las transformaciones de la modernidad (Revolución Francesa e Industrial). Defiende la tradición, las jerarquías sociales ('orden natural'), la familia patriarcal y la propiedad privada.</li>
+<li><b>Liberalismo</b>: es una expresión de la modernidad. El individuo es el sujeto político, la libertad es 'negativa' (hago lo que quiero mientras no afecte la libertad de otro), confía en el progreso y ve al Estado como un 'mal necesario'.</li>
+<li><b>Coinciden en dos puntos</b>: la defensa a ultranza de la propiedad privada y el recelo frente a las masas. Eso permitió la fórmula: <b>liberales en lo económico, conservadores en lo político</b>.</li>
+<li>Del video: 'en un punto son contradictorios, pero en la Argentina caminaron juntos bastante tiempo. Eran conservadores en unas cosas y liberales en otras'.</li>
+<li><b>Pregunta al grupo</b>: ¿qué escuela, qué policía, qué hospital querría alguien que desconfía de las masas pero necesita un país 'moderno'?</li>
+<li>Conexión con el diálogo: «respeto a la tradición y a la autoridad» y «son temas de adultos» son frases conservadoras clásicas (jerarquías, orden natural, recelo frente a las masas). La escuela, a la vez, es una institución moderna y liberal: obligatoria, gratuita, común.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 1. ¿Quiénes son y qué creen?</div>
+  <h2>El orden conservador liberal</h2>
+  <svg viewBox="0 0 1150 565" style="width:100%;flex:1">
+<circle cx="430" cy="275" r="230" fill="#C9CCF0" fill-opacity=".75" stroke="#2F3E5C" stroke-width="3"/>
+<circle cx="720" cy="275" r="230" fill="#BFD8EE" fill-opacity=".75" stroke="#2F3E5C" stroke-width="3"/>
+<text x="345" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#1B2742">CONSERVADURISMO</text><text x="805" y="32" text-anchor="middle" font-family="Playfair Display" font-size="28" font-weight="700"  fill="#1B2742">LIBERALISMO</text>
+<text x="355" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Valor de la <tspan font-weight="700">tradición</tspan></text><text x="355" y="185" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Jerarquías</tspan> sociales</text><text x="355" y="210" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">(«orden natural»)</text>
+<text x="355" y="255" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Familia <tspan font-weight="700">patriarcal</tspan></text><text x="355" y="300" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Mira al <tspan font-weight="700">pasado</tspan></text>
+<text x="355" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">Reacción ante los cambios</text><text x="355" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">de la modernidad</text>
+<text x="795" y="145" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">El <tspan font-weight="700">individuo</tspan> libre</text><text x="795" y="170" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">es el sujeto político</text><text x="795" y="215" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Libertad «negativa»</text>
+<text x="795" y="260" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Confía en el <tspan font-weight="700">progreso</tspan></text><text x="795" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">Estado = «mal necesario»</text>
+<text x="795" y="350" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">Una expresión</text><text x="795" y="372" text-anchor="middle" font-family="Inter" font-size="17"  font-style="italic" fill="#1B2742">de la modernidad</text>
+<text x="575" y="175" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#4A4FA3">LO QUE</text><text x="575" y="195" text-anchor="middle" font-family="Inter" font-size="17" font-weight="700"  fill="#4A4FA3">COMPARTEN</text>
+<text x="575" y="240" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Propiedad</tspan></text><text x="575" y="262" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">privada</tspan></text><text x="575" y="305" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742"><tspan font-weight="700">Recelo frente</tspan></text><text x="575" y="327" text-anchor="middle" font-family="Inter" font-size="20"   fill="#1B2742">a las <tspan font-weight="700">masas</tspan></text>
+<rect x="95" y="522" width="960" height="38" rx="19" fill="#E3DAF4" stroke="#4A4FA3" stroke-width="2.5"/>
+<text x="575" y="548" text-anchor="middle" font-family="Inter" font-size="20" font-weight="700"  fill="#4A4FA3">Liberalismo económico + conservadurismo político = fórmula de las élites argentinas</text>
+</svg>
+  <div class="lens"><b>En esta estación:</b> la directora habla desde la <b>tradición y la autoridad</b>; la escuela pública nace en este régimen.</div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=S5yFB5Tg514" target="_blank" rel="noopener">video Ley 1420</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (6-8 min)</b><ul>
+<li><b>1874</b>: el Partido Nacional de Avellaneda y el Partido Autonomista de Alsina se unen y forman el <b>Partido Autonomista Nacional (PAN)</b>. Antes, en 1861, Mitre había impuesto en Pavón la hegemonía de Buenos Aires y los liberales se dividieron por el destino de la ciudad y su aduana.</li>
+<li><b>1880</b>: Roca es elegido presidente (11 de abril). Tejedor, gobernador de Buenos Aires, no acepta la derrota y encabeza una revolución: unos 20.000 hombres, 6.000 muertos según el video. Buenos Aires se federaliza. Roca gobierna con el lema <b>'paz y administración'</b>: asegurar el orden político para conseguir el progreso. Se consolida el <b>modelo agroexportador</b>.</li>
+<li><b>1890</b>: Revolución del Parque (26 de julio): la Unión Cívica de Alem y Mitre reclama respeto a las instituciones y elecciones limpias. La sofocan, pero el presidente (Juárez Celman) renuncia por la crisis financiera. ⚠ El video escribe 'Juárez Zelman'; el apellido es Juárez Celman.</li>
+<li><b>1910-16</b>: Sáenz Peña impulsa la reforma: padrón único, voto secreto y obligatorio, lista incompleta. El 2 de abril de 1916 gana Yrigoyen: <b>termina un período de 35 años</b> de gobiernos conservadores liberales.</li>
+<li><b>1930</b>: los conservadores apoyan el primer golpe de Estado (Uriburu). En los años 30 vuelven con el llamado <b>'fraude patriótico'</b>: por eso se la conoce como década infame.</li>
+<li>Los nodos oscuros son los hechos de ESTA estación: mostrar cómo se insertan dentro del mismo régimen.</li>
+<li><b>Pregunta al grupo</b>: ¿qué cambia para la gente común cuando las elecciones 'solo convalidan lo que está decidido de antemano'?</li>
+<li><b>El Congreso Pedagógico (11 de abril de 1882)</b>: en Plaza Miserere, 125 educadores de provincias y de otros países. Sarmiento, presidente honorario, no va y critica la cantidad de maestras ('señoras apenas preparadas'). Se retiran 15 congresistas católicos porque no se incluye la religión; <b>las maestras apoyan seguir</b> y Sarmiento cambia el tono: 'se pusieron de pie con decisión'. Se acuerda: común, obligatoria, graduada, gratuita. No hay acuerdo en la laicidad.</li>
+<li><b>La Ley 1420 (8 de julio de 1884)</b> la discute el Congreso nacional. Triunfa la posición liberal: la religión puede enseñarse solo antes o después de las horas de clase, por ministros de cada culto.</li>
+<li>Años 20-30: llega la Escuela Nueva (nodo verde): es la mirada que vamos a ver desde la diapositiva 7.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 2. ¿Qué pasó?</div>
+  <h2>35 años de gobiernos conservadores liberales</h2>
+  <svg viewBox="0 0 1150 400" style="width:100%;flex:1"><line x1="30" y1="185" x2="1120" y2="185" stroke="#2F3E5C" stroke-width="3"/><circle cx="100" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="100" y1="172" x2="100" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="100" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Se forma el PAN</text><text x="100" y="105" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1874</text><circle cx="235.71428571428572" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="235.71428571428572" y1="198" x2="235.71428571428572" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="235.71428571428572" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1880</text><text x="235.71428571428572" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Roca: «paz y</text><text x="235.71428571428572" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">administración»</text><circle cx="371.42857142857144" cy="185" r="16" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="3"/><line x1="371.42857142857144" y1="172" x2="371.42857142857144" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="371.42857142857144" y="111" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">Congreso Pedagógico</text><text x="371.42857142857144" y="133" text-anchor="middle" font-family="Inter" font-size="18" font-weight="700" fill="#1B2742">y Ley 1420</text><text x="371.42857142857144" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1882-84</text><circle cx="507.14285714285717" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="507.14285714285717" y1="198" x2="507.14285714285717" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="507.14285714285717" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1890</text><text x="507.14285714285717" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Revolución del Parque</text><text x="507.14285714285717" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">y Unión Cívica</text><circle cx="642.8571428571429" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="642.8571428571429" y1="172" x2="642.8571428571429" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="642.8571428571429" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Sáenz Peña y</text><text x="642.8571428571429" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">triunfo de Yrigoyen</text><text x="642.8571428571429" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1910-16</text><circle cx="778.5714285714287" cy="185" r="13" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="3"/><line x1="778.5714285714287" y1="198" x2="778.5714285714287" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="778.5714285714287" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">Años 20-30</text><text x="778.5714285714287" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Llega la</text><text x="778.5714285714287" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Escuela Nueva</text><circle cx="914.2857142857143" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="914.2857142857143" y1="172" x2="914.2857142857143" y2="149" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="914.2857142857143" y="111" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">Primer golpe</text><text x="914.2857142857143" y="133" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">de Estado</text><text x="914.2857142857143" y="83" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">1930</text><circle cx="1050" cy="185" r="13" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="3"/><line x1="1050" y1="198" x2="1050" y2="221" stroke="#2F3E5C" stroke-width="1.5" stroke-dasharray="4 3"/><text x="1050" y="253" text-anchor="middle" font-family="Playfair Display" font-size="26" font-weight="700" fill="#4A4FA3">Años 30</text><text x="1050" y="279" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">«Fraude patriótico»:</text><text x="1050" y="301" text-anchor="middle" font-family="Inter" font-size="18"  fill="#1B2742">década infame</text><circle cx="60" cy="380" r="9" fill="#C9CCF0" stroke="#2F3E5C" stroke-width="2.5"/><text x="78" y="386" font-family="Inter" font-size="16" fill="#1B2742">El régimen conservador liberal</text><circle cx="400" cy="380" r="11" fill="#4A4FA3" stroke="#2F3E5C" stroke-width="2.5"/><text x="420" y="386" font-family="Inter" font-size="16" fill="#1B2742">Lo que vemos en esta estación</text><circle cx="740" cy="380" r="9" fill="#C6E3DA" stroke="#2F3E5C" stroke-width="2.5"/><text x="758" y="386" font-family="Inter" font-size="16" fill="#1B2742">Otras miradas que aparecen</text></svg>
+  <div class="lens"><b>En esta estación:</b> el <b>Congreso Pedagógico (1882)</b> y la <b>Ley 1420 (1884)</b> ocurren dentro de este régimen.</div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=S5yFB5Tg514" target="_blank" rel="noopener">video Ley 1420</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (8-10 min)</b><ul>
+<li>El mecanismo (fila de arriba) es el mismo en todas las estaciones: <b>modelo agroexportador → PAN → elecciones controladas → represión y negociación</b>.</li>
+<li><b>Modelo agroexportador</b>: durante el gobierno de Roca se consolida y beneficia sobre todo a los grandes terratenientes y a sectores de la burguesía, socios del capital extranjero. Las élites locales apoyan al presidente y se esfuerzan por mantener ese orden.</li>
+<li><b>PAN</b>: el único partido capaz de alcanzar el poder; es el espacio donde se relacionan los gobernadores, el presidente y quien aspira a sucederlo. Los cargos se reparten por devolución de favores políticos, intereses económicos y parentesco. Las elecciones solo convalidan lo decidido de antemano.</li>
+<li><b>Frente a los reclamos</b>: cuando Roca vuelve en 1898 encuentra una sociedad distinta, con conflictos: la clase obrera reclama derechos, los inmigrantes traen ideas socialistas y anarquistas, los radicales piden reforma política. Responde con 'una mezcla de represión y negociación' y reformas que 'no modifican la raíz de las desigualdades'.</li>
+<li><b>Resultado</b>: una Argentina con derechos para pocos. Cuando por fin hubo elecciones libres (1916), la mayor parte de la sociedad rechazó a los conservadores liberales. Después apoyaron golpes de Estado (1930, 1955, 1966, 1976).</li>
+<li>La fila de abajo es la mirada de ESTA estación: cómo se concreta ese orden en la vida cotidiana de los personajes.</li>
+<li><b>La escuela en este régimen</b>: la élite quería y temía la inmigración (era problema y aspiración). La escuela cumple dos funciones a la vez: <b>control social</b> y <b>formación del ciudadano</b>. Una especialista del video dice que la discusión entre escuela laica o católica escondía el debate profundo por el poder.</li>
+<li><b>Antes de 1884</b>: se enseñaba a leer, escribir, contar y catecismo; la disciplina era un látigo ('descolgar las disciplinas'). <b>Después</b>: geometría, ciencias, educación física, lecciones de cosas; recreos, ejercicio físico y canto (art. 14); prohibidos los castigos corporales. El video muestra dos objetos: la regla de geometría con agujeros, usada para pegar, y el nuevo material de enseñanza.</li>
+<li><b>Pedagogía tradicional</b> (herbartiana): se inscribe en la llamada pedagogía tradicional y convirtió a la pedagogía en la 'ciencia de enseñar' (Dono Rubio y Lázzari, 2005). Docente en la tarima, distancia y obediencia a veces autoritaria.</li></ul>">
+  <div class="kicker">Mirada hegemónica · 3. ¿Qué dejó?</div>
+  <h2>Un orden con derechos para pocos</h2>
+  <div class="row" style="margin:6px 0 10px;align-items:stretch">
+    <div class="box sm grow" style="background:var(--manteca)"><h3>Modelo agroexportador</h3><ul><li>Favorece a grandes terratenientes y al capital extranjero</li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--malva)"><h3>El PAN</h3><ul><li>Cargos por favores, intereses y parentesco</li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--azul)"><h3>Elecciones controladas</h3><ul><li><b>Control de comicios y fraude</b></li></ul></div>
+    <div class="arrow" style="font-size:26px">➜</div>
+    <div class="box sm grow" style="background:var(--durazno)"><h3>Frente a obreros e inmigrantes</h3><ul><li><b>Represión y negociación</b></li></ul></div>
   </div>
-  <span class="fuente">Fuente: sitio de la estación Escuela</span><span class="num">12</span>
+  <div class="lens" style="margin:0 0 8px"><b>En la escuela: un proyecto para ordenar… con dos caras</b></div>
+  <div class="row" style="flex:1;align-items:stretch;margin-bottom:10px"><div class="box sm grow" style="background:var(--lila)"><h3>La ley (1884)</h3><ul><li>Común, obligatoria, <b>gratuita</b> y gradual</li><li><b>Laica</b>: religión fuera del horario de clase</li></ul></div><div class="box sm grow" style="background:var(--azul)"><h3>Dos caras</h3><ul><li>Instrumento de <b>control</b> de una población nueva y diversa</li><li>Formación <b>ciudadana</b> e identidad nacional</li></ul></div><div class="box sm grow" style="background:var(--salvia)"><h3>En el aula</h3><ul><li>Pedagogía <b>tradicional</b>: tarima, distancia y obediencia</li><li>Se prohíben los <b>castigos corporales</b></li></ul></div></div>
+  <span class="fuente">Fuentes: <a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">educ.ar: Los conservadores liberales</a> · <a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">video Los conservadores liberales (28:36)</a> · <a href="https://www.youtube.com/watch?v=S5yFB5Tg514" target="_blank" rel="noopener">video Ley 1420</a></span>
+  <span class="num">0</span>
 </section>
 
-<!-- 13 MAESTRAS 2 -->
-<section class="slide" data-notes="
-<b>Para decir (4 min)</b><ul>
-<li><b>Florencia Fossatti</b> (Mendoza, 1888-1978): maestra, pedagoga y gremialista. Encabezó la renovación pedagógica junto a María Champeau y Néstor Lemos. Buscaba una escuela <b>laica, democrática y autogestiva</b>.</li>
-<li><b>Herminia Brumana</b> (Pigüé, 1897 – Buenos Aires, 1954): maestra, escritora, periodista, dramaturga y activista. Nueve libros y once obras de teatro. Militó en filas socialistas y anarquistas, más cerca del anarquismo.</li>
-<li><b>Olga Cossettini</b> (San Jorge, 1898): se recibe en 1914; en 1921 adhiere a la primera huelga de maestros de la provincia; en 1930 pone en marcha la <b>Escuela Serena</b>; en 1950 la declaran cesante por 'aplicar ideas educativas contrarias al gobierno'.</li>
-<li>Estas tres <b>cuestionan o renuevan</b>. Conecten con los 'transgresores' y los 'radicalizados' de Puiggrós.</li>
-<li>⚠ En tu Wix el título dice 'Cossetini' y el texto 'Cossettini'. Lo correcto es <b>Cossettini</b>.</li></ul>">
-  <div class="kicker">Parada 4 · Las maestras (2 de 2)</div>
-  <h2>Las que disputaron el sentido de la escuela</h2>
-  <div class="row" style="flex:1;margin-top:10px;margin-bottom:22px">
-    <div class="maestra"><header style="background:var(--durazno)"><div class="ini">F</div><div><h3>Florencia Fossatti</h3><div class="vida">Mendoza, 1888 – 1978</div></div></header><div class="body"><p>Maestra, pedagoga y <b>gremialista</b>.</p><p>Encabezó la <b>renovación pedagógica</b> en Mendoza.</p><p>Buscaba una escuela <b>laica, democrática y autogestiva</b>.</p></div></div>
-    <div class="maestra"><header style="background:var(--malva)"><div class="ini">H</div><div><h3>Herminia Brumana</h3><div class="vida">Pigüé 1897 – Buenos Aires 1954</div></div></header><div class="body"><p>Maestra, escritora, periodista, dramaturga y activista.</p><p>Nueve libros y once obras de teatro.</p><p>Militó en filas <b>socialistas y anarquistas</b>.</p></div></div>
-    <div class="maestra"><header style="background:var(--lila)"><div class="ini">O</div><div><h3>Olga Cossettini</h3><div class="vida">San Jorge, 1898</div></div></header><div class="body"><p><b>1921</b>: adhiere a la primera huelga de maestros de la provincia.</p><p><b>1930</b>: crea la <b>Escuela Serena</b>.</p><p><b>1950</b>: cesante por «aplicar ideas contrarias al gobierno».</p></div></div>
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li>Después de la Primera Guerra, entre los años 20 y 30, llegan propuestas de Europa y EE. UU. conocidas como <b>Escuela Nueva</b>. Raíces: Rousseau, Pestalozzi, Fröbel, Tolstoi. Se organizan en ligas.</li>
+<li>Propone otra relación entre docentes y alumnos, frente a la distancia y la obediencia del siglo XIX.</li>
+<li><b>Los siete principios</b> los estableció el pedagogo suizo <b>Adolphe Ferrière</b>, que visitó la Argentina. En el video aparecen: respeto por la individualidad del niño, la disciplina y la cooperación entre maestros y alumnos, la instrucción común para ambos sexos y la ciudadanía plena.</li>
+<li><b>Paidocentrismo</b>: el centro es el alumno; sus aportes concretos cobran valor.</li>
+<li><b>Adriana Puiggrós</b> distingue tres grupos: orgánicos, transgresores y radicalizados.</li>
+<li>Fossatti buscaba una escuela laica, democrática y autogestiva; Brumana militó en filas socialistas y anarquistas, más cerca del anarquismo.</li>
+<li><b>Pregunta al grupo</b>: ¿qué cambia en una escuela si el centro es el alumno y no el docente?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · 1. ¿Quiénes son y qué creen?</div>
+  <h2>Otra escuela: el niño en el centro</h2>
+  <div class="row" style="flex:1;margin-top:6px;margin-bottom:12px;align-items:stretch">
+    <div class="box grow " style="background:var(--salvia)"><h3>Los principios (Ferrière)</h3><ul><li>Respeto por la <b>individualidad</b> del niño</li><li>Disciplina y <b>cooperación</b></li><li><b>Coeducación</b>: niñas y niños juntos</li><li>Ciudadanía: un ser humano pleno</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Paidocentrismo</h3><ul><li>El centro pasa a ser el <b>alumno</b></li><li>El docente pierde centralidad</li><li>Raíces: Rousseau, Pestalozzi, Fröbel, Tolstoi</li></ul></div>
+    <div class="box grow " style="background:var(--lila)"><h3>Tres grupos (Puiggrós)</h3><ul><li><b>Orgánicos</b>: dentro del sistema</li><li><b>Transgresores</b>: cambian currículo y prácticas</li><li><b>Radicalizados</b>: que la escuela cambie la sociedad</li></ul></div>
   </div>
-  <span class="fuente">Fuente: sitio de la estación Escuela</span><span class="num">13</span>
+  <div class="lens"><b>Otras voces:</b> escuelas <b>laicas, democráticas y autogestivas</b> (Fossatti) y militancia <b>socialista y anarquista</b> (Brumana).</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=XZauITNP6mM" target="_blank" rel="noopener">video Historia de la Escuela Nueva</a> · <a href="https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1" target="_blank" rel="noopener">sitio de la estación</a></span>
+  <span class="num">0</span>
 </section>
 
-<!-- 14 DIALOGO -->
-<section class="slide" data-notes="
-<b>Para decir (3 min)</b><ul>
-<li>Ahora sí: el diálogo del mapa. Una maestra quiere hablar con sus alumnos de lo que pasa en el país porque dos chicos se pelearon por lo que dicen sus padres.</li>
-<li>La directora está de acuerdo en que hay que hacer algo, pero distinto: <b>los niños no se meten en temas de adultos</b>; trabajamos tradición y autoridad.</li>
-<li>La maestra insiste: diálogo, solidaridad, participación, justicia, derechos. Y sitúa el problema: en las casas la comida no alcanza y el casero apura con alquileres altísimos.</li>
-<li>Si el estudiante elige continuar como directora, la respuesta es: la escuela no es lugar para ideologías ni para 'ideas extranjeras subversivas'.</li>
-<li>Pidan que relacionen cada frase con lo visto: ¿recelo frente a las masas?, ¿paidocentrismo?, ¿escuela como control o como ciudadanía?</li></ul>">
-  <div class="kicker">Parada 4 · El diálogo del mapa</div>
-  <h2>Maestra socialista y directora conservadora</h2>
-  <div class="row" style="flex:1;margin-top:10px;margin-bottom:22px;align-items:stretch">
-    <div class="box grow" style="background:var(--lila);border-color:var(--ciruela)"><h3>Maestra socialista</h3><ul><li>Hay que hablar en la escuela de lo que pasa en el país</li><li>Promover el <b>diálogo y la solidaridad</b></li><li>Enseñar <b>participación, justicia, derechos</b></li><li>Mira el contexto: en las casas la comida no alcanza y los alquileres son altísimos</li></ul></div>
-    <div style="align-self:center;text-align:center;font-family:'Playfair Display',serif;color:var(--ciruela);font-size:20px;width:150px;line-height:1.3">¿Quién<br>decide<br>qué entra<br>al aula?</div>
-    <div class="box grow" style="background:var(--malva)"><h3>Directora conservadora</h3><ul><li>Son <b>temas de adultos</b>: los niños no deben meterse</li><li>Valores: <b>tradición y autoridad</b></li><li>Los niños no están en edad de debatir</li><li>Si insiste: nada de «ideologías» ni «ideas extranjeras subversivas»</li></ul></div>
+<section class="slide " data-notes="<b>Para decir (8 min)</b><ul>
+<li>Las tres primeras (azul y verdes) <b>construyen el sistema</b> desde el Estado; las otras tres lo <b>cuestionan o lo renuevan</b> desde adentro. Es una agrupación orientativa, para discutir.</li>
+<li><b>Juana Manso</b>: nace en Buenos Aires en 1819; vive en Montevideo, Río de Janeiro, Estados Unidos y Cuba; vuelve definitivamente en 1859. Conoce a Sarmiento y es la primera mujer funcionaria pública.</li>
+<li><b>Sara Eccleston</b>: estadounidense (1840-1916), una de las docentes contratadas por el Estado argentino; llega en 1884, el año de la ley. 'La Abuela de los Jardines de Infantes'.</li>
+<li><b>Rosario Vera Peñaloza</b> (1873-1950): de familias tradicionales riojanas; educación común, jardines de infantes y perfeccionamiento docente.</li>
+<li><b>Florencia Fossatti</b> (Mendoza, 1888-1978): maestra, pedagoga y gremialista; encabezó la renovación pedagógica junto con María Champeau y Néstor Lemos.</li>
+<li><b>Herminia Brumana</b> (1897-1954): maestra, escritora, periodista, dramaturga y activista; nueve libros y once obras de teatro; militó en filas socialistas y anarquistas, más cerca del anarquismo.</li>
+<li><b>Olga Cossettini</b> (1898): se recibe en 1914; 1921, adhiere a la primera huelga de maestros de la provincia; 1930, la <b>Escuela Serena</b>; 1940, beca Guggenheim; 1950, declarada cesante por 'aplicar ideas educativas contrarias al gobierno'.</li>
+<li>⚠ En tu Wix el título dice 'Cossetini' y el texto 'Cossettini'. Lo correcto es <b>Cossettini</b>. Las ideas pedagógicas de Manso, Eccleston y Vera Peñaloza no figuran en la Wix: si querés las ampliamos.</li>
+<li>Cada tarjeta tiene sus enlaces: Leer (educ.ar, Billiken, etc.), Ver (video) y Escuchar (audio tuyo).</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · 2. ¿Qué pasó?</div>
+  <h2>Seis maestras, seis trayectorias</h2>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:16px;flex:1;margin-top:6px;margin-bottom:12px">
+    <div class="maestra"><header style="background:var(--azul);padding:10px 14px"><div class="ini" style="width:50px;height:50px;font-size:24px">J</div><div><h3 style="font-size:24px">Juana Manso</h3><div class="vida" style="font-size:16px">Buenos Aires, 1819</div></div></header><div class="body" style="padding:10px 16px 12px;font-size:20px;line-height:1.3"><p style="margin:4px 0">Primera mujer <b>funcionaria pública</b>; conoce a Sarmiento.</p><p class="lk" style="font-size:19px;margin-top:8px!important"><a href="https://www.educ.ar/recursos/152931/juana-manso" target="_blank" rel="noopener">Leer</a> · <a href="https://www.youtube.com/watch?v=OE3XOY8DBkA" target="_blank" rel="noopener">Ver</a> · <a href="https://soundcloud.com/carina-quintero-53081960/1-juana-manso" target="_blank" rel="noopener">Escuchar</a></p></div></div>
+    <div class="maestra"><header style="background:var(--turquesa);padding:10px 14px"><div class="ini" style="width:50px;height:50px;font-size:24px">S</div><div><h3 style="font-size:24px">Sara Eccleston</h3><div class="vida" style="font-size:16px">EE. UU. 1840 – Bs. As. 1916</div></div></header><div class="body" style="padding:10px 16px 12px;font-size:20px;line-height:1.3"><p style="margin:4px 0">Docente <b>contratada por el Estado</b>; pionera de los jardines de infantes.</p><p class="lk" style="font-size:19px;margin-top:8px!important"><a href="https://billiken.lat/educadores/sara-eccleston-la-pionera-en-la-profesionalizacion-de-las-maestras-jardineras/" target="_blank" rel="noopener">Leer</a> · <a href="https://www.youtube.com/watch?v=c5OaKAIZhw0" target="_blank" rel="noopener">Ver</a> · <a href="https://on.soundcloud.com/i8oFC" target="_blank" rel="noopener">Escuchar</a></p></div></div>
+    <div class="maestra"><header style="background:var(--manteca);padding:10px 14px"><div class="ini" style="width:50px;height:50px;font-size:24px">R</div><div><h3 style="font-size:24px">Rosario Vera Peñaloza</h3><div class="vida" style="font-size:16px">1873 – 1950 · La Rioja</div></div></header><div class="body" style="padding:10px 16px 12px;font-size:20px;line-height:1.3"><p style="margin:4px 0">Educación común, <b>jardines de infantes</b> y formación docente.</p><p class="lk" style="font-size:19px;margin-top:8px!important"><a href="https://www.cultura.gob.ar/rosario-vera-penaloza-la-maestra-de-la-patria-10558/" target="_blank" rel="noopener">Leer</a> · <a href="https://www.youtube.com/watch?v=VVelrp51XGY" target="_blank" rel="noopener">Ver</a> · <a href="https://soundcloud.com/carina-quintero-53081960/rosario-vera-penaloza-breves-palabras" target="_blank" rel="noopener">Escuchar</a></p></div></div>
+    <div class="maestra"><header style="background:var(--durazno);padding:10px 14px"><div class="ini" style="width:50px;height:50px;font-size:24px">F</div><div><h3 style="font-size:24px">Florencia Fossatti</h3><div class="vida" style="font-size:16px">Mendoza, 1888 – 1978</div></div></header><div class="body" style="padding:10px 16px 12px;font-size:20px;line-height:1.3"><p style="margin:4px 0">Gremialista; renovación pedagógica: escuela <b>laica, democrática y autogestiva</b>.</p><p class="lk" style="font-size:19px;margin-top:8px!important"><a href="https://www.educ.ar/recursos/154809/florencia-fossati" target="_blank" rel="noopener">Leer</a> · <a href="https://www.youtube.com/watch?v=ckfUPMgbHVw" target="_blank" rel="noopener">Ver</a> · <a href="https://on.soundcloud.com/sTgKq" target="_blank" rel="noopener">Escuchar</a></p></div></div>
+    <div class="maestra"><header style="background:var(--malva);padding:10px 14px"><div class="ini" style="width:50px;height:50px;font-size:24px">H</div><div><h3 style="font-size:24px">Herminia Brumana</h3><div class="vida" style="font-size:16px">Pigüé 1897 – Bs. As. 1954</div></div></header><div class="body" style="padding:10px 16px 12px;font-size:20px;line-height:1.3"><p style="margin:4px 0">Maestra y escritora; filas <b>socialistas y anarquistas</b>.</p><p class="lk" style="font-size:19px;margin-top:8px!important"><a href="https://www.educ.ar/recursos/154771/herminia-brumana" target="_blank" rel="noopener">Leer</a> · <a href="https://www.youtube.com/watch?v=4PiU1PjkPgg" target="_blank" rel="noopener">Ver</a> · <a href="https://on.soundcloud.com/UvdD6" target="_blank" rel="noopener">Escuchar</a></p></div></div>
+    <div class="maestra"><header style="background:var(--lila);padding:10px 14px"><div class="ini" style="width:50px;height:50px;font-size:24px">O</div><div><h3 style="font-size:24px">Olga Cossettini</h3><div class="vida" style="font-size:16px">San Jorge, 1898</div></div></header><div class="body" style="padding:10px 16px 12px;font-size:20px;line-height:1.3"><p style="margin:4px 0">Huelga de 1921; <b>Escuela Serena</b> (1930); cesante en 1950.</p><p class="lk" style="font-size:19px;margin-top:8px!important"><a href="https://rosario.italiani.it/olga-cossettini-la-maestra-que-revoluciono-la-educacion/" target="_blank" rel="noopener">Leer</a> · <a href="https://www.youtube.com/watch?v=CV3TxWEzJG4" target="_blank" rel="noopener">Ver</a> · <a href="https://on.soundcloud.com/u8LPo" target="_blank" rel="noopener">Escuchar</a></p></div></div>
   </div>
-  <span class="fuente">Fuente: diálogo de la estación Escuela (mapa interactivo)</span><span class="num">14</span>
+  <span class="fuente">Fuente: <a href="https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1" target="_blank" rel="noopener">sitio de la estación Escuela</a></span>
+  <span class="num">0</span>
 </section>
 
-<!-- 15 PUENTE: CONCEPTOS -> DIALOGO -->
-<section class="slide" data-notes="
-<b>Para decir (2 min)</b><ul>
-<li>Esta diapositiva es la 'llave' para la actividad: cada frase del diálogo se conecta con una idea de la clase.</li>
-<li>Insistir: ninguna de las dos hablantes es 'la mala'; cada una representa un <b>proyecto de escuela y de sociedad</b>.</li></ul>">
+<section class="slide " data-notes="<b>Para decir (6 min)</b><ul>
+<li><b>Cambios concretos</b> en la Argentina (video): pupitres móviles, imprenta en la escuela, cuaderno de clase único, supresión de la tarima docente, educación a través del arte (dibujo, composición libre) y currículo organizado en actividades o centros de interés, no en disciplinas.</li>
+<li>Un movimiento que se dio siempre desde la <b>escuela pública</b>, muy distinto de Europa y EE. UU.</li>
+<li><b>Críticas</b> de otros historiadores: no quisieron cambiar el alcance de la escuela (que llegue a todos), ni los contenidos, ni la estructura del sistema; solo el cotidiano escolar.</li>
+<li><b>Lo que costó</b>: la huelga de maestros de 1921 y la cesantía de Cossettini en 1950. En los años 30 la Iglesia gana peso (lo había perdido con la Escuela Normal) e incorpora rituales militares.</li>
+<li><b>Después</b> (para mencionar): en los 60 y 70 profundizan Piaget, Pichon-Rivière y Paulo Freire (pedagogía antiautoritaria, institucional, de la liberación); desde 1983, corrientes constructivistas.</li>
+<li><b>Pregunta al grupo</b>: ¿qué de lo que vivieron en la escuela viene de esta renovación?</li></ul>">
+  <div class="kicker">Mirada contrahegemónica · 3. ¿Qué dejó?</div>
+  <h2>Lo que cambió en el aula y lo que costó</h2>
+  <div class="row" style="flex:1;margin-top:6px;margin-bottom:12px;align-items:stretch">
+    <div class="box grow " style="background:var(--salvia)"><h3>Cambios en el aula</h3><ul><li>Pupitres móviles</li><li>Imprenta y cuaderno único</li><li>Sin tarima docente</li><li>Arte, dibujo y composición libre</li><li>Centros de interés</li></ul></div>
+    <div class="box grow " style="background:var(--lila)"><h3>Lo que costó</h3><ul><li><b>1921</b>: primera huelga de maestros de la provincia (Cossettini)</li><li><b>1930</b>: Escuela Serena</li><li><b>1950</b>: Cossettini cesante por «ideas contrarias al gobierno»</li></ul></div>
+    <div class="box grow " style="background:var(--azul)"><h3>Límites y críticas</h3><ul><li>No amplió el <b>alcance</b> del sistema ni cambió su <b>estructura</b></li><li>Ocurrió dentro de la <b>escuela pública</b></li><li>Años 30: la Iglesia gana peso y entran rituales militares</li></ul></div>
+  </div>
+  <div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">Hubo décadas de renovación en el aula, sin cambiar del todo la escuela</div>
+  <span class="fuente">Fuentes: <a href="https://www.youtube.com/watch?v=XZauITNP6mM" target="_blank" rel="noopener">video Historia de la Escuela Nueva</a> · <a href="https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1" target="_blank" rel="noopener">sitio de la estación</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (4 min)</b><ul>
+<li>Lo leemos por filas, no por columnas. Cada fila es una pregunta: ¿cuál es el centro? ¿cómo es el vínculo? ¿para qué? ¿quién decide?</li>
+<li><b>Tradicional</b>: pedagogía herbartiana, 'la ciencia de enseñar', sistematizada en la segunda mitad del siglo XIX (Dono Rubio y Lázzari, 2005).</li>
+<li><b>Contrahegemónica</b>: Escuela Nueva más las voces socialistas, anarquistas y autogestivas. Ojo con la columna: reúne enfoques distintos que comparten la crítica al modelo tradicional.</li>
+<li><b>Síntesis</b>: el conflicto ocurrió dentro de la escuela pública; por eso la directora y la maestra comparten la misma escuela y discuten.</li>
+<li><b>Pregunta al grupo</b>: ¿en qué columna estaba su escuela primaria? ¿y su escuela hoy?</li></ul>">
+  <div class="kicker">Comparación y síntesis</div>
+  <h2>Dos escuelas cara a cara</h2>
+  <table style="margin-top:4px;font-size:23px"><tr><th></th><th style="background:var(--malva)">Mirada hegemónica</th><th style="background:var(--salvia)">Mirada contrahegemónica</th></tr>
+    <tr><td>Centro</td><td>El docente y el contenido</td><td>El niño y su grupo</td></tr>
+    <tr><td>Vínculo</td><td>Distancia y obediencia</td><td>Respeto y cooperación</td></tr>
+    <tr><td>Para qué</td><td>Ordenar e integrar a la población</td><td>Formar un ser humano pleno; que la escuela cambie la sociedad</td></tr>
+    <tr><td>Quién decide</td><td>La autoridad: tradición y orden</td><td>Docentes, comunidad y alumnos (autogestión)</td></tr>
+    <tr><td>Ejemplos</td><td>Ley 1420, normalismo, herbartismo</td><td>Escuela Nueva, Escuela Serena, Fossatti, Brumana</td></tr>
+  </table>
+  <div style="margin-top:12px"></div><div class="box" style="background:var(--lila);border-color:var(--ciruela);text-align:center;font-size:24px;font-family:'Playfair Display',serif;margin-bottom:14px;padding:10px 20px">No se reemplazan: <b>se disputan dentro de la misma escuela pública</b></div>
+  <span class="fuente">Fuentes: <a href="https://cdsa.aacademica.org/000-006/208.pdf" target="_blank" rel="noopener">Dono Rubio y Lázzari (2005)</a> · <a href="https://www.youtube.com/watch?v=XZauITNP6mM" target="_blank" rel="noopener">video Escuela Nueva</a></span>
+  <span class="num">0</span>
+</section>
+
+<section class="slide " data-notes="<b>Para decir (5 min)</b><ul>
+<li>Esta es la 'llave' para la actividad: cada frase del diálogo se conecta con una idea que vimos. La columna de la derecha dice en qué diapositiva está.</li>
+<li>Se puede hacer así: leo una frase, el grupo propone con qué idea se conecta, y recién después muestro la columna.</li>
+<li>La frase 'los alquileres son altísimos' de la maestra conecta con el modelo agroexportador y la desigualdad (diap. 6): una Argentina con derechos para pocos.</li></ul>">
   <div class="kicker">Puente a la actividad</div>
   <h2>Cada frase del diálogo tiene historia</h2>
-  <table style="margin-top:8px">
-    <tr><th style="width:42%">Lo que dice el personaje</th><th>Idea con la que se conecta</th></tr>
-    <tr><td style="color:var(--tinta);font-weight:500">«Son temas de adultos en los que no se tienen que meter»</td><td>Recelo frente a las masas · jerarquías sociales · orden natural</td></tr>
-    <tr><td style="color:var(--tinta);font-weight:500">«Respeto a la tradición y a la autoridad»</td><td>Conservadurismo · pedagogía tradicional · distancia y obediencia</td></tr>
-    <tr><td style="color:var(--tinta);font-weight:500">«Promover el diálogo y la solidaridad»</td><td>Escuela Nueva (cooperación) · escuela socialista y libertaria</td></tr>
-    <tr><td style="color:var(--tinta);font-weight:500">«¿Dónde enseñamos participación, justicia, derechos?»</td><td>Formación ciudadana de la Ley 1420 · «radicalizados»</td></tr>
-    <tr><td style="color:var(--tinta);font-weight:500">«Ideas extranjeras subversivas»</td><td>Escuela como control social frente a una inmigración que se quiere y se teme</td></tr>
+  <table style="margin-top:4px"><tr><th>Lo que dice el personaje</th><th>Idea con la que se conecta</th><th></th></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Son temas de adultos en los que no se tienen que meter»</td><td>Recelo frente a las masas · jerarquías sociales</td><td style="width:90px;text-align:right;color:var(--ciruela);font-weight:700">diap. 4</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Respeto a la tradición y a la autoridad»</td><td>Conservadurismo · pedagogía tradicional</td><td style="width:90px;text-align:right;color:var(--ciruela);font-weight:700">diap. 4 y 6</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Ideas extranjeras subversivas»</td><td>Escuela como control frente a una inmigración que se quiere y se teme</td><td style="width:90px;text-align:right;color:var(--ciruela);font-weight:700">diap. 6</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«Promover el diálogo y la solidaridad»</td><td>Escuela Nueva: cooperación y paidocentrismo</td><td style="width:90px;text-align:right;color:var(--ciruela);font-weight:700">diap. 7</td></tr>
+    <tr><td style="color:var(--tinta);font-weight:500;width:42%">«¿Dónde enseñamos participación, justicia, derechos?»</td><td>Formación ciudadana de la Ley 1420 · «radicalizados»</td><td style="width:90px;text-align:right;color:var(--ciruela);font-weight:700">diap. 6 y 7</td></tr>
   </table>
-  <span class="num">15</span>
+  <span class="fuente">Fuente: diálogo de la estación (mapa interactivo)</span>
+  <span class="num">0</span>
 </section>
 
-<!-- 16 ACTIVIDAD -->
-<section class="slide" style="background:linear-gradient(135deg,var(--marfil) 55%,var(--lila) 100%)" data-notes="
-<b>Actividad (aprox. 30 min)</b><ul>
-<li>Grupos de 4: dos asumen los roles, dos observan.</li>
-<li>Primero leen el diálogo en el mapa (estación Escuela) y eligen quién continúa como cada personaje.</li>
-<li>El botón al final del diálogo lleva al PPT: <i>Ahora continuá asumiendo el rol del personaje elegido</i>.</li>
-<li>Los observadores registran argumentos y los conectan con un concepto de la clase.</li>
-<li>Puesta en común: completar la frase 'Para la directora la escuela sirve para…; para la maestra socialista, para…'.</li></ul>">
-  <div class="kicker">Trabajo en grupos</div>
-  <h2>Ahora sigue la conversación</h2>
-  <div class="row" style="flex:1;margin-top:12px;margin-bottom:22px">
-    <div class="box grow" style="background:var(--lila);border-color:var(--ciruela)">
-      <h3>Consigna</h3>
-      <ul>
-        <li>Entremos a la estación <b>Escuela</b> del mapa y leamos el diálogo.</li>
-        <li>En grupos de 4: <b>dos asumimos los roles</b> y dos observamos.</li>
-        <li>Continuemos el diálogo en el PPT sin salirnos del personaje.</li>
-        <li>Cada personaje usa <b>al menos un concepto</b> de la clase.</li>
-      </ul>
-    </div>
-    <div class="box grow" style="background:var(--manteca)">
-      <h3>Observadores</h3>
-      <ul>
-        <li>Anotamos los <b>argumentos</b> de cada rol.</li>
-        <li>Los relacionamos con una idea de la clase (<i>tradición, ciudadanía, paidocentrismo, control…</i>).</li>
-      </ul>
-      <h3 style="margin-top:14px">Cierre grupal</h3>
-      <div style="font-size:20px;line-height:1.35">«Para la directora la escuela sirve para ______; para la maestra socialista, para ______.»</div>
-    </div>
+<section class="slide " data-notes="<b>Actividad (aprox. 20-25 min)</b><ul>
+<li>Primero, 5 min con las tres preguntas entre todos. Volvemos a las respuestas que anotamos al comienzo: ¿qué cambiaríamos?</li>
+<li>Después, grupos de 4: dos asumen los roles (maestra socialista y directora) y dos observan. Entran a la estación Escuela del mapa, leen el diálogo y continúan en el PPT (botón 'Ahora continuá asumiendo el rol del personaje elegido').</li>
+<li>Los observadores anotan argumentos y los vinculan con un concepto de la diapositiva 11.</li>
+<li>Puesta en común: cada grupo completa la frase de cierre en voz alta.</li></ul>">
+  <div class="kicker">Trabajo en la clase</div>
+  <h2>Pensamos juntos y seguimos la conversación</h2>
+  <div class="row" style="flex:1;margin-top:8px;margin-bottom:14px;align-items:stretch">
+    <div class="box grow" style="background:var(--manteca)"><h3>Para pensar entre todos y todas</h3><ul><li>¿Quién decide qué entra al aula y qué queda afuera?</li><li>¿Qué escuela se parece más a la que vivimos?</li><li>¿Qué haría hoy cada personaje frente a una pelea entre alumnos?</li></ul></div>
+    <div class="box grow" style="background:var(--lila);border-color:var(--ciruela)"><h3>Actividad en grupos</h3><ul>
+      <li>En grupos de 4: <b>dos asumimos los roles</b> y dos observamos.</li>
+      <li>Continuemos el diálogo en el <a href="https://docs.google.com/presentation/d/1geEi3cmWnIXTdGm4MvmEolE07kcFAOBcYTNU0RGL6vg/edit?usp=sharing" target="_blank" rel="noopener">PPT</a> sin salirnos del personaje y usando <b>al menos un concepto</b> de la clase.</li>
+      <li>Observadores: anotamos <b>argumentos</b> y los relacionamos con la teoría.</li></ul>
+      <div class="lens" style="margin-top:8px"><b>Cierre grupal:</b> «Para la directora la escuela sirve para ______; para la maestra socialista, para ______.»</div></div>
   </div>
-  <span class="num">16</span>
+  <span class="num">0</span>
 </section>
 
+<section class="slide " data-notes="<b>Para decir (1 min)</b><ul><li>Los enlaces funcionan en el HTML y en el PDF. Es la diapositiva para compartir por Moodle o por el grupo.</li><li>Los enlaces de cada maestra (leer, ver, escuchar) están en la diapositiva 8.</li><li>⚠ De Historia Argentina cap. 2 (pp. 50-64) solo tenemos el título; el Doc enlazado es el texto de educ.ar sobre los conservadores liberales.</li></ul>">
+  <div class="kicker">Para seguir</div>
+  <h2>Recursos y enlaces de la estación</h2>
+  <div class="row" style="flex:1;margin-top:8px;margin-bottom:14px;align-items:stretch">
+    <div class="box grow sm" style="background:var(--lila)"><h3>Para el trabajo</h3><ul><li><a href="https://cartografiandoprac.wixsite.com/cartograf-as-y-conve/about-1" target="_blank" rel="noopener">Sitio de la estación Escuela</a></li><li><a href="https://docs.google.com/presentation/d/1geEi3cmWnIXTdGm4MvmEolE07kcFAOBcYTNU0RGL6vg/edit?usp=sharing" target="_blank" rel="noopener">PPT para continuar el diálogo</a></li></ul></div>
+    <div class="box grow sm" style="background:var(--azul)"><h3>Videos</h3><ul><li><a href="https://www.youtube.com/watch?v=S5yFB5Tg514" target="_blank" rel="noopener">Ley de Educación 1.420. Argentina siglo XIX</a></li><li><a href="https://www.youtube.com/watch?v=XZauITNP6mM" target="_blank" rel="noopener">Historia de la Escuela Nueva</a></li><li><a href="https://www.youtube.com/watch?v=4B6NoHwvYmg" target="_blank" rel="noopener">Los conservadores liberales (28:36)</a></li></ul></div>
+    <div class="box grow sm" style="background:var(--malva)"><h3>Textos</h3><ul><li><a href="https://docs.google.com/document/d/1aKd5VdVH4cUR2c6xCkBZKEUmTDVzS0OK7km2fEshWW8/edit?usp=sharing" target="_blank" rel="noopener">Los conservadores liberales (educ.ar)</a></li><li><a href="https://cdsa.aacademica.org/000-006/208.pdf" target="_blank" rel="noopener">Dono Rubio y Lázzari (2005)</a></li><li><a href="https://bnm.educacion.gob.ar/digital/documentos/EL006510.pdf" target="_blank" rel="noopener">Documento complementario (PDF)</a></li></ul></div>
+  </div>
+  <span class="num">0</span>
+</section>
 </div></div>
 
 <div id="ctrl">
@@ -463,6 +396,8 @@ body.notes #notes{display:block}
     i=Math.max(0,Math.min(slides.length-1,n));
     slides.forEach(function(s,j){s.classList.toggle('on',j===i)});
     notes.innerHTML=slides[i].getAttribute('data-notes')||'';
+    document.getElementById('prev').style.display=(i===0)?'none':'';
+    document.getElementById('next').style.display=(i===slides.length-1)?'none':'';
     try{history.replaceState(null,'','#'+(i+1))}catch(e){}
   }
   function go(d){show(i+d)}
@@ -488,8 +423,10 @@ body.notes #notes{display:block}
   addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
   addEventListener('touchend',function(e){if(tx===null)return;var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)go(d<0?1:-1);tx=null});
   stage.addEventListener('click',function(e){
+    if(e.target.closest('a'))return;
     var r=stage.getBoundingClientRect();if(e.clientX-r.left>r.width*.5)go(1);else go(-1);
   });
+  slides.forEach(function(s,j){var n=s.querySelector('.num');if(n)n.textContent=j+1});
   fit();
   var h=parseInt((location.hash||'').slice(1),10);
   show(isNaN(h)?0:h-1);
